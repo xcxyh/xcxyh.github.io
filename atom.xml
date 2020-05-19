@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://xcxyh.github.io/"/>
-  <updated>2020-05-18T13:31:43.125Z</updated>
+  <updated>2020-05-19T01:02:12.899Z</updated>
   <id>https://xcxyh.github.io/</id>
   
   <author>
@@ -17,20 +17,42 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>my new post</title>
-    <link href="https://xcxyh.github.io/2020/05/18/my-new-post/"/>
-    <id>https://xcxyh.github.io/2020/05/18/my-new-post/</id>
-    <published>2020-05-18T08:45:32.000Z</published>
-    <updated>2020-05-18T13:31:43.125Z</updated>
+    <title>hexo 踩坑</title>
+    <link href="https://xcxyh.github.io/2020/05/18/hexo-%E8%B8%A9%E5%9D%91/"/>
+    <id>https://xcxyh.github.io/2020/05/18/hexo-%E8%B8%A9%E5%9D%91/</id>
+    <published>2020-05-18T14:51:54.000Z</published>
+    <updated>2020-05-19T01:02:12.899Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="第一篇-记录一下"><a href="#第一篇-记录一下" class="headerlink" title="第一篇  记录一下"></a>第一篇  记录一下</h3><p>吼吼吼</p>]]></content>
+    <content type="html"><![CDATA[<h3 id="hexo-generate-报错"><a href="#hexo-generate-报错" class="headerlink" title="hexo  generate 报错"></a>hexo  generate 报错</h3><p>ERROR Render HTML failed: 2020/05/18/hello-world/index.html<br>TypeError: Cannot read property ‘replace’ of null</p><p>不知道啥原因啊。最后重装 next 解决了</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h3 id=&quot;第一篇-记录一下&quot;&gt;&lt;a href=&quot;#第一篇-记录一下&quot; class=&quot;headerlink&quot; title=&quot;第一篇  记录一下&quot;&gt;&lt;/a&gt;第一篇  记录一下&lt;/h3&gt;&lt;p&gt;吼吼吼&lt;/p&gt;
-
+        &lt;h3 id=&quot;hexo-generate-报错&quot;&gt;&lt;a href=&quot;#hexo-generate-报错&quot; class=&quot;headerlink&quot; title=&quot;hexo  generate 报错&quot;&gt;&lt;/a&gt;hexo  generate 报错&lt;/h3&gt;&lt;p&gt;ERROR Render
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>my new post</title>
+    <link href="https://xcxyh.github.io/2020/05/18/my-new-post/"/>
+    <id>https://xcxyh.github.io/2020/05/18/my-new-post/</id>
+    <published>2020-05-18T08:45:32.000Z</published>
+    <updated>2020-05-19T01:02:55.919Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="第一篇-记录一下"><a href="#第一篇-记录一下" class="headerlink" title="第一篇  记录一下"></a>第一篇  记录一下</h3><p>hexo 简单命令</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">"postName"</span>   <span class="comment">#新建文章</span></span><br><span class="line">hexo new page <span class="string">"pageName"</span> <span class="comment">#新建页面</span></span><br><span class="line">hexo generate <span class="comment">#生成静态页面至public目录</span></span><br><span class="line">hexo server <span class="comment">#开启预览访问端口（默认端口4000，'ctrl + c'关闭server）</span></span><br><span class="line">hexo deploy <span class="comment">#将.deploy目录部署到GitHub</span></span><br><span class="line">hexo <span class="built_in">help</span>  <span class="comment"># 查看帮助</span></span><br><span class="line">hexo version  <span class="comment">#查看Hexo的版本</span></span><br><span class="line">hexo deploy -g  <span class="comment">#生成加部署</span></span><br><span class="line">hexo server -g  <span class="comment">#生成加预览</span></span><br><span class="line"><span class="comment">#命令的简写</span></span><br><span class="line">hexo n == hexo new</span><br><span class="line">hexo g == hexo generate</span><br><span class="line">hexo s == hexo server</span><br><span class="line">hexo d == hexo deploy</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;第一篇-记录一下&quot;&gt;&lt;a href=&quot;#第一篇-记录一下&quot; class=&quot;headerlink&quot; title=&quot;第一篇  记录一下&quot;&gt;&lt;/a&gt;第一篇  记录一下&lt;/h3&gt;&lt;p&gt;hexo 简单命令&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;
       
     
     </summary>
