@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="百度 0912 二战百度 还是二面挂 一面  1  百度一面 进程间通信的方式？ 12345678linux使用的进程间通信方式管道（pipe）,流管道(s_pipe)和有名管道（FIFO）信号(signal)消息队列共享内存    共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快	   的 IPC 方式，它是针对其他进程间通信方式运行">
+<meta property="og:type" content="website">
+<meta property="og:title" content="xcxyh">
+<meta property="og:url" content="https://xcxyh.github.io/%E9%9D%A2%E7%BB%8F%E6%96%87%E4%BB%B6/%E7%99%BE%E5%BA%A6%E9%9D%A2%E7%BB%8F%E9%97%AE%E9%A2%98.html">
+<meta property="og:site_name" content="xcxyh">
+<meta property="og:description" content="百度 0912 二战百度 还是二面挂 一面  1  百度一面 进程间通信的方式？ 12345678linux使用的进程间通信方式管道（pipe）,流管道(s_pipe)和有名管道（FIFO）信号(signal)消息队列共享内存    共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快	   的 IPC 方式，它是针对其他进程间通信方式运行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xcxyh.github.io/%E9%9D%A2%E7%BB%8F%E6%96%87%E4%BB%B6/%E7%99%BE%E5%BA%A6%E9%9D%A2%E7%BB%8F%E9%97%AE%E9%A2%98.htm/.%5C%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98%5Ctcp%E5%90%8C%E6%97%B6%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5.png">
+<meta property="article:published_time" content="2020-09-11T11:00:51.274Z">
+<meta property="article:modified_time" content="2020-09-11T10:56:25.463Z">
+<meta property="article:author" content="小熊一号">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xcxyh.github.io/%E9%9D%A2%E7%BB%8F%E6%96%87%E4%BB%B6/%E7%99%BE%E5%BA%A6%E9%9D%A2%E7%BB%8F%E9%97%AE%E9%A2%98.htm/.%5C%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98%5Ctcp%E5%90%8C%E6%97%B6%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5.png">
+
+<link rel="canonical" href="https://xcxyh.github.io/%E9%9D%A2%E7%BB%8F%E6%96%87%E4%BB%B6/%E7%99%BE%E5%BA%A6%E9%9D%A2%E7%BB%8F%E9%97%AE%E9%A2%98">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | xcxyh
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="xcxyh" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">xcxyh</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">嘻嘻嘻,正经网站</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xcxyh" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <p>百度 0912 二战百度 还是二面挂</p>
+<p>一面 </p>
+<p>1 </p>
+<p>百度一面</p>
+<p>进程间通信的方式？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">linux使用的进程间通信方式</span><br><span class="line">管道（pipe）,流管道(s_pipe)和有名管道（FIFO）</span><br><span class="line">信号(signal)</span><br><span class="line">消息队列</span><br><span class="line">共享内存</span><br><span class="line">    共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快	   的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。</span><br><span class="line">信号量</span><br><span class="line">套接字（socket) (tcp&#x2F;ip 协议)</span><br></pre></td></tr></table></figure>
+
+<p>tcp 拥塞控制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">慢启动</span><br><span class="line">拥塞避免</span><br></pre></td></tr></table></figure>
+
+<p>tcp 三次握手 ，四次挥手， 为啥 两次 握手不行？</p>
+<p>百度二面</p>
+<p>redis 是单线程的吗</p>
+<p>kafka 重复消费问题</p>
+<p>kafka 分区 partition 消息分布不均匀怎么办？</p>
+<p>tcp fast-open 过程？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">三次握手的过程中，当用户首次访问server时，发送syn包，server根据用户IP生成cookie，并与syn+ack一同发回client；client再次访问server时，在syn包携带TCP cookie；如果server校验合法，则在用户回复ack前就可以直接发送数据；否则按照正常三次握手进行。</span><br><span class="line"></span><br><span class="line">TFO提高性能的关键是省去了热请求的三次握手，这在充斥着小对象的移动应用场景中能够极大提升性能。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>tcp 连接中 两端同时断开连接的过程是怎样的？</p>
+<figure class="highlight https"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">https://blog.csdn.net/Windgs_YF/article/details/86550843</span></span><br></pre></td></tr></table></figure>
+
+<p> 四次握手过程基本类似，注意两者状态转换的区别，同时关闭是由ESTABLISHED-&gt;FIN_WAIT_1-&gt;CLOSING-&gt;TIME_WAIT-&gt;CLOSED。同时关闭的流程如下，不在做额外的讲解。 </p>
+<p><img src="/%E9%9D%A2%E7%BB%8F%E6%96%87%E4%BB%B6/%E7%99%BE%E5%BA%A6%E9%9D%A2%E7%BB%8F%E9%97%AE%E9%A2%98.htm/.%5C%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98%5Ctcp%E5%90%8C%E6%97%B6%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5.png" alt></p>
+<p>继承与组合的区别，优缺点？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">继承是 子类继承父类，父类的所有方法都是对子类开放的</span><br><span class="line">组合是 一个类以成员变量的形式存在于另一个类中。</span><br><span class="line"></span><br><span class="line">两种方式都可以达到对类的功能进行扩展的作用。</span><br><span class="line"></span><br><span class="line">继承优缺点：</span><br><span class="line">	优点：支持扩展，通过继承父类实现，可以多态，易于修改被复用的代码。</span><br><span class="line">	缺点：父类一旦改动，会影响到所有的子类，子类缺乏独立性，依赖于父类，耦合度较高。父类的实现细节暴露给子类，破坏了封装性。</span><br><span class="line">组合优缺点：</span><br><span class="line">	优点：整体类与局部类之间松耦合，相互独立。支持动态扩展。每个类只专注于一项任务</span><br><span class="line">	缺点：创建整体类对象时，需要创建所有局部类对象。导致系统对象很多。</span><br><span class="line"></span><br><span class="line">使用场景：（组合优于继承）</span><br><span class="line">    1.除非考虑使用多态，否则优先使用组合。</span><br><span class="line">	2.要实现类似”多重继承“的设计的时候，使用组合。</span><br><span class="line">	3.要考虑多态又要考虑实现“多重继承”的时候，使用组合+接口。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>算法题：链表快排，要交换节点，不能仅仅交换节点的值 (第一次面试没写出来的，二面接着问)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 交换节点 而不是交换 值 的 快排, 效率最低， 反向优化</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> ListNode <span class="title">quickSort</span><span class="params">(ListNode head)</span></span>&#123;</span><br><span class="line">       <span class="keyword">if</span>(head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>) <span class="keyword">return</span> head;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">int</span> pivot = head.val;</span><br><span class="line">       <span class="comment">// 链表划分</span></span><br><span class="line">       ListNode ls = <span class="keyword">new</span> ListNode(-<span class="number">1</span>), rs = <span class="keyword">new</span> ListNode(-<span class="number">1</span>);</span><br><span class="line">       ListNode l = ls, r = rs, cur = head;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">while</span>(cur != <span class="keyword">null</span>)&#123;</span><br><span class="line">           <span class="keyword">if</span>(cur.val &lt; pivot)&#123;</span><br><span class="line">               l.next = cur;</span><br><span class="line">               l = l.next;</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               r.next = cur;</span><br><span class="line">               r = r.next;</span><br><span class="line">           &#125;</span><br><span class="line">           cur = cur.next;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// 这两句不能交换 ，否则链表成环</span></span><br><span class="line">       r.next = <span class="keyword">null</span>;</span><br><span class="line">       l.next = rs.next;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 递归调用,先重排右边的,再把指针置空,再重排左边的</span></span><br><span class="line">       <span class="comment">// 和归并排序很像的</span></span><br><span class="line">       ListNode right = quickSort(head.next);</span><br><span class="line">       head.next = <span class="keyword">null</span>;</span><br><span class="line">       ListNode left = quickSort(ls.next);</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 拼接左半部分和右半部分</span></span><br><span class="line">       cur = left;</span><br><span class="line">       <span class="keyword">while</span>(cur.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">           cur = cur.next;</span><br><span class="line">       &#125;</span><br><span class="line">       cur.next = right;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> left;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>算法题：有序排列的矩阵中查找元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (matrix == <span class="keyword">null</span> || matrix.length == <span class="number">0</span> || matrix[<span class="number">0</span>].length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> rows = matrix.length;</span><br><span class="line">        <span class="keyword">int</span> cols = matrix[<span class="number">0</span>].length;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> i = rows - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(i &gt;= <span class="number">0</span> &amp;&amp; j &lt; cols)&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (matrix[i][j] &gt; target)&#123;</span><br><span class="line">                i--;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (matrix[i][j] &lt; target)&#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>智力题：还有一个是 一杯糖 一杯盐，一样多，然后一个k大的勺子 ，先从 糖里面挖一勺到 盐里面 ，混合之后，在从盐那个杯子里面挖一勺放回去，问 两个杯子里面杂质的占比哪个多？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一样多。</span><br></pre></td></tr></table></figure>
+
+<p>智力题：共有100个球,甲乙轮流拿,一次最多能拿5个,拿到第100个球的人赢,如甲先拿,他要拿几个,才能赢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">答： 100÷6&#x3D;16......4</span><br><span class="line">拿法：甲先拿4个，以后的拿法为：乙拿x个，1≤x≤5，则甲拿6-x个。</span><br><span class="line">乙拿一次甲拿一次算一轮的话，每轮都会减少6个球。</span><br><span class="line">所以最后一轮会剩下6个，无论乙拿几个甲都会拿到最后1个</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="面试中的-手撕题"><a href="#面试中的-手撕题" class="headerlink" title="面试中的 手撕题"></a>面试中的 手撕题</h3><p> 编程，写个快排</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] quickSort(<span class="keyword">int</span>[] nums)&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length &lt; <span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    quickSort(nums, <span class="number">0</span>, nums.length);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> nums;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (start &gt; end)&#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> temp = nums[start];</span><br><span class="line">    <span class="keyword">int</span> i = start;</span><br><span class="line">    <span class="keyword">int</span> j = end;</span><br><span class="line">    <span class="keyword">while</span>(i &lt; j)&#123;</span><br><span class="line">         <span class="comment">// 右边找小的,如果 大 就  j--</span></span><br><span class="line">            <span class="keyword">while</span>(i &lt; j &amp;&amp; nums[j] &gt;= temp)&#123; <span class="comment">// 相等也 j--</span></span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 左边找大的 ,如果 小 就  i++</span></span><br><span class="line">            <span class="keyword">while</span>(i &lt; j &amp;&amp; nums[i] &lt;= temp)&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="comment">// 找到了 就交换</span></span><br><span class="line">        <span class="keyword">if</span> (i &lt; j)&#123;</span><br><span class="line">            <span class="keyword">int</span> t = nums[i];</span><br><span class="line">            nums[i] = nums[j];</span><br><span class="line">            nums[j] = t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//交换 temp 和 这个中间位置的元素</span></span><br><span class="line">    nums[start] = nums[i];</span><br><span class="line">    nums[i] = temp;</span><br><span class="line">    <span class="comment">// 递归左半部分</span></span><br><span class="line">    quickSort(nums, start, i - <span class="number">1</span>);</span><br><span class="line">    <span class="comment">//递归右半部分</span></span><br><span class="line">     quickSort(nums, i + <span class="number">1</span>, end);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>平方根</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">mySqrt</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (x &lt;= <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> x;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">long</span> right = x / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span>(left &lt; right)&#123;</span><br><span class="line">            <span class="comment">// 这里选择右中位数</span></span><br><span class="line">            <span class="keyword">long</span> mid = left + (right - left + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (mid * mid &gt; x)&#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                left = mid;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>)left;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>  两数之和，LeetCode 1 <a href="https://leetcode-cn.com/problems/two-sum/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/two-sum/</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">     HashMap&lt;Integer,Integer&gt; map= <span class="keyword">new</span> HashMap();</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">          <span class="keyword">if</span>(map.containsKey(target - nums[i]))&#123;</span><br><span class="line">              <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;map.get(target - nums[i]) ,i&#125;;</span><br><span class="line">          &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">              map.put(nums[i],i);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;-<span class="number">1</span>,-<span class="number">1</span>&#125;;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>①只用一行代码实现判断一个数x是不是2的幂级数(就是判断这样2 4 8 16 ….)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n &amp; (n - <span class="number">1</span>) == <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>我想的是hashmap的长度为啥是2的n次幂，就马上写出来了<br>②计算二叉树的深度.很快用递归秒了，然后他问用别的方法说下思路,我就用广度搜索的方法说了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxDepth</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (root == <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> leftMax = maxDepth(root.left);</span><br><span class="line">    <span class="keyword">int</span> rightMax = maxDepth(root.right);</span><br><span class="line">    <span class="keyword">return</span> Math.max(leftMax, rightMax) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  4个写代码题： </p>
+<p>  ①数组找到出现次数大于半数的  ( moore 投票算法)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1 排序后 返回 中位数 </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">majorityElement</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="keyword">return</span> nums[nums.length / <span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// 2 moore 投票算法  用count 统计票数， 最终票数大于0 对应的那个数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">majorityElement</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length == <span class="number">0</span>)&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">	<span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> ans = nums[<span class="number">0</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> x : nums)&#123;</span><br><span class="line">        <span class="keyword">if</span> (count == <span class="number">0</span> || x == ans)&#123;</span><br><span class="line">            count++;</span><br><span class="line">            ans = x;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            count--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  ②hashmap遍历 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// 创建一个key和value均为String的Map集合</span></span><br><span class="line">       Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       map.put(<span class="string">"1"</span>, <span class="string">"11"</span>);</span><br><span class="line">       map.put(<span class="string">"2"</span>, <span class="string">"22"</span>);</span><br><span class="line">       map.put(<span class="string">"3"</span>, <span class="string">"33"</span>);</span><br><span class="line">       <span class="comment">// 键和值</span></span><br><span class="line">       String key = <span class="keyword">null</span>;</span><br><span class="line">       String value = <span class="keyword">null</span>;</span><br><span class="line">       <span class="comment">// 获取键值对的迭代器</span></span><br><span class="line">       Iterator&lt;Map.Entry&lt;String, String&gt;&gt; it = map.entrySet().iterator();</span><br><span class="line">       <span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">           Map.Entry&lt;String, String&gt; entry = it.next();</span><br><span class="line">           key =  entry.getKey();</span><br><span class="line">           value = entry.getValue();</span><br><span class="line">           System.out.println(<span class="string">"key:"</span> + key + <span class="string">"---"</span> + <span class="string">"value:"</span> + value);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  ③两集合的交集 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] intersection(<span class="keyword">int</span>[] nums1, <span class="keyword">int</span>[] nums2) &#123;</span><br><span class="line">    HashSet&lt;Integer&gt; set1 = <span class="keyword">new</span> HashSet&lt;Integer&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Integer n : nums1) set1.add(n);</span><br><span class="line">    HashSet&lt;Integer&gt; set2 = <span class="keyword">new</span> HashSet&lt;Integer&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Integer n : nums2) set2.add(n);</span><br><span class="line"></span><br><span class="line">    set1.retainAll(set2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> [] output = <span class="keyword">new</span> <span class="keyword">int</span>[set1.size()];</span><br><span class="line">    <span class="keyword">int</span> idx = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> s : set1) output[idx++] = s;</span><br><span class="line">    <span class="keyword">return</span> output;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">retainAll</span><span class="params">(Collection&lt;?&gt; c)</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(c);</span><br><span class="line">        <span class="keyword">boolean</span> modified = <span class="keyword">false</span>;</span><br><span class="line">        Iterator&lt;E&gt; it = iterator();</span><br><span class="line">        <span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!c.contains(it.next())) &#123;</span><br><span class="line">                it.remove(); <span class="comment">//!!!</span></span><br><span class="line">                modified = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> modified;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  ④链表每k次反转 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseKGroup</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ListNode a = head;</span><br><span class="line">    ListNode b = head;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++)&#123;</span><br><span class="line">    	<span class="keyword">if</span> (b == <span class="keyword">null</span>)&#123;</span><br><span class="line">            retrun head;</span><br><span class="line">        &#125;</span><br><span class="line">    	b = b.next;</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="comment">// 局部翻转之后 的 新头节点</span></span><br><span class="line">    ListNode newHead = reverseBetween(a, b);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//  反转之后  a 就 变成了  上一个局部的 尾节点 ，然后 和 之后的部分连接起来</span></span><br><span class="line">    a.next = reverseKGroup(b, k);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> newHead;</span><br><span class="line">&#125;</span><br><span class="line">   <span class="comment">// [a, b)  不包括 右端点</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> ListNode <span class="title">reverseBetween</span><span class="params">(ListNode a, ListNode b)</span></span>&#123;</span><br><span class="line">    ListNode pre = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">while</span>(a != b)&#123;</span><br><span class="line">        ListNode next = a.next;</span><br><span class="line">        a.next = pre;</span><br><span class="line">        pre = a;</span><br><span class="line">        a = next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pre;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写代码题（一个字符串的indexof（String target）方法，我觉得不难，写出来了，他一直在挑错误，不停地让我测试，但幸运都过了）；  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(String source, String target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span>[] value = source.toCharArray();</span><br><span class="line">        <span class="keyword">char</span>[] targetValue = target.toCharArray();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> indexOf(value, targetValue);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(<span class="keyword">char</span>[] source, <span class="keyword">char</span>[] target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (target == <span class="keyword">null</span> || target.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> sourceCount = source.length;</span><br><span class="line">        <span class="keyword">int</span> targetCount = target.length;</span><br><span class="line">        <span class="keyword">char</span> first = target[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> max =  sourceCount;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; max; i++) &#123;</span><br><span class="line">            <span class="comment">/* Look for first character. */</span></span><br><span class="line">       		<span class="keyword">while</span>(source[i] != first)&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">/* Found first character, now look at the rest of v2 */</span></span><br><span class="line">           <span class="keyword">if</span> (i &lt; max)&#123;</span><br><span class="line">               <span class="keyword">int</span> j = i + <span class="number">1</span>;</span><br><span class="line">               <span class="keyword">int</span> k;</span><br><span class="line">           	   <span class="keyword">for</span>(k = <span class="number">1</span>; k &lt; targetCount; k++)&#123;</span><br><span class="line">                   <span class="keyword">if</span> (target[k] != source[j] || j &gt;= sourceCount)&#123;</span><br><span class="line">                       <span class="keyword">break</span>;</span><br><span class="line">                   &#125;</span><br><span class="line">                   j++;</span><br><span class="line">               &#125;</span><br><span class="line">               </span><br><span class="line">               <span class="keyword">if</span> (k == targetCount)&#123;</span><br><span class="line">                   <span class="keyword">return</span> i;</span><br><span class="line">               &#125;</span><br><span class="line">               </span><br><span class="line">           &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    算法题，给定字符串判断括号是否匹配 （用栈秒了）      </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.length() == <span class="number">0</span>)&#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       ArrayDeque&lt;Character&gt; stack = <span class="keyword">new</span> ArrayDeque&lt;&gt;();</span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">char</span> c : s.toCharArray())&#123;</span><br><span class="line">           <span class="keyword">if</span> (c == <span class="string">'['</span> || c == <span class="string">'('</span> || c == <span class="string">'&#123;'</span>)&#123;</span><br><span class="line">               stack.push(c);</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               <span class="keyword">switch</span> (c)&#123;</span><br><span class="line">                   <span class="keyword">case</span> <span class="string">')'</span>:</span><br><span class="line">                       <span class="keyword">if</span> (stack.isEmpty() || stack.peek() != <span class="string">'('</span>)&#123;</span><br><span class="line">                           <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                       &#125;</span><br><span class="line">                       stack.pop();</span><br><span class="line">                       <span class="keyword">break</span>;</span><br><span class="line">                   <span class="keyword">case</span> <span class="string">']'</span>:</span><br><span class="line">                       <span class="keyword">if</span> (stack.isEmpty() || stack.peek() != <span class="string">'['</span>)&#123;</span><br><span class="line">                           <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                       &#125;</span><br><span class="line">                       stack.pop();</span><br><span class="line">                       <span class="keyword">break</span>;</span><br><span class="line">                   <span class="keyword">case</span> <span class="string">'&#125;'</span>:</span><br><span class="line">                       <span class="keyword">if</span> (stack.isEmpty() || stack.peek() != <span class="string">'&#123;'</span>)&#123;</span><br><span class="line">                           <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                       &#125;</span><br><span class="line">                       stack.pop();</span><br><span class="line">                       <span class="keyword">break</span>;</span><br><span class="line">                   <span class="keyword">default</span>:</span><br><span class="line">                       <span class="keyword">break</span>;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> stack.isEmpty();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="面经-0725"><a href="#面经-0725" class="headerlink" title="面经 0725"></a>面经 0725</h2><p> \1. 自我介绍 </p>
+<p> \2. java基础 </p>
+<p> String，Stringbuffer，Stringbuilder区别 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">都是final类,不允许被继承。因为这几个类都是经常被使用着，且考虑到防止其中的参数被参数修改影响到其他的应用。</span><br><span class="line">String 为String类，“字符串常量”，也就是不可改变的对象。</span><br><span class="line">Stringbuffer 为字符串变量， 线程安全 </span><br><span class="line">Stringbuilder 为字符串变量 ，线程不安全</span><br></pre></td></tr></table></figure>
+
+
+
+<p> String为什么设计成final的（没答出来） </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">final 表示 该类 不可继承</span><br><span class="line"></span><br><span class="line">String类的主力成员字段value是个char[]数组,而且是用final修饰的，不可更改</span><br><span class="line"></span><br><span class="line">好处： </span><br><span class="line">	几乎每个类都会使用的类，为了安全，</span><br><span class="line">	确保它们不会再子类中改变语义，不允许任何人定义String的子类</span><br><span class="line"> 	线程安全</span><br><span class="line"></span><br><span class="line">主要是为了“效率” 和 “安全性” 的缘故。若String允许被继承, 由于它的高度被使用率, 可能会降低程序的性能，所以String被定义成final。</span><br></pre></td></tr></table></figure>
+
+
+
+<p> equals和==的区别 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">对于基本类型： 二者都是 比较的值</span><br><span class="line"></span><br><span class="line">对于 对象： &#x3D;&#x3D; 比较的是 对象的 地址，equals 如果没被覆写， 也是比较的 地址 ，调用 &#x3D;&#x3D;</span><br><span class="line">	equals 方法，如果被覆写，就通过该方法的 比较逻辑 进行比较。如 ：String，Date 覆写了 equals 方法</span><br></pre></td></tr></table></figure>
+
+
+
+<p> 基础类型的== </p>
+<p> 重写equals时hashcode问题 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">重写 equals 方法必须重写 hashcode 方法， 因为java 中 比较两个对象是否相等， 首先比较 两个对象的hash值是否相等，然后调用 equals 方法看是否相等。</span><br><span class="line"></span><br><span class="line">如果 重写 equals 方法没有去重写 hashcode 方法，那么，在调用 equals 方法判断两个对象相等 后， 这两个对象的 hash值不等，在内存中的 地址也不等， 打破了 相等对象必须具有相等的哈希码 的规定。</span><br></pre></td></tr></table></figure>
+
+<p> jvm结构及作用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">jvm 结构： </span><br><span class="line">1.类加载器（Class Loader）：加载类文件到内存。Class loader只管加载，只要符合文件结构就加载，至于能否运行，它不负责，那是有Exectution Engine 负责的。</span><br><span class="line"></span><br><span class="line">2.执行引擎（Execution Engine）：也叫解释器，负责解释命令，交由操作系统执行。</span><br><span class="line"></span><br><span class="line">3.本地库接口（Native Interface）：本地接口的作用是融合不同的语言为java所用</span><br><span class="line"></span><br><span class="line">4.运行时数据区（Runtime Data Area）：堆，方法区，虚拟机栈， 本地方法栈，程序计数器</span><br></pre></td></tr></table></figure>
+
+<p> 如何实现多线程 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1 继承Thread类，重写run方法（其实Thread类本身也实现了Runnable接口）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//2 实现 Runnable 接口，重写run方法 ，传入 Thread类中，调用 start 方法启动</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//3 实现Callable接口，重写call方法（有返回值）</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span> <span class="keyword">implements</span> <span class="title">Callable</span></span>&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> Object <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//执行 Callable 方式，需要 FutureTask 实现类的支持，用于接收运算结果。</span></span><br><span class="line">        FutureTask&lt;Integer&gt; result = <span class="keyword">new</span> FutureTask&lt;&gt;(<span class="keyword">new</span> test());</span><br><span class="line">        <span class="keyword">new</span> Thread(result).start();</span><br><span class="line"></span><br><span class="line"><span class="comment">//4 使用线程池</span></span><br><span class="line">ThreadPoolExecutor() ; <span class="comment">// 7 大参数配置</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p> start和run方法的关系 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">start 方法是开启一个线程，使之进入就绪状态， 在 进入到 运行状态时会 调用 run方法</span><br><span class="line"></span><br><span class="line">run 方法 如果直接调用 ，则只是一个普通方法。</span><br></pre></td></tr></table></figure>
+
+
+
+<p> 线程池（问了参数，这块不是特别清楚） </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 核心线程数  corePoolSize</span><br><span class="line">2 最大线程数  maximumPoolSize</span><br><span class="line">3 过期时间 keepAliveTime</span><br><span class="line">4 时间单位  unit</span><br><span class="line">5 一个 有界的阻塞队列  workQueue</span><br><span class="line">6 线程工厂  threadFactory</span><br><span class="line">7 拒绝策略  handler</span><br></pre></td></tr></table></figure>
+
+<p> BIO，NIO，AIO </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Bio 阻塞 io : 同步阻塞I&#x2F;O模式，数据的读取写入必须阻塞在一个线程内等待其完成。 通常由一个独立的 Acceptor 线程负责监听客户端的连接</span><br><span class="line">Nio New I&#x2F;O 非阻塞 io : 同步非阻塞的I&#x2F;O模型, 提供了 Channel , Selector，Buffer等抽象。 支持面向缓冲的，基于通道的I&#x2F;O操作方法。</span><br><span class="line">Aio 异步 io :异步非阻塞的IO模型, 信号驱动IO模型</span><br><span class="line">当有流可读取时，操作系统会将可读的流传入read方法的缓冲区，并通知应用程序；对于写操作而言，当操作系统将write方法传递的流写入完毕时，操作系统主动通知应用程序。read&#x2F;write方法都是异步的，完成后会主动调用回调函数。 AIO是一个有效请求一个线程。</span><br><span class="line">简单来说，用户进程只需要发起一个IO操作然后立即返回，等IO操作真正的完成以后，应用程序会得到IO操作完成的通知。不需要进行实际的IO读写操作，因为真正的IO读取或者写入操作已经由内核完成了。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BIO的每个连接一个单独的线程，而NIO则是每个连接共用一个线程。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">同步与异步</span><br><span class="line">    同步： 同步就是发起一个调用后，被调用者未处理完请求之前，调用不返回。</span><br><span class="line"></span><br><span class="line">    异步： 异步就是发起一个调用后，立刻得到被调用者的回应表示已接收到请求，但是被调用者并没有返回结果，此时我们可		以处理其他的请求，被调用者通常依靠事件，回调等机制来通知调用者其返回结果。</span><br><span class="line">    </span><br><span class="line">同步和异步的区别最大在于异步的话调用者不需要等待处理结果，被调用者会通过回调等机制来通知调用者其返回结果。</span><br><span class="line"></span><br><span class="line">阻塞和非阻塞</span><br><span class="line"></span><br><span class="line">    阻塞： 阻塞就是发起一个请求，调用者一直等待请求结果返回，也就是当前线程会被挂起，无法从事其他任务，只有当条件就绪才能继续。</span><br><span class="line"></span><br><span class="line">    非阻塞： 非阻塞就是发起一个请求，调用者不用一直等着结果返回，可以先去干其他事情。</span><br></pre></td></tr></table></figure>
+
+<p> 重载和重写（开始忘记重载是什么了，面试官提醒了一下） </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">重载 ： 同一个类中，方法名相同 但 传入的参数类型 或 个数不同</span><br><span class="line">重写： 子类 覆写 父类 的 方法名相同的方法</span><br></pre></td></tr></table></figure>
+
+<p> lock和synchronized的区别 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">* 1 原始构成：</span><br><span class="line"> * synchronized 是关键字，属于JVM 层面 monitorenter 和 monitorexit</span><br><span class="line"> * 底层是通过monitor对象来完成，其实wait 和 notify 等方法也依赖于 monitor 对象</span><br><span class="line"> * 而且只有在 同步代码块和同步方法中才能调用 wait和 notify</span><br><span class="line"> * lock 是具体接口，是（java.util.concurrent.locks.Lock ）api 层面</span><br><span class="line"> *</span><br><span class="line"> * 2 使用方法:</span><br><span class="line"> * synchronized 不需要手动释放锁 ，当 synchronized 代码运行完成后系统自动让线程释放对锁的占用</span><br><span class="line"> * Lock 的实现类ReentrantLock 需要用户手动释放锁（unlock），若没有主动释放锁，会造成死锁现象</span><br><span class="line"> *</span><br><span class="line"> * 3 等待是否可中断：</span><br><span class="line"> * synchronized 不可以被中断  要么抛出异常 要么正常完成</span><br><span class="line"> * Lock 的实现类ReentrantLock 可中断 ：</span><br><span class="line"> *   * 1 设置超时方法 trylock （long timeout, TimeUnit unit）</span><br><span class="line"> *   * 2 lockinterruptibly() 放入代码块中，调用interrupt（）方法可中断</span><br><span class="line"> *</span><br><span class="line"> * 4 加锁是否公平</span><br><span class="line"> * synchronized 是一种可重入的 非公平锁</span><br><span class="line"> * Lock 的实现类ReentrantLock 也是可重入锁，但是 他既可以是 非公平的 也可以是公平的，</span><br><span class="line"> * 看传入构造方法的参数</span><br><span class="line"> *</span><br><span class="line"> * 5 锁绑定多个 condition 可唤醒指定线程</span><br><span class="line"> * synchronized 没有 condition  只能通过 notify 或者 notifyAll 随机唤醒一个线程或全部线程</span><br><span class="line"> * Lock 的实现类ReentrantLock 可使用condition 完成分组唤醒 需要唤醒的线程</span><br></pre></td></tr></table></figure>
+
+<p> CAS怎么回事，自旋怎么回事，ABA如何处理 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CAS 比较并交换 操作 unsafe类 </span><br><span class="line">比较并交换(compare and swap, CAS)，是原子操作的一种。在多线程没有锁的状态下，可以保证多个线程对同一个值的更新。</span><br><span class="line">该操作通过将内存中的值与指定数据进行比较，当数值一样时将内存中的数据替换为新的值.</span><br><span class="line"></span><br><span class="line">自旋  ， 比较不成功  一直自旋  就是不停的判断比较，看能否将值交换</span><br><span class="line"></span><br><span class="line">ABA 问题，添加 版本号机制</span><br></pre></td></tr></table></figure>
+
+<p> \3. 计算机网络 </p>
+<p> http和https区别 </p>
+<p> https怎么加密 </p>
+<p> 七层协议和五层协议（有两层顺序说反了，面试官敏锐的察觉到了，第二次说的时候说对了） </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">七层协议 OSI</span><br><span class="line">	应用层</span><br><span class="line">	表示层</span><br><span class="line">	会话层</span><br><span class="line">	传输层</span><br><span class="line">	网络层</span><br><span class="line">	数据链路层</span><br><span class="line">	物理层</span><br><span class="line">五层协议</span><br><span class="line">	将上三层合并为 应用层</span><br><span class="line">	应用层</span><br><span class="line">	传输层</span><br><span class="line">	网络层</span><br><span class="line">	数据链路层</span><br><span class="line">	物理层</span><br></pre></td></tr></table></figure>
+
+<p> 每层协议作用 </p>
+<p> 路由器是哪一层  （网络层）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.网络层：路由器、防火墙</span><br><span class="line">2.数据链路层：网卡、网桥、交换机</span><br><span class="line">3.物理层：中继器、集线器</span><br></pre></td></tr></table></figure>
+
+
+
+<p> TCP和UDP </p>
+<p> 粘包怎么解决 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">粘包：将多个小的包封装成一个大的数据包一次发送</span><br><span class="line">拆包：将一个大包拆分成多个小的包，分批次发送</span><br><span class="line"></span><br><span class="line">解决方案：</span><br><span class="line">	1 消息定长， 每个消息都固定长度，不够长的消息后面补空格</span><br><span class="line">	2 在消息尾部增加 回车换行符 进行分割</span><br><span class="line">	3 将消息分为 消息头和消息体，消息头包含消息总长度等信息</span><br><span class="line">netty 中 粘包&#x2F;拆包，问题的解决方案：</span><br><span class="line">	DelimiterBasedFrameDecoder(10000, Delimiters.lineDelimiter()[0])</span><br><span class="line">	10000， 消息最大长度</span><br><span class="line">	Delimiters.lineDelimiter()[0] 表示 分隔符  &#39;\r&#39;, &#39;\n&#39;</span><br></pre></td></tr></table></figure>
+
+<p> 三次握手，四次挥手过程，为什么要设计成这样 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">三次是 客户端和 服务端 判断 彼此 都准备好了的 最小次数</span><br><span class="line"></span><br><span class="line">首先 客户端要 判断 服务端是否 具有 接收和 发送能力 ： 先 发一条 建立连接请求到服务端</span><br><span class="line"></span><br><span class="line">若 服务端 收到请求 ，则 服务端 知道 客户端拥有 发送能力， 此时 发一条消息返回给 客户端</span><br><span class="line"></span><br><span class="line">若 客户端接到了 服务端 返回的消息， 则 客户端 知道 服务端 拥有 接收和发送 的能力，证明 服务端准备完毕</span><br><span class="line"></span><br><span class="line">但是此时 服务端还不知道 客户端是否具有 接收能力，所以 此时客户端 必须再发送一条 消息到 服务端证明自己的 接收能力。</span><br></pre></td></tr></table></figure>
+
+<p> \4. 数据结构和算法 </p>
+<p> 哈希表相关 </p>
+<p> 红黑树，b树，b+树区别 </p>
+<p> 熟悉的排序，如何实现，时间复杂度如何 </p>
+<p> 主要讲了快排，归并排和堆排 </p>
+<p> \5. 操作系统 </p>
+<p> 线程和进程区别，jvm里的对应 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">进程 是 操作系统 资源分配的 基本单位</span><br><span class="line">线程 是 操作系统 资源调度的 基本单位</span><br><span class="line"></span><br><span class="line">一个进程里 可以有多个 线程</span><br><span class="line">在 JVM 中的 对应：</span><br><span class="line">    一个JVM实例其实就是JVM跑起来的进程</span><br><span class="line">    java 程序里的 Thread 是线程</span><br></pre></td></tr></table></figure>
+
+
+
+<p> 死锁如何产生，产生死锁如何处理 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">产生死锁有四个必要条件：</span><br><span class="line"></span><br><span class="line">互斥条件。一个资源只能被一个进程占用</span><br><span class="line">不可剥夺条件。某个进程占用了资源，就只能他自己去释放。</span><br><span class="line">请求和保持条件。某个经常之前申请了资源，我还想再申请资源，之前的资源还是我占用着，别人别想动。除非我自己不想用了，释放掉。</span><br><span class="line">循环等待条件。一定会有一个环互相等待。</span><br><span class="line"></span><br><span class="line">解决死锁的基本方法：</span><br><span class="line">	1、以确定的顺序获得锁</span><br><span class="line">	2、超时放弃	</span><br><span class="line"></span><br><span class="line">只要破坏产生死锁的四个条件中的其中一个就可以了。</span><br><span class="line">破坏互斥条件：这个条件我们没有办法破坏，因为我们用锁本来就是想让他们互斥的（临界资源需要互斥访问）。</span><br><span class="line">破坏请求与保持条件：一次性申请所有的资源。</span><br><span class="line">破坏不剥夺条件：占用部分资源的线程进一步申请其他资源时，如果申请不到，可以主动释放它占有的资源。</span><br><span class="line">破坏循环等待条件：靠按序申请资源来预防。按某一顺序申请资源，释放资源则反序释放</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">死锁检测</span><br><span class="line">1、Jstack命令，jstack是java虚拟机自带的一种堆栈跟踪工具。 线程出现停顿的时候通过jstack来查看各个线程的调用堆栈</span><br></pre></td></tr></table></figure>
+
+<p> 银行家算法 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在避免死锁中，最重要的就是银行家算法了。</span><br><span class="line">银行家算法基本思想： 允许进程动态地申请资源，系统在每次实施资源分配之前，先计算资源分配的安全性，若此次资源分配安全（即资源分配后，系统能按某种顺序来为每个进程分配其所需的资源，使每个进程都可以顺利地完成），便将资源分配给进程，否则不分配资源，让进程等待。</span><br></pre></td></tr></table></figure>
+
+<p> 乐观锁和悲观锁 </p>
+<p> 什么时候用乐观锁什么时候用悲观锁（开始答错了，后来面试官引导了一下答对） </p>
+<p> \6. mysql （数据库没单独问，就一个问题还是在其他地方想到顺便说的，本来mysql和redis我还准备挺多的） </p>
+<p> innodb和myisam在用b+树存索引的区别（这是从问数据结构b+树那里跳过来的） </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">innodb 聚簇索引</span><br><span class="line">myisam 非聚簇索引</span><br></pre></td></tr></table></figure>
+
+
+
+<p> \7. spring（这块比较薄弱，只是会用，还远谈不上熟悉） </p>
+<p> springboot和spring区别（我简历上提到用过springboot） </p>
+<p> ioc和aop </p>
+<p> aop怎么实现的，用过什么aop </p>
+<p> （面试官应该看出我这块比较薄弱了，就没继续深问了） </p>
+<p> \8. 编程，写个快排</p>
+<h2 id="面经-0offer—让我改名可以吗"><a href="#面经-0offer—让我改名可以吗" class="headerlink" title="面经  0offer—让我改名可以吗"></a>面经  <a href="https://www.nowcoder.com/profile/309684208" target="_blank" rel="noopener">0offer—让我改名可以吗</a></h2><p> 百度提前批一面java，90分钟<br>1 自我介绍(重点围绕项目)</p>
+<p>2 项目中用了springboot，说一下对他的理解，主要是启动和自动配置的源码问题，各种注解，aop mvc</p>
+<p>3 然后问，springboot相比spring有什么不同，我说少很多配置，然后问spring，mybatis也能用注解，为啥不用</p>
+<p>4 延伸问了aop，哪些实现方式，我说代理，有cglib和invocationhandler，说了源码，又说了不同和各自限制(后者的没答出来)，代理，动静态</p>
+<p>5 一个电商项目的实现流程，从数据库设计 到mvc框架的大概设计流程，再到高并发问题，redis nginx rabbitmq 分布式都有问到</p>
+<p>6 说到了消息队列的削峰，问了秒杀问题的，最主要是多个服务器时怎么保持缓存中秒杀的物品量一致</p>
+<p>7 redis操作的事务性，一条事物是否支持回滚，能不能用这个解决第6个问题，如果不能，要加什么，引导下答出来了</p>
+<p>8 jvm内存布局各板块，我加了jdk1.6到1.8的区别</p>
+<p>9 垃圾回收算法怎么解决碎片问题，只针对复制清除的</p>
+<p>10 什么时候会有full GC(我只说了老年代快满的时候，不知道对不对，求大佬评论区指出)</p>
+<p>11 千万级别的大表怎么优化，杂七杂八说了一些，又问了一些索引问题，我给他计算了索引在两次io的情况下存储量</p>
+<p>12 数据库的隔离级别，各级别可能有哪些问题，默认是哪一个,怎么解决的幻读问题</p>
+<p>13 上面的级别，在spring对应的propogation哪些，怎么开启</p>
+<p>14 最后补充了线程问题，他突然问的，</p>
+<p>15 手写代码题<br>①只用一行代码实现判断一个数x是不是2的幂级数(就是判断这样2 4 8 16 ….)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n&amp;(n - 1) &#x3D;&#x3D; 0</span><br></pre></td></tr></table></figure>
+
+<p>我想的是hashmap的长度为啥是2的n次幂，就马上写出来了<br>②计算二叉树的深度.很快用递归秒了，然后他问用别的方法说下思路,我就用广度搜索的方法说了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">递归很简单</span><br></pre></td></tr></table></figure>
+
+
+
+<p>最后面试结束，他说这两天会有通知结果，我问总共几轮，他说3轮技术。</p>
+<p>作者：0offer—让我改名可以吗<br><a href="https://www.nowcoder.com/discuss/458384?source_id=profile_create&amp;channel=666来源：牛客网" target="_blank" rel="noopener">https://www.nowcoder.com/discuss/458384?source_id=profile_create&amp;channel=666来源：牛客网</a></p>
+<p>  先发来7个编程题，在文档上，他能看到我操作文档 </p>
+<p>  4个写代码题： </p>
+<p>  ①数组找到出现次数大于半数的 </p>
+<p>  ②hashmap遍历 </p>
+<p>  ③两集合的交集 </p>
+<p>  ④链表每k次反转 </p>
+<p>  3个读写代码题： </p>
+<p>  ①一堆会抛出异常情况的代码，有一个循环，要求分析最后输出 </p>
+<p>  ②String类型各种混杂在一起，判断是否== </p>
+<p>  ③线程池，ThreadPoolExecutor怎么实例化的，各参数代表啥，线程池原理说一说 </p>
+<p>  <strong>面试题：</strong>  </p>
+<p>  1、private等修饰符的区别与运用 </p>
+<p>  2、怎么停止线程 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 interrupt方法</span><br><span class="line"></span><br><span class="line">2 定义一个用volatile修饰的成员变量来控制线程的停止，这点是利用了volatile修饰的成员变量可以在多线程之间达到共享，也就是可见性来实现的</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  3、sleep与wait方法什么区别 </p>
+<p>  4、哪些常见的运行时异常 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NullPointerException </span><br><span class="line">ClassNotFoundException </span><br><span class="line">ArrayIndexOutOfBoundsException </span><br><span class="line">BufferOverflowException</span><br><span class="line">ConcurrentModificationException</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  5、Collections与Collection有啥区别 </p>
+<p>  6、数组与链表区别与运用 </p>
+<p>  7、数据库索引， </p>
+<p>  8、红黑树的增删 </p>
+<p>  9、linux查看进程，停止进程 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep xxx.jar</span><br><span class="line">2265</span><br><span class="line"><span class="built_in">kill</span> -9 2265</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  10、查看端口号被谁占用 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1 lsof(list open files)是一个列出当前系统打开文件的工具</span></span><br><span class="line">lsof -i:端口号</span><br><span class="line"><span class="comment"># 2 netstat  用于查看指定端口号的进程情况</span></span><br><span class="line">netstat -tunlp|grep 端口号</span><br></pre></td></tr></table></figure>
+
+<p>  11、vim各种命令 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">w  q  i </span><br><span class="line"><span class="comment"># 查看日志时 常用的命令 </span></span><br><span class="line">G	移动到这个档案的最后一行(常用)</span><br><span class="line">gg	移动到这个档案的第一行，相当于 1G 啊！ (常用)</span><br><span class="line">[Ctrl] + [f]	屏幕『向下』移动一页，相当于 [Page Down]按键 (常用)</span><br><span class="line">[Ctrl] + [b]	屏幕『向上』移动一页，相当于 [Page Up] 按键 (常用)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  12、awk（没听过） </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AWK 是一种处理文本文件的语言，是一个强大的文本分析工具。 更适合格式化文本，对文本进行较复杂格式处理</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  13、git命令（只说了在本地ide上pull和poll这些） </p>
+<p>  14、concurrenthashmap怎么保持线程安全 </p>
+<p>  15、http与https的区别 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">HTTP：是互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少。</span><br><span class="line">HTTPS：是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL(Secure Sockets Layer)安全套接字协议。</span><br><span class="line">HTTPS协议的主要作用可以分为两种：一种是建立一个信息安全通道，来保证数据传输的安全；另一种就是确认网站的真实性。</span><br><span class="line">HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，要比http协议安全。</span><br><span class="line"></span><br><span class="line">1、https协议需要到CA  （Certificate Authority，证书颁发机构）申请证书，一般免费证书较少，因而需要一定费用。(原来网易官网是http，而网易邮箱是https。)</span><br><span class="line"></span><br><span class="line">2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl(Secure Sockets Layer)加密传输协议。</span><br><span class="line"></span><br><span class="line">3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</span><br><span class="line"></span><br><span class="line">4、http的连接很简单，是无状态的。Https协议是由SSL+Http协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。(无状态的意思是其数据包的发送、传输和接收都是相互独立的。无连接的意思是指通信双方都不长久的维持对方的任何信息。)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  16、http中post方法的content-type有哪些（说了post方法常用来提交表单等，没说出type有哪些） </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">消息主体&#x2F;编码方式</span><br><span class="line">text&#x2F;xml </span><br><span class="line">application&#x2F;json </span><br><span class="line">multipart&#x2F;form-data</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  17、jvm的一些参数 </p>
+<p>  18、jvm的堆内存详述 </p>
+<p>  19、String str = new String(“abc”);创建了几个对象 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">首先要看常量池里是否有“abc”这个字符串，如果有，则创建一个，如果没有，则创建两个。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  20、finalize方法的作用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">finalize是在对象回收前做一些清扫工作，以及可清理栈上的内存，比如调用本地方法可能在栈上创建对象。即使对象不可达，也并不是非死不可，还是可以抢救一下，当一个对象没有与GCroot相连的引用链时，它将被第一次标记，然后判断对象是否有必要执行finalize()方法。当对象没有覆盖finalize()方法（没有就没法抢救了），或者finalize()方法已经被虚拟机调用过，则不必执行，如果有必要执行，该对象就会被放到一个叫做F-Queue的队列里，并且由一个低优先级的Finalizer线程去执行它。但是不保证会等待方法执行结束。finalize方法是对象逃脱的最后机会，稍后GC会对F-Queue中的对象进行二次标记，只要对象重新链接上了引用链，它就会被移出即将回收的集合。。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  21、hash算法与运用场合 </p>
+<p>  22、有没有实习过（说拿了华为的软开暑假实习offer，时间原因没去） </p>
+<p>  反问：表现怎么样，有什么建议，是不是三轮技术面 </p>
+<p>  答：理论基础掌握的牢，但是缺少实践经验，两轮纯技术+（经理和技术面试官综合终面），一天内出结果 </p>
+<p>作者：0offer—让我改名可以吗<br><a href="https://www.nowcoder.com/discuss/460804?type=all&amp;order=time&amp;pos=&amp;page=1&amp;channel=1012&amp;source_id=search_all来源：牛客网" target="_blank" rel="noopener">https://www.nowcoder.com/discuss/460804?type=all&amp;order=time&amp;pos=&amp;page=1&amp;channel=1012&amp;source_id=search_all来源：牛客网</a></p>
+<p>  2、说一下NIO和BIO的区别 </p>
+<p>  3、多路复用，select、poll、epoll </p>
+<p>  4、什么是一致性hash（我想从普通的hash过渡到一致性hash，被打断，说你这是普通的hash，然后跳过问了写一个） </p>
+<p>  5、如何解决mysql的死锁（用代码，这个我不会，他让我讲一讲死锁，我说到一半他开始接电话） </p>
+<p>  。。。。面试官接电话（听得出来，在跟一个leader汇报一些数据库方面的项目进度） </p>
+<p>   他接完电话，我继续说死锁，又被他打断，他又说你不用讲理论，只用告诉我mysql解除死锁的命令（我不知道怎么回，我刚刚已经说了不会这个命令，你又让我介绍死锁，这时我其实已经有点不高兴了） </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1.查询是否锁表</span><br><span class="line"></span><br><span class="line">show OPEN TABLES where In_use &gt; 0;</span><br><span class="line"></span><br><span class="line">2.查询进程（如果您有SUPER权限，您可以看到所有线程。否则，您只能看到您自己的线程）</span><br><span class="line"></span><br><span class="line">show processlist</span><br><span class="line"></span><br><span class="line">3.杀死进程id（就是上面命令的id列）</span><br><span class="line"></span><br><span class="line">kill id</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  6、说一下堆内存溢出和栈内存溢出的区别（说了堆和栈一般存的什么，然后分析溢出原因，又被打断，说你只用告诉我怎么用命令看他们是否溢出） </p>
+<p>  7、怎么定位上面说的两种溢出（用代码命令，我说了jvm调优参数不是很熟，就说了一个jstack命令） </p>
+<p>  8、http和tcp有什么不同 </p>
+<p>  9、哪些是基于http的（没有写错，我还问了应该是基于tcp吧，他说就基于http，我说http已经是应用层协议了，还是觉得他问错了，应该是基于tcp，他说就是基于http，我真不知道，就跳过） </p>
+<p>  10、http中有哪些内容，怎么传输的 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1 方法-URI-协议&#x2F;版本:GET &#x2F;index.jsp HTTP&#x2F;1.1</span><br><span class="line">2.Accept-Language: zh-cn</span><br><span class="line"></span><br><span class="line">3.Connection: Keep-Alive</span><br><span class="line"></span><br><span class="line">4.Host: 192.168.0.106</span><br><span class="line"></span><br><span class="line">5.Content-Length: 37</span><br><span class="line"></span><br><span class="line">6.userName&#x3D;new_andy&amp;password&#x3D;new_andy</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  11、servlet是什么 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用 Java 语言编写的运行在服务器端的程序,通常来说,Servlet 是指所有实现了 Servlet 接口的类。 Servlet 主要用于处理客户端传来的 HTTP 请求.</span><br></pre></td></tr></table></figure>
+
+
+
+<p>  12、servlet有什么方法（说了一些生命周期的方法还有获取参数的方法，说了实现类httpservlet的doget和dopost，又问了它两的区别，还没说完就被打断跳过了） </p>
+<p>  13、http的hide是什么（说没听过，听不清说的是hide还是hit） </p>
+<p>  14、数据库的mvcc是什么  </p>
+<p>  15、redis中的一个XX参数（没听清楚，我说没听清，他就直接跳过了）  </p>
+<p>  16、写代码题（一个字符串的indexof（String target）方法，我觉得不难，写出来了，他一直在挑错误，不停地让我测试，但幸运都过了）；  </p>
+<p>  17、有没有读过什么源码（我说的都是springboot、concurrenthashmap、threadlocal这些api里面的，他说有没有读开源项目，我说没有）  </p>
+<p>  他就说到这里吧，感觉就是不想说话了，也没有反问  </p>
+<p>作者：olin6520<br><a href="https://www.nowcoder.com/discuss/457816?type=all&amp;order=time&amp;pos=&amp;page=1&amp;channel=1012&amp;source_id=search_all来源：牛客网" target="_blank" rel="noopener">https://www.nowcoder.com/discuss/457816?type=all&amp;order=time&amp;pos=&amp;page=1&amp;channel=1012&amp;source_id=search_all来源：牛客网</a></p>
+<p>  \2. MYSQL的隔离级别 </p>
+<p>  \3. MySQL为什么用B+树而不是红黑树 </p>
+<p>  \4. SQL太慢可能是什么原因 </p>
+<p>  然后问了JAVA基础： </p>
+<p>  \1. java内存模型 </p>
+<p>  \2. jvm 垃圾收集器随便介绍两个 </p>
+<p>  然后做了题目： </p>
+<p>  LeetCode 1 <a href="https://leetcode-cn.com/problems/two-sum/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/two-sum/</a></p>
+<p>作者：SakuraDon<br><a href="https://www.nowcoder.com/discuss/453713?type=post&amp;order=time&amp;pos=&amp;page=1&amp;channel=1012&amp;source_id=search_post来源：牛客网" target="_blank" rel="noopener">https://www.nowcoder.com/discuss/453713?type=post&amp;order=time&amp;pos=&amp;page=1&amp;channel=1012&amp;source_id=search_post来源：牛客网</a></p>
+<ol>
+<li><p>​    Integer a = new Integer(7); Integer b = new Integer(7); a == b? （开门红，答错了）       </p>
+</li>
+<li><p>​    voatile和synchronized       </p>
+</li>
+<li><p>​    讲讲HashMap       </p>
+</li>
+<li><p>​    红黑树了解吗，是一种什么树       </p>
+</li>
+<li><p>​    HashMap如何实现线程安全       </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Collections.synchronizedMap() </span><br><span class="line">或者  使用 ConcurrentHashMap</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>​    讲讲ConcurrentHashMap       </p>
+</li>
+<li><p>​    讲讲ReentranLock      </p>
+</li>
+<li><p>​    equals 和 ==，重写equals是否要重写hashCode      </p>
+</li>
+<li><p>​    cookie和session     </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. cookie 是一种发送到客户浏览器的文本串句柄，并保存在客户机硬盘上，可以用来在某个 WEB 站点会话间持久的保持数据</span><br><span class="line"></span><br><span class="line">2. session 其实指的就是访问者从到达某个特定主页到离开为止的那段时间。 Session 其实是利用 Cookie 进行信息处理的，当用户首先进行了请求后，服务端就在用户浏览器上创建了一个 Cookie，当这个 Session 结束时，其实就是意味着这个 Cookie 就过期了</span><br><span class="line"></span><br><span class="line">3. cookie 数据保存在客户端，session 数据保存在服务器端</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="10">
+<li><p>​    cookie还能存什么 （基本没用过cookie，都是用的Token鉴权的方式）       </p>
+</li>
+<li><p>​    HTTP请求报文       </p>
+</li>
+<li><p>​    举几个常见的header       </p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Request Header</span><br><span class="line">1. Origin  用于说明请求来自哪个站点，使用时对应服务端Access-Control-Allow-Origin</span><br><span class="line">2. host  指明目标服务器的域名和端口。必须存在，否则会出现400错误。</span><br><span class="line">3. referer</span><br></pre></td></tr></table></figure>
+
+
+
+<ol>
+<li><p>​    JVM内存区域       </p>
+</li>
+<li><p>​    GC垃圾回收      </p>
+</li>
+<li><p>​    举几个垃圾回收器 （CMS，G1）      </p>
+</li>
+<li><p>​    spring aop      </p>
+</li>
+<li><p>​    项目中有用到aop么      </p>
+</li>
+<li><p>​    spring事务      </p>
+</li>
+<li><p>​    jdk代理和cglib的区别      </p>
+</li>
+<li><p>​    Java反射      </p>
+</li>
+<li><p>​    是否用过反射，反射常用方法      </p>
+</li>
+<li><p>​    Java的异常有哪些，那些是需要catch的      </p>
+</li>
+<li><p>​    在try代码块里return，finally是否还会执行 （答错了，会执行但不会影响返回值）      </p>
+</li>
+<li><p>​    REST和RPC概念区别       </p>
+</li>
+<li><p>​    项目为什么使用rabbitMQ       </p>
+</li>
+<li><p>​    rabbitMQ消息丢失如何防止       </p>
+</li>
+<li><p>​    redis基本数据类型       </p>
+</li>
+<li><p>​    数据库隔离级别       </p>
+</li>
+<li><p>​    linux修改文件权限命令       </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">chmod:</span><br><span class="line"><span class="comment">#修改文件夹及子文件夹权限可以用  chmod -R 777 /var/home/userid/cc</span></span><br><span class="line"><span class="comment">#r 读权限  4</span></span><br><span class="line"><span class="comment">#w 写权限  2</span></span><br><span class="line"><span class="comment">#x 执行权限 1</span></span><br><span class="line">chmod -R 744 /soft/tomcat/ <span class="comment"># 表示 文件所有者权限 rwx，群组用户权限 r-- ,其他用户 r--</span></span><br><span class="line"><span class="comment">#u 表示“用户（user）”，即文件或目录的所有者。</span></span><br><span class="line"><span class="comment">#g 表示“同组（group）用户”，即与文件属主有相同组ID的所有用户。</span></span><br><span class="line"><span class="comment">#o 表示“其他（others）用户”。</span></span><br><span class="line"><span class="comment">#a 表示“所有（all）用户”。它是系统默认值。    </span></span><br><span class="line">chmod a+x soft.txt <span class="comment"># 表示 所有用户都添加对该文件的 执行权限</span></span><br><span class="line">chmod ug+w，o-x text <span class="comment"># 表示 u（用户所有者）和 g（同组）添加 写(w) 权限， o(其他用户) 删除执行权限</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="18">
+<li><p>​    文件权限3个数字分别代表什么       </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">按顺序 4 为 读 ，2 为写， 1 为执行</span><br><span class="line">744 分别代表   文件所有者， 群组用户，其他用户 的权限</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="19">
+<li><p>​    遇到过 “too many open files” 错误吗 （没有。。。）       </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">用ulimit -n命令查询 最大的可以同时打开的文件的上限 （65535），每个进程均会有对应的Max open files设置，用到的命令：cat &#x2F;proc&#x2F;&#123;pid&#125;&#x2F;limits |grep &#39;Max open files&#39;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">lsof命令是Linux中的一个系统监视命令，可以查看进程打开的文件、端口等，功能强大，</span><br><span class="line">lsof命令查询某个进程 到的打开文件数量：</span><br><span class="line">		lsof -p pid | wc -l</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="20">
+<li>​    算法题，给定字符串判断括号是否匹配 （用栈秒了）      </li>
+</ol>
+<p>  二面 （半个小时） </p>
+<ol>
+<li><p>​    redis集群如何保证节点数据安全 （答了哨兵）       </p>
+</li>
+<li><p>​    nginx处理http请求的过程 （不会）       </p>
+</li>
+<li><p>​    nginx配置负载均衡 （不会，只配过反向代理）       </p>
+</li>
+<li><p>​    为什么使用rabbitMQ       </p>
+</li>
+<li><p>​    docker和虚拟机的区别 （看过，忘了）       </p>
+</li>
+<li><p>​    docker常用命令       </p>
+</li>
+<li><p>​    docker删除一个正在运行容器的镜像 （先ps，然后 stop ，rm，最后rmi）       </p>
+</li>
+<li><p>​    用一条shell命令实现上面的操作 （这个就真不会了）<br>​       </p>
+</li>
+<li><p>​    数据库引擎选型       </p>
+</li>
+<li><p>​    B+树的时间复杂度       </p>
+</li>
+<li><p>​    数据库隔离级别       </p>
+</li>
+<li><p>​    不同级别采用的锁       </p>
+</li>
+<li><p>​    redis的key过期删除       </p>
+</li>
+<li><p>​    int a = 7; Integer b = new Integer(7); a == b? （梅开二度，答错了）       </p>
+</li>
+<li><p>​    如何实现原子操作       </p>
+</li>
+<li><p>​    CAS是什么，在什么地方用到了       </p>
+</li>
+<li><p>​    线程池参数，执行流程       </p>
+</li>
+<li><p>​    JVM G1 垃圾回收器，为什么要分区，有什么好处    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">好处：</span><br><span class="line">有的分区内垃圾对象特别多，有的分区内垃圾对象很少，G1会优先回收垃圾对象特别多的分区，这样可以花费较少的时间来回收这些分区的垃圾，这也就是G1名字的由来，即首先收集垃圾最多的分区。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+</li>
+</ol>
+<ol start="19">
+<li><p>​    JVM 如何排查OOM  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先通过内存映像工具对Dump出来的堆转储快照进行分析，重点是确认内存中的对象是否是必要的，也就是要先分清楚到底是出现了内存泄漏还是内存溢出。</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<pre><code>​     </code></pre><ol start="20">
+<li><p>​    JVM设置内存的参数 （只记得个-Xms -Xmx什么的，具体的意思忘了）       </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">设置堆内存的：</span><br><span class="line">	-Xms 初始大小内存，默认为物理内存1&#x2F;64，等价于-XX:InitialHeapSize</span><br><span class="line">	-Xmx 最大分配内存，默认物理内存1&#x2F;4，等价于-XX:MaxHeapSize</span><br><span class="line">	-XX:MetaspaceSize 设置元空间大小</span><br><span class="line">设置栈内存的：</span><br><span class="line">	-Xss 设置单个线程栈的大小，默认542K~1024K ，等价于-XX:ThreadStackSize</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="21">
+<li><p>​    52张牌，26张红牌26张黑牌，抽两张一红一黑的概率 （慌了，很简单的数学题，脑子抽了没答上来）</p>
+<p>\7. new 的过程</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 检查这个符号引用代表的类是否已经被加载、解析和初始化过。如果没有，那就先执行类加载的过程。</span><br><span class="line"></span><br><span class="line">2 在类加载检查通过后，接下来虚拟机将为新生对象分配内存。</span><br><span class="line"></span><br><span class="line">3 类 初始化 ，实例 初始化</span><br><span class="line"></span><br><span class="line">4 在线程 栈中新建对象引用 ，并指向堆中刚刚新建的对象实例。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>\8. 类加载器过程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">加载（Loading）、验证（Verification）、准备（Preparation）、解析（Resolution）、初始化（Initialization）、使用（Using）、卸载（Unloading）,其中验证、准备、解析三个部分统称链接。</span><br><span class="line"></span><br><span class="line">加载：加载阶段是通过类加载（ClassLoader）来完成的。</span><br><span class="line"></span><br><span class="line">验证：确保class文件的字节流中包含的信息符合虚拟机的要求，不能危害虚拟机自身安全。验证阶段主要包括四个检验过程：文件格式验证、元数据验证、字节码验证和符号引用验证。</span><br><span class="line"></span><br><span class="line">准备：为类变量分配内存并设置类变量初始值的阶段。</span><br><span class="line"></span><br><span class="line">解析：将符号引用转化为直接引用的过程。</span><br><span class="line"></span><br><span class="line">初始化：初始化阶段是执行类构造器&lt;clinit&gt;()方法的过程</span><br></pre></td></tr></table></figure>
+
+
+
+<p>\9. 打破双亲委托机制原理，以及常用场景</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">双亲委派模型的工作过程为：如果一个类加载器收到了类请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父加载器去完成，每一层都是如此，因此所有类加载的请求都会传到启动类加载器，只有当父加载器无法完成该请求时，子加载器才去自己加载。</span><br><span class="line"></span><br><span class="line">    双亲委派模型的好处就是java类随着它的类加载器一起具备了一种带有优先级的层次关系。例如：Object,无论那个类加载器去加载该类，最终都是由启动类加载器进行加载的，因此Object类在程序的各种类加载环境中都是一个类。如果不用改模型，那么java.lang.Object类存放在classpath中，那么系统中就会出现多个Object类，程序变得很混乱。</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">自定义类加载器 ： 继承 ClassLoader 并 重写 findClass 方法</span><br><span class="line">打破 双亲委派模型，还要 必须重写loadClass方法 ：这里先尝试交由System类加载器加载，加载失败才会由自己加载。它并没有优先交给父类加载器，这就打破了双亲委派机制。</span><br></pre></td></tr></table></figure>
+
+<p>数据库三范式，  1nf 2nf 是什么 ，违反了有什么后果 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1NF:字段不可分;</span><br><span class="line"></span><br><span class="line">2NF:有主键，非主键字段依赖主键;</span><br><span class="line"></span><br><span class="line">3NF:非主键字段不能相互依赖;</span><br><span class="line"></span><br><span class="line">解释:</span><br><span class="line"></span><br><span class="line">1NF:原子性 字段不可再分,否则就不是关系数据库;</span><br><span class="line"></span><br><span class="line">2NF:唯一性 一个表只说明一个事物;</span><br><span class="line"></span><br><span class="line">3NF:每列都与主键有直接关系，不存在传递依赖;</span><br></pre></td></tr></table></figure>
+
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#面试中的-手撕题"><span class="nav-number">1.</span> <span class="nav-text">面试中的 手撕题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面经-0725"><span class="nav-number"></span> <span class="nav-text">面经 0725</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面经-0offer—让我改名可以吗"><span class="nav-number"></span> <span class="nav-text">面经  0offer—让我改名可以吗</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="小熊一号"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">小熊一号</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xcxyh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xcxyh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:window3cc@qq.com" title="E-Mail → mailto:window3cc@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小熊一号</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

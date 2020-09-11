@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="作者：牛客490834331号https:&#x2F;&#x2F;www.nowcoder.com&#x2F;discuss&#x2F;440731来源：牛客网 时间： 2020.06.17">
+<meta property="og:type" content="website">
+<meta property="og:title" content="xcxyh">
+<meta property="og:url" content="https://xcxyh.github.io/%E9%9D%A2%E7%BB%8F%E6%96%87%E4%BB%B6/%E9%9D%A2%E7%BB%8F%E7%AC%94%E8%AE%B0-wh.html">
+<meta property="og:site_name" content="xcxyh">
+<meta property="og:description" content="作者：牛客490834331号https:&#x2F;&#x2F;www.nowcoder.com&#x2F;discuss&#x2F;440731来源：牛客网 时间： 2020.06.17">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-11T11:00:51.274Z">
+<meta property="article:modified_time" content="2020-07-01T08:59:34.343Z">
+<meta property="article:author" content="小熊一号">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://xcxyh.github.io/%E9%9D%A2%E7%BB%8F%E6%96%87%E4%BB%B6/%E9%9D%A2%E7%BB%8F%E7%AC%94%E8%AE%B0-wh">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | xcxyh
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="xcxyh" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">xcxyh</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">嘻嘻嘻,正经网站</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xcxyh" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <p>作者：牛客490834331号<br><a href="https://www.nowcoder.com/discuss/440731来源：牛客网" target="_blank" rel="noopener">https://www.nowcoder.com/discuss/440731来源：牛客网</a></p>
+<p>时间： 2020.06.17</p>
+<a id="more"></a>
+
+<h2 id="美团："><a href="#美团：" class="headerlink" title="美团："></a>美团：</h2><p>一面： </p>
+<p> mysql知道哪些存储引擎，它们的区别 </p>
+<p> mysql索引在什么情况下会失效 </p>
+<p> mysql在项目中的优化场景，慢查询解决等 </p>
+<p> mysql有什么索引，索引模型是什么 </p>
+<p> B-树与B+树的区别？为什么不用红黑树 </p>
+<p> mysql主从同步怎么做 </p>
+<p> 乐观锁与悲观锁的区别？ </p>
+<p> binlog日志 </p>
+<p> redis 持久化有哪几种方式，怎么选？ </p>
+<p> redis 主从同步是怎样的过程？ </p>
+<p> redis 的 zset 怎么实现的？ </p>
+<p> redis key 的过期策略 </p>
+<p> hashmap 是怎样实现的？为什么要用红黑树，而不用平衡二叉树？为什么在1.8中链表大于8时会转红黑树？HashMap为什么线程不安全的？ </p>
+<p> 如何实现线程安全的hashmap？ </p>
+<p> select 和 epoll的区别 </p>
+<p> http与https的区别，加密怎么加的？ </p>
+<p> raft算法详细讲解 </p>
+<p> Kafka 选主怎么做的？ </p>
+<p> kafka如何保证生产与消费都是同步的？ </p>
+<p> kafka 怎么保证不丢消息的 </p>
+<p> redis如何保证高可用 </p>
+<p> 算法：剪绳子（贪心或递归解决） </p>
+<p> 算法：给前序和中序遍历，重建二叉树 </p>
+<p> 二面： </p>
+<p> 自我介绍 </p>
+<p> 讲讲项目（项目没啥亮点，直接问基础） </p>
+<p> volatile作用？底层实现？禁止重排序的场景？单例模式中volatile的作用？ </p>
+<p> 如何构造线程池，它的参数，饱和策略？ </p>
+<p> 公平锁和非公平锁区别？为什么公平锁效率低？ </p>
+<p> 线程都有哪些状态？ </p>
+<p> 线程、进程、协程的区别？ </p>
+<p> 同步队列器AQS思想，以及基于AQS实现的lock,。 </p>
+<p> 并发工具类CountDownLatch、CyclicBarrier、Semaphore介绍 </p>
+<p> Execuors类实现的几种线程池类型，最后如何返回？ </p>
+<p> 手写单例模式 </p>
+<p> 手写消费者生产者模式 </p>
+<p> 算法：反转单链表 </p>
+<p> 算法：给定一个只包含 ‘(‘ 和 ‘)’ 的字符串，找出最长的包含有效括号的子串的长度。 </p>
+<p> 三面： </p>
+<p>  这一面，没问啥东西，主要聊人生，和未来3年的规划。 </p>
+<h2 id="字节跳动："><a href="#字节跳动：" class="headerlink" title="字节跳动："></a>字节跳动：</h2><p> 一面： </p>
+<p> 自我介绍 </p>
+<p> 项目介绍（没亮点，还是问基础） </p>
+<p> 堆排序的原理及时间复杂度，是否稳定，最坏及最坏场景。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">堆 这里指的是 二叉堆，有大顶堆和小顶堆之分，其具体含义是，若是大顶堆，则 根节点的 值 大于等于它的 左右子树的值， 这个性质具有递归性。每个结点的左子树和右子树都是一个二叉堆（都是最大堆或最小堆）。</span><br><span class="line">与 二叉树不同，二叉堆 是通过数组的方式实现的，所以我们可以利用它的性质来对数组进行排序。</span><br><span class="line">具体过程是： </span><br><span class="line">    1首先将原数组构造成为一个二叉堆，这里我们默认构造大顶堆，那么它堆顶元素就是最大的。</span><br><span class="line">    2然后将  堆顶 ，即数组中的第一个位置的元素和 数组末尾元素 交换。</span><br><span class="line">    3然后对剩余的  0 ~ n -1 的部分进行调整，使之重新满足 大顶堆的性质。</span><br><span class="line">    4然后 重复 2 3 两步，直到整个数组有序。</span><br><span class="line"></span><br><span class="line">最开始构造二叉堆时，可以从最后一个非叶子节点 的位置开始，反向遍历构造 （ (n &#x2F; 2 - 1) ~~~~ 0）</span><br><span class="line"></span><br><span class="line">堆排序时间复杂度：O(NlogN)</span><br><span class="line">	初始化建堆过程时间：O(n)：（从最后一个非叶子节点开始）， k 为 堆的高度 k &#x3D; logN</span><br><span class="line">	总的时间计算为：s &#x3D; (2^( i - 1 )) * ( k - i )；其中 i 表示第几层，2^(i - 1) 表示该层上有多少个元素，(k - i) 表示子树上要比较的次数.</span><br><span class="line">	 S &#x3D; 2^(k-2) * 1 + 2^(k-3)*2.....+2^(k-2)+2^(0)*(k-1)  &#x3D;&#x3D;&#x3D;&gt; S &#x3D; 2^k -k -1 代入k : S &#x3D; N - logN -1</span><br><span class="line">	</span><br><span class="line">	更改堆元素后重建堆时间：O(nlogn):</span><br><span class="line">	首先，将一个元素调整到二叉堆中合适的位置，其时间复杂度为 这个 二叉堆的高度 即 logN</span><br><span class="line">	然后 我们需要处理整个 数组 中的N 个元素。</span><br><span class="line">	合起来 他的时间复杂度为 O(NlogN)</span><br><span class="line">堆排序是不稳定的。因为在堆性质维护的时候，可能导致相同的数据位置发生变换。</span><br></pre></td></tr></table></figure>
+
+
+
+<p> Object类都有哪些方法？ </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toString(), hashCode(), clone(), equals(), wait(), notify(), notifyAll(), finalize(), getClass()</span><br></pre></td></tr></table></figure>
+
+
+
+<p> DNS解析的过程/浏览器输入一个url，敲下回车后网络的全过程 </p>
+<p> HTTP和HTTPS的区别 </p>
+<p> UDP怎么实现可靠传输 </p>
+<p> 介绍下https，是如何加密的，加密算法 </p>
+<p> 数据库索引的优缺点，以及什么时候数据库索引失效 </p>
+<p> 事务的隔离级别？ </p>
+<p> 数据库的脏读，不可重复读，幻读 </p>
+<p> 算法：接雨水：给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。 </p>
+<p> 算法：N皇后 </p>
+<p> 二面： </p>
+<p> \1. Kafka的特性？ </p>
+<p> \2. Kafka中的分区器、序列化器、拦截器是否了解？它们之间的处理顺序是什么？ </p>
+<p> \3. 消费者重平衡（高可用性、伸缩性） </p>
+<p> \4. 那些情景下会造成消息漏消费？ </p>
+<p> \5. 如何保证消息不被重复消费（幂等性） </p>
+<p> \6. KafkaConsumer是非线程安全的，那么怎么样实现多线程消费？ </p>
+<p> \7. Kafka生产者客户端中使用了几个线程来处理？分别是什么？ </p>
+<p> \8. 消费者与生产者的工作流程： </p>
+<p> \9. topic的分区数可不可以增加？ </p>
+<p> \10. 算法：二叉树中的最大路径和 </p>
+<p> \11. 算法：给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。 </p>
+<p> 三面： </p>
+<p> redis的Zset怎么实现的？ </p>
+<p> sentinel和cluster区别和各自适用场景 </p>
+<p> redis cluster集群同步过程 </p>
+<p> redis单线程为什么快？ </p>
+<p> mybatis一级缓存和二级缓存 </p>
+<p> spring如何解决循环依赖？ </p>
+<p> spring AOP的原理。 </p>
+<p> spring的生命周期。 </p>
+<p> Dubbo服务暴露和引用过程，负载均衡策略，容错机制在哪里实现的源码 </p>
+<p> 项目中遇到了哪些问题。（抱歉，我的工作就是增删改查，没接触过相关问题） </p>
+<p> 算法：二叉树的镜像 </p>
+<p> 算法：从上到下打印二叉树 </p>
+<h2 id="腾讯："><a href="#腾讯：" class="headerlink" title="腾讯："></a>腾讯：</h2><p> 一面： </p>
+<p> 如何设计一个秒杀系统？ </p>
+<p> 一天爬一千万条文章，怎么做设计？怎么并行协调？100 台服务器怎么尽可能负载均衡？ </p>
+<p> 有用过短域名服务吗，能说一下吗？ </p>
+<p> 微服务的特点，如何实现服务发现和负载均衡 </p>
+<p> 如何排查线上问题？（背过，没排过） </p>
+<p> 贝叶斯的概率学原理 </p>
+<p> 负载均衡的加权轮询算法怎么实现 </p>
+<p> 如果用户量大幅度上涨，如何优化？ </p>
+<p> paxos算法（这个算法太难，学的时候就没太理解） </p>
+<p> 平时都看什么博客，最近看什么书了。 </p>
+<p> 二面： </p>
+<p> 自我介绍 </p>
+<p> 项目介绍（面试官：你说你经验不足，那咱们从基础来问） </p>
+<p> redis的5种类型，及其实现原理（redis设计与实现这本书我倒背如流，面试官夸我很不错） </p>
+<p> 如何使用redis的Zset实现延时队列？ </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">延时队列可以通过 Redis 的 zset （有序列表）来实现。我们将消息序列化成一个字符串作为 zset 的 value，</span><br><span class="line">这个消息的到期处理时间作为 score，然后用多个线程轮询zset 获取到期的任务进行处理 。</span><br><span class="line">多个线程是为了保障可用性，万一挂了一个线程还有其他线程可以继续处理。</span><br><span class="line">因为有多个线程，所以需要考虑并发争抢任务，确保任务不会被多次执行。</span><br><span class="line"></span><br><span class="line">Redis 的 zrem 方法是多线程多进程争抢任务的关键，它的返回值决定了当前实例有没有抢到任务，因为 loop 方法可能会被多个线程、多个进程调用，同一个任务可能会被多个进程线程抢到，通过 zrem 来决定唯一的属主。 同时，我们要注意一定要对 handle_msg 进行异常捕获，避免因为个别任务处理问题导致循环异常退出。</span><br></pre></td></tr></table></figure>
+
+
+
+<p> redis如何实现高可用？ </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p> redis缓存穿透、缓存击穿、缓存雪崩。 </p>
+<p> 布隆过滤器的实现。 </p>
+<p> 如何保证mysql与redis的双写一致性。 </p>
+<p> 负载均衡算法有哪些？ </p>
+<p> 服务发现是怎么实现的？ </p>
+<p> 熔断是怎么实现的？ </p>
+<p> 算法：连续子数组的最大和 </p>
+<p> 讲讲分布式CAP和BASE？ </p>
+<p> 什么是强一致性 </p>
+<p> 分布式事务的解决方案？ </p>
+<p> TCC（两阶段型、补偿型） </p>
+<p> id生成器如何实现？ </p>
+<p> 如何判断一个图是否有环？ </p>
+<p> 一致性Hash算法，及其应用。 </p>
+<p> 背包问题 </p>
+<p> 三面： </p>
+<p> 自我介绍 </p>
+<p> 项目介绍 </p>
+<p> redis的zSet如何实现？ </p>
+<p> redis持久化机制。 </p>
+<p> redis的Hash类型讲解，渐进式rehash。 </p>
+<p> HashMap原理，一个put操作，都有什么流程？ </p>
+<p> nginx有自己配置过吗（这个是我唯一手动操作过的，这个不是背的） </p>
+<p> nginx的使用场景。 </p>
+<p> 什么是分布式，什么是集群，区别是什么？ </p>
+<p> 在基于dubbo的分布式环境中，一般将超时timeout设置在provider还是consumer? </p>
+<p> dubbo中负载均衡的策略有哪些？ </p>
+<p> 接口的异步调用？如何设置？运行效果？ </p>
+<p> 谈谈基于dubbo的系统中consumer集群的解决方案？ </p>
+<p> mysql是集群还是单节点？最大连接数，最大的表中数据量大约是多少？ </p>
+<p> mysql主从复制主要有哪几种模式？ </p>
+<p> mysql索引，B+树，为什么不用红黑树？ </p>
+<p> 数据库垂直与水平拆分怎么做。 </p>
+<p> 分布式session设置 </p>
+<p> IO、BIO、NIO，阻塞与非阻塞的区别? </p>
+<p> 分布式接口的幂等性设计（不能重复扣付款） </p>
+<p> 算法：二叉搜索数与双向链表（这个懵了） </p>
+<p> 算法：最长不含重复字符的子字符串 </p>
+<p> 算法：手写快速排序、插入排序、冒泡排序，并分析时间复杂度和空间复杂度，它们的稳定性。 </p>
+<h2 id="字节："><a href="#字节：" class="headerlink" title="字节："></a>字节：</h2><p>作者：在所不辞<br><a href="https://www.nowcoder.com/discuss/385601来源：牛客网" target="_blank" rel="noopener">https://www.nowcoder.com/discuss/385601来源：牛客网</a></p>
+<ol>
+<li><code>HashMap</code> 和 <code>ConcurrentHashMap</code> 的区别？（不会，当时太菜了）</li>
+<li>线程池（当时就说了怎么用，连底层结构都答不上来，太丢人了）</li>
+<li>数据库的锁（不会）</li>
+<li>数据库的三范式（不会，还瞎扯了一堆） </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#第一范式是属性不可分；</span><br><span class="line"></span><br><span class="line">#第二范式是在第一范式的基础上，要求实体的属性完全依赖于主关键字，没有部分依赖；</span><br><span class="line"></span><br><span class="line">#第三范式是在第二范式的基础上，所有属性都和主键有直接关系，没有传递依赖。</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>线程和进程的区别</p>
+</li>
+<li><p>缓存（简单说了下浏览器缓存的作用）</p>
+</li>
+<li><p>算法题目1：随机链表复制（秒了）<a href="https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/" target="_blank" rel="noopener">剑指 Offer 35. 复杂链表的复制</a></p>
+</li>
+<li><p>算法题目2：滑动窗口算法（卡了蛮久） <a href="https://leetcode-cn.com/problems/minimum-window-substring/" target="_blank" rel="noopener">76. 最小覆盖子串</a>  的简易版 </p>
+</li>
+<li><p>期间问了项目的问题：缓存一致性问题、MySQL乐观锁；</p>
+</li>
+<li><p>问之前实习的一些问题，在实习的时候学到了什么。</p>
+</li>
+<li><p>Redis 的过期策略、缓存雪崩、惰性删除</p>
+</li>
+<li><p>MySQL索引、<code>b+</code>树，为什么不用哈希map来存储？</p>
+</li>
+<li><p>最左前缀原则</p>
+</li>
+<li><p>(A,B,C）的联合索引，去查 B = 0 和 C = 0，还会使用索引吗？</p>
+</li>
+<li><p>SQL，求第二大的薪水 <a href="https://leetcode-cn.com/problems/second-highest-salary/" target="_blank" rel="noopener">176. 第二高的薪水</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ifnull((select distinct salary from  Employee order by salary desc limit 1, 1), null) as SecondHighestSalary</span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li><p>给定一个排序链表，删除所有重复的元素只留下原链表中没有重复的元素。 <a href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/" target="_blank" rel="noopener">82. 删除排序链表中的重复元素 II</a></p>
+</li>
+<li><p>JAVA的锁、乐观锁悲观锁（视频卡出翔，面试官基本听不到我说啥，然后说我们来先做题吧，我？？）</p>
+</li>
+<li><p>编程题1：最大岛问题（我想了个分治，思路不对，直接爆炸，面试官还是不错的，给我换了道题）</p>
+</li>
+<li><p>编程题2：股票利润1（还要求写测试用例，要求跑通）</p>
+</li>
+<li><p>编程题3：股票利润2（可以买卖多次）(这两题都秒了，面试前一晚正好想刷一刷dp的题，就刷了这两题，所以说大家想到什么一定要去学！！！)</p>
+</li>
+<li><p>TCP的四次挥手</p>
+</li>
+<li><p>HTTPS</p>
+</li>
+<li><p>分代回收在整个GC中处于什么位置？</p>
+</li>
+<li><p>HashMap扩容底层实现</p>
+</li>
+<li><p>Git 底层实现；如何解决冲突？</p>
+</li>
+<li><p>设计题：关注系统怎么设计？</p>
+<ul>
+<li>可以关注、取关别人 </li>
+<li>可以查看关注、粉丝列表 </li>
+<li>可以查看关注、粉丝数 </li>
+<li>快速判断两个人的关系 </li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<pre><code>23. 如果有大V（粉丝数很多），你的系统有没有问题？或者说如果觉得没问题，为什么没问题？（存储上，使用上）
+
+24. 编程题1：股票利润1
+
+25. 编程题2：股票利润3（可以买卖两次）</code></pre>
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#美团："><span class="nav-number">1.</span> <span class="nav-text">美团：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字节跳动："><span class="nav-number">2.</span> <span class="nav-text">字节跳动：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#腾讯："><span class="nav-number">3.</span> <span class="nav-text">腾讯：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字节："><span class="nav-number">4.</span> <span class="nav-text">字节：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="小熊一号"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">小熊一号</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xcxyh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xcxyh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:window3cc@qq.com" title="E-Mail → mailto:window3cc@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小熊一号</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

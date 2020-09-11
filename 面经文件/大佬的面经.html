@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="作者：AxisXXXXXhttps:&#x2F;&#x2F;www.nowcoder.com&#x2F;discuss&#x2F;472793?type&#x3D;0&amp;order&#x3D;0&amp;pos&#x3D;31&amp;page&#x3D;3&amp;channel&#x3D;666&amp;source_id&#x3D;discuss_center_0 来源：牛客网  2020.08.10 Java相关  JVM内存模型JMM 引用类型 垃圾回收算法 垃圾收集器 Hash">
+<meta property="og:type" content="website">
+<meta property="og:title" content="xcxyh">
+<meta property="og:url" content="https://xcxyh.github.io/%E9%9D%A2%E7%BB%8F%E6%96%87%E4%BB%B6/%E5%A4%A7%E4%BD%AC%E7%9A%84%E9%9D%A2%E7%BB%8F.html">
+<meta property="og:site_name" content="xcxyh">
+<meta property="og:description" content="作者：AxisXXXXXhttps:&#x2F;&#x2F;www.nowcoder.com&#x2F;discuss&#x2F;472793?type&#x3D;0&amp;order&#x3D;0&amp;pos&#x3D;31&amp;page&#x3D;3&amp;channel&#x3D;666&amp;source_id&#x3D;discuss_center_0 来源：牛客网  2020.08.10 Java相关  JVM内存模型JMM 引用类型 垃圾回收算法 垃圾收集器 Hash">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-11T11:00:51.274Z">
+<meta property="article:modified_time" content="2020-08-19T11:02:51.310Z">
+<meta property="article:author" content="小熊一号">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://xcxyh.github.io/%E9%9D%A2%E7%BB%8F%E6%96%87%E4%BB%B6/%E5%A4%A7%E4%BD%AC%E7%9A%84%E9%9D%A2%E7%BB%8F">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | xcxyh
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="xcxyh" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">xcxyh</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">嘻嘻嘻,正经网站</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xcxyh" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <p>作者：AxisXXXXX<br><a href="https://www.nowcoder.com/discuss/472793?type=0&amp;order=0&amp;pos=31&amp;page=3&amp;channel=666&amp;source_id=discuss_center_0" target="_blank" rel="noopener">https://www.nowcoder.com/discuss/472793?type=0&amp;order=0&amp;pos=31&amp;page=3&amp;channel=666&amp;source_id=discuss_center_0</a></p>
+<p>来源：牛客网  2020.08.10</p>
+<h3 id="Java相关"><a href="#Java相关" class="headerlink" title="Java相关"></a>Java相关</h3><p>  JVM内存模型JMM<br> 引用类型<br> 垃圾回收算法<br> 垃圾收集器<br> HashMap源码<br> ArrayList源码<br> LinkedList源码<br> ConcurrentHashMap源码<br> 阻塞队列实现<br> CopyOnWrite<br> 线程池<br> 定位内存泄漏<br> 线程间通信<br> 写一个死锁的例子<br> 类加载机制，双亲委派模型，findClass和loadClass<br> Class.forName和ClassLoader区别<br> Volatile，JMM，指令重排，Happens-before<br> Synchronized原理，偏向锁，轻量级锁，重量级锁<br> GC Root有哪些<br> 线程的状态<br> 死锁<br> 自动装箱，赋值操作，在内存里面是如何实现的<br> String类为什么是不可变的<br> ThreadLocal<br> Final/Static关键字的对象放在内存的什么位置<br> Java接口继承<br> CAS，存在的问题<br> CountDownLatch、Semaphore<br> 动态代理<br> 序列化底层实现<br> AIO, BIO, NIO<br> 停止一个正在运行的线程<br> interrupted 和 isInterrupted 方法的区别</p>
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>  三大范式<br> ACID<br> InnoDB和MyISAM区别<br> 索引<br> B树和B+树的区别<br> 为什么要用自增id作主键<br> 内连接，外连接，左右外连接<br> 哈希索引，全文索引<br> 前缀索引<br> 聚簇索引<br> 索引覆盖<br> 索引什么时候失效<br> Explain<br> 事务的隔离级别<br> 事务和锁<br> MVCC<br> 死锁<br> 查询优化<br> 主从复制<br> 读写分离</p>
+<h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><p> 5种数据结构，有哪些好处，使用场景<br> 数据淘汰策略<br> 并发竞争问题<br> Redission分布式锁<br> 持久化方式：RDB和AOF区别、优缺点<br> 集群方案<br> 数据分片模型<br> 哈希槽</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Redis 集群并没有使用一致性hash，而是引入了哈希槽的概念。Redis 集群有16384个哈希槽，每个key通过CRC16校验后对16384取模来决定放置哪个槽，集群的每个节点负责一部分hash槽。</span><br></pre></td></tr></table></figure>
+
+
+
+<p> 最大节点数为什么是16384个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在redis节点发送心跳包时需要把所有的槽放到这个心跳包里，以便让节点知道当前集群信息，16384，在发送心跳包时使用char进行bitmap压缩后是2KB（2 * 8 (bit) * 1024(1k) &#x3D; 2K, 1B &#x3D; 8bit），也就是说使用 2KB 的空间创建了16384 的槽数。</span><br><span class="line"></span><br><span class="line">虽然使用CRC16算法最多可以分配65535（2^16-1）个槽位，65535&#x3D;65k，压缩后就是8k（8 * 8 (8 bit) * 1024(1k) &#x3D; 8K），也就是说需要需要8k的心跳包，作者认为这样做不太值得；并且一般情况下一个redis集群不会有超过1000个master节点，所以16k的槽位是个比较合适的选择。</span><br></pre></td></tr></table></figure>
+
+
+
+<p> Redis事务<br> 性能优化常见方案<br> 缓存击穿<br> 缓存雪崩<br> 对比memcache<br> Redis为什么是单线程的<br> lpush和brpop实现消息队列<br> 应用场景<br> Redis线程模型<br> 缓存和数据库双写一致性问题<br> 如何解决redis的并发竞争key问题<br> MySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据</p>
+<h3 id="分布式相关"><a href="#分布式相关" class="headerlink" title="分布式相关"></a>分布式相关</h3><p> Paxos协议<br> Raft协议<br> ZAB协议<br> 选举过程<br> 基于Zookeeper实现分布式锁<br> 实现分布式发号器<br> 分布式Barrier</p>
+<h3 id="算法题"><a href="#算法题" class="headerlink" title="算法题"></a>算法题</h3><p> 快排<br> 前缀树</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Trie</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">TrieNode</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> TrieNode[] children;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">boolean</span> isEnd;</span><br><span class="line">        </span><br><span class="line">        TrieNode()&#123;</span><br><span class="line">            children = <span class="keyword">new</span> TrieNode[<span class="number">26</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setEnd</span><span class="params">()</span></span>&#123; isEnd = <span class="keyword">true</span>;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isEnd</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> isEnd;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">char</span> ch, TrieNode node)</span></span>&#123; children[ch - <span class="string">'a'</span>] = node; &#125;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> TrieNode <span class="title">get</span><span class="params">(<span class="keyword">char</span> ch)</span></span>&#123;<span class="keyword">return</span> children[ch - <span class="string">'a'</span>];&#125;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">containsKey</span><span class="params">(<span class="keyword">char</span> ch)</span></span>&#123; <span class="keyword">return</span> children[ch - <span class="string">'a'</span>] != <span class="keyword">null</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(String word)</span></span>&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">search</span><span class="params">(String word)</span></span>&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">startsWith</span><span class="params">(String prefix)</span></span>&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> TrieNode <span class="title">searchPrefix</span><span class="params">(String prefix)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p> 判断链表有环,求环的入口<br> 最大公因数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p> 两个链表找交点<br> topK<br> LRU<br> 两个栈实现一个队列<br> 树层次遍历第一层从左往右，第二层从右向左<br> 随机数产生转换-根据(1,5)随机数生成器，生成(1,7)之内的随机数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p> 最长公共子序列<br> 最长上升子序列<br> 最大子段和<br> 股票买卖系列</p>
+<p> 合并k个链表 </p>
+<p>  k个一组反转链表 </p>
+<p>  接雨水 </p>
+<p>  二维接雨水 </p>
+<p>  零钱兑换</p>
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java相关"><span class="nav-number">1.</span> <span class="nav-text">Java相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库"><span class="nav-number">2.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis"><span class="nav-number">3.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式相关"><span class="nav-number">4.</span> <span class="nav-text">分布式相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法题"><span class="nav-number">5.</span> <span class="nav-text">算法题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="小熊一号"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">小熊一号</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xcxyh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xcxyh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:window3cc@qq.com" title="E-Mail → mailto:window3cc@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小熊一号</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
