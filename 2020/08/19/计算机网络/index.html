@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Linux查看域名对应的ip地址 123nslookup www.baidu.comping www.baidu.comhost www.baidu.com">
@@ -27,14 +27,14 @@
 <meta property="og:site_name" content="xcxyh">
 <meta property="og:description" content="Linux查看域名对应的ip地址 123nslookup www.baidu.comping www.baidu.comhost www.baidu.com">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xcxyh.github.io/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5C%E5%90%84%E5%B1%82%E5%8D%8F%E8%AE%AE.png">
-<meta property="og:image" content="https://xcxyh.github.io/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5C%E5%8D%8F%E8%AE%AE%E7%AB%AF%E5%8F%A3%E5%8F%B7.png">
-<meta property="og:image" content="https://xcxyh.github.io/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5Ctcpip%E5%8D%8F%E8%AE%AE%E6%A0%88.jpg">
+<meta property="og:image" content="https://xcxyh.github.io/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%90%84%E5%B1%82%E5%8D%8F%E8%AE%AE.png">
+<meta property="og:image" content="https://xcxyh.github.io/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%8D%8F%E8%AE%AE%E7%AB%AF%E5%8F%A3%E5%8F%B7.png">
+<meta property="og:image" content="https://xcxyh.github.io/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/tcpip%E5%8D%8F%E8%AE%AE%E6%A0%88.jpg">
 <meta property="article:published_time" content="2020-08-19T03:25:38.204Z">
-<meta property="article:modified_time" content="2020-09-11T11:06:24.643Z">
+<meta property="article:modified_time" content="2020-09-11T12:01:02.910Z">
 <meta property="article:author" content="小熊一号">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xcxyh.github.io/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5C%E5%90%84%E5%B1%82%E5%8D%8F%E8%AE%AE.png">
+<meta name="twitter:image" content="https://xcxyh.github.io/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%90%84%E5%B1%82%E5%8D%8F%E8%AE%AE.png">
 
 <link rel="canonical" href="https://xcxyh.github.io/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
 
@@ -109,6 +109,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -143,11 +144,38 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -203,7 +231,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-11 19:06:24" itemprop="dateModified" datetime="2020-09-11T19:06:24+08:00">2020-09-11</time>
+                <time title="修改时间：2020-09-11 20:01:02" itemprop="dateModified" datetime="2020-09-11T20:01:02+08:00">2020-09-11</time>
               </span>
 
           
@@ -226,9 +254,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">TCP头部占 至少 20 字节</span><br><span class="line">	1 源端口和目的端口 共占  4 字节</span><br><span class="line">	2 序列号 syn 占 4 字节</span><br><span class="line">	3 确认号 ack 占 4 字节</span><br><span class="line">	4 长度 + 标志位（SYN,FIN, ACK, ...）+ 窗口大小 占 4 字节</span><br><span class="line">	5 校验和 + 紧急指针 占 4 字节</span><br><span class="line"></span><br><span class="line">UDP头部 占 8 字节</span><br><span class="line">	1 源端口和目的端口 共占  4 字节</span><br><span class="line">	2 整个数据报文长度 + 校验和  占 4 字节</span><br></pre></td></tr></table></figure>
 
 <p>OSI 七层协议：</p>
-<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5C%E5%90%84%E5%B1%82%E5%8D%8F%E8%AE%AE.png" alt></p>
+<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%90%84%E5%B1%82%E5%8D%8F%E8%AE%AE.png" alt></p>
 <p>各层协议对应端口号</p>
-<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5C%E5%8D%8F%E8%AE%AE%E7%AB%AF%E5%8F%A3%E5%8F%B7.png" alt></p>
+<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%8D%8F%E8%AE%AE%E7%AB%AF%E5%8F%A3%E5%8F%B7.png" alt></p>
 <p>各层协议使用的机器，机器的作用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">传输层：网关</span><br><span class="line"></span><br><span class="line">网络层：路由器、防火墙</span><br><span class="line"></span><br><span class="line">数据链路层：网卡、网桥、交换机</span><br><span class="line"></span><br><span class="line">物理层：中继器 （Repeater，也叫放大器） 、集线器</span><br></pre></td></tr></table></figure>
 
@@ -249,7 +277,7 @@
 <li>传输层：负责对报文进行分组和重组，并以TCP或UDP协议格式封装报文。</li>
 <li>应用层：负责向用户提供应用程序，比如HTTP、FTP、Telnet、DNS、SMTP等。</li>
 </ul>
-<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5Ctcpip%E5%8D%8F%E8%AE%AE%E6%A0%88.jpg" alt></p>
+<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/tcpip%E5%8D%8F%E8%AE%AE%E6%A0%88.jpg" alt></p>
 
     </div>
 
@@ -381,6 +409,8 @@
 
         
 
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
 <div class="copyright">
   
   &copy; 
@@ -390,8 +420,6 @@
   </span>
   <span class="author" itemprop="copyrightHolder">小熊一号</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
-  </div>
 
         
 
@@ -427,6 +455,10 @@
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 

@@ -171,7 +171,7 @@
 <a id="more"></a>
 
 <h3 id="网易：问题1：卡特兰数-通项公式："><a href="#网易：问题1：卡特兰数-通项公式：" class="headerlink" title="网易：问题1：卡特兰数 通项公式："></a>网易：<strong>问题1：</strong>卡特兰数 通项公式：<img src="/2020/06/21/%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E9%80%9A%E9%A1%B9%E5%85%AC%E5%BC%8F.png" alt></h3><p>例如 ： n = 3  得   Catalan   =  20 / 4  =  5 </p>
-<p>卡特兰数递推公式：<img src="/2020/06/21/%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98/.%5C%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98%5C%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0.png" alt="image-20200910193749562"></p>
+<p>卡特兰数递推公式：<img src="/2020/06/21/%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0.png" alt="image-20200910193749562"></p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">CatalanNumber</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">1</span> || n == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> CatalanNumber(n - <span class="number">1</span>) * (<span class="number">4</span> * n - <span class="number">2</span>) / (n + <span class="number">1</span>);      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
@@ -181,7 +181,7 @@
 <p>2  给定一个整数 <em>n</em>，求以 1 … <em>n</em> 为节点组成的二叉搜索树有多少种？  或者，有N个节点的二叉树共有多少种情形？</p>
 <p>3 <strong>找零钱（找一半）</strong>：有2n个人排成一行进入剧场。入场费5元。其中只有n个人有一张5元钞票，另外n人只有10元钞票，剧院无其它钞票，问有多少种方法使得只要有10元的人买票，售票处就有5元的钞票找零？</p>
 <p>4 <strong>三角网格</strong></p>
-<p><img src="/2020/06/21/%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98/.%5C%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98%5C%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E5%BA%94%E7%94%A84.png" alt="img"></p>
+<p><img src="/2020/06/21/%E9%9D%A2%E8%AF%95%E4%B8%AD%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98/%E5%8D%A1%E7%89%B9%E5%85%B0%E6%95%B0%E5%BA%94%E7%94%A84.png" alt="img"></p>
 <p>形如这样的直角三角形网格，从左上角开始，只能向右走和向下走，问总共有多少种走法？</p>
 <p>5  有n对括号，可以并列或嵌套排列，共有多少种情况？ </p>
 <p>6 球分两种颜色，黑色和白色分别各有n只，盒子数量和球的个数相同，每个盒子里面只能放一只球，并且必须满足如下限制,即每一个白球必须和一只黑球配对（白球在黑球前，<strong>允许嵌套</strong>）。</p>
@@ -363,7 +363,7 @@
 <p>​        现在把三次握手改成仅需要两次握手，死锁是可能发生的。作为例子，考虑计算机S和C之间的通信，假定C给S发送一个连接请求分组，S收到了这个分组，并发 送了确认应答分组。按照两次握手的协定，S认为连接已经成功地建立了，可以开始发送数据分组。可是，C在S的应答分组在传输中被丢失的情况下，将不知道S 是否已准备好，不知道S建立什么样的序列号，C甚至怀疑S是否收到自己的连接请求分组。在这种情况下，C认为连接还未建立成功，将忽略S发来的任何数据分 组，只等待连接确认应答分组。而S在发出的分组超时后，重复发送同样的分组。这样就形成了死锁。</p>
 <p>【问题4】如果已经建立了连接，但是客户端突然出现故障了怎么办？</p>
 <p>TCP还设有一个<strong>保活计时器</strong>，显然，客户端如果出现故障，服务器不能一直等下去，白白浪费资源。服务器每收到一次客户端的请求后都会重新复位这个计时器，时间通常是设置为2小时，若两小时还没有收到客户端的任何数据，服务器就会发送一个探测报文段，以后每隔75秒钟发送一次。若一连发送10个探测报文仍然没反应，服务器就认为客户端出了故障，接着就关闭连接。</p>
-<p> <img src="/2020/05/04/TCP%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%92%8C%E5%85%B3%E9%97%AD/.%5CTCP%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%92%8C%E5%85%B3%E9%97%AD%5Ctcpip%E5%8D%8F%E8%AE%AE%E6%A0%88.jpg" alt="img"> </p>
+<p> <img src="/2020/05/04/TCP%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%92%8C%E5%85%B3%E9%97%AD/tcpip%E5%8D%8F%E8%AE%AE%E6%A0%88.jpg" alt="img"> </p>
 ]]></content>
   </entry>
   <entry>
@@ -378,9 +378,9 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">TCP头部占 至少 20 字节</span><br><span class="line">	1 源端口和目的端口 共占  4 字节</span><br><span class="line">	2 序列号 syn 占 4 字节</span><br><span class="line">	3 确认号 ack 占 4 字节</span><br><span class="line">	4 长度 + 标志位（SYN,FIN, ACK, ...）+ 窗口大小 占 4 字节</span><br><span class="line">	5 校验和 + 紧急指针 占 4 字节</span><br><span class="line"></span><br><span class="line">UDP头部 占 8 字节</span><br><span class="line">	1 源端口和目的端口 共占  4 字节</span><br><span class="line">	2 整个数据报文长度 + 校验和  占 4 字节</span><br></pre></td></tr></table></figure>
 
 <p>OSI 七层协议：</p>
-<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5C%E5%90%84%E5%B1%82%E5%8D%8F%E8%AE%AE.png" alt></p>
+<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%90%84%E5%B1%82%E5%8D%8F%E8%AE%AE.png" alt></p>
 <p>各层协议对应端口号</p>
-<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5C%E5%8D%8F%E8%AE%AE%E7%AB%AF%E5%8F%A3%E5%8F%B7.png" alt></p>
+<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%8D%8F%E8%AE%AE%E7%AB%AF%E5%8F%A3%E5%8F%B7.png" alt></p>
 <p>各层协议使用的机器，机器的作用</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">传输层：网关</span><br><span class="line"></span><br><span class="line">网络层：路由器、防火墙</span><br><span class="line"></span><br><span class="line">数据链路层：网卡、网桥、交换机</span><br><span class="line"></span><br><span class="line">物理层：中继器 （Repeater，也叫放大器） 、集线器</span><br></pre></td></tr></table></figure>
 
@@ -401,7 +401,7 @@
 <li>传输层：负责对报文进行分组和重组，并以TCP或UDP协议格式封装报文。</li>
 <li>应用层：负责向用户提供应用程序，比如HTTP、FTP、Telnet、DNS、SMTP等。</li>
 </ul>
-<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/.%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%5Ctcpip%E5%8D%8F%E8%AE%AE%E6%A0%88.jpg" alt></p>
+<p><img src="/2020/08/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/tcpip%E5%8D%8F%E8%AE%AE%E6%A0%88.jpg" alt></p>
 ]]></content>
   </entry>
 </search>

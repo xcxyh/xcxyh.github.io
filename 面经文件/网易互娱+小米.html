@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="网易互娱 08191 时针与分针之间的夹角， 问 07：55 时针和分针夹角？ 2 栈和队列的特点 ，区别，应用场景？ 3 栈中有abc 三个元素，出栈方式有多少种，有公式描述这种规律吗？ 1三个元素 有5种出栈方式，具体规律为卡特兰数，公式为：Cn_2n &#x2F; (n+1)    4 找 数组中 第 k 大的元素 ，不用写，说思路，我说了 优先队列，又问复杂度， 解释下 为什么是 nlog">
@@ -27,8 +27,8 @@
 <meta property="og:site_name" content="xcxyh">
 <meta property="og:description" content="网易互娱 08191 时针与分针之间的夹角， 问 07：55 时针和分针夹角？ 2 栈和队列的特点 ，区别，应用场景？ 3 栈中有abc 三个元素，出栈方式有多少种，有公式描述这种规律吗？ 1三个元素 有5种出栈方式，具体规律为卡特兰数，公式为：Cn_2n &#x2F; (n+1)    4 找 数组中 第 k 大的元素 ，不用写，说思路，我说了 优先队列，又问复杂度， 解释下 为什么是 nlog">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-11T11:00:51.274Z">
-<meta property="article:modified_time" content="2020-09-03T07:38:39.876Z">
+<meta property="article:published_time" content="2020-09-16T08:45:42.559Z">
+<meta property="article:modified_time" content="2020-09-16T08:45:42.559Z">
 <meta property="article:author" content="小熊一号">
 <meta name="twitter:card" content="summary">
 
@@ -106,6 +106,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -140,11 +141,38 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -261,10 +289,18 @@
 <p>12 mysql ACID 分别是什么 ，怎么理解 其中的 隔离性（ 一个事务所做的修改在最终提交以前，对其他事务是不可见的。 ）</p>
 <p>9 mysql 事务隔离级别， 幻读是什么， 跟脏读的区别</p>
 <p>13 sql 题， 有一张表 ，id， course， score ， 求 其中 分数 &gt;80 的课程有 4 门以上的 学生 （这个也没写对）(当时的意思大概这样，不知道对不对)</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> A.* <span class="keyword">from</span> students A <span class="keyword">where</span> (<span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">as</span> <span class="keyword">count</span> <span class="keyword">from</span> students B <span class="keyword">where</span> B.score &gt;= <span class="number">80</span> <span class="keyword">and</span> A.id = B.id <span class="keyword">group</span> <span class="keyword">by</span> B.id) &gt;= <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select A.* from students A where (select count(*) as count from students B where B.score &gt;&#x3D; 80 and A.id &#x3D; B.id group by B.id) &gt;&#x3D; 4</span><br><span class="line"></span><br><span class="line">select id, count(*) as count from students  where score &gt;&#x3D; 80 group by id having count &gt;&#x3D; 4</span><br></pre></td></tr></table></figure>
 
 <p>14 顺时针打印矩阵，问的很详细，具体到每一步，为什么这一步要这样写？</p>
 <p>15 反问环节，我说没什么问题，哈哈哈</p>
+<h4 id="小米0916"><a href="#小米0916" class="headerlink" title="小米0916"></a>小米0916</h4><p>1 线程池</p>
+<p>2 数组和链表区别</p>
+<p>3 concurrentHashmap</p>
+<p>4 cas 原理 </p>
+<p>5 sql语句</p>
+<p>6 java8  的 stream 流 的 map reduce ？？？（完全不会啊）</p>
+<p>7 spring的 aop  ioc</p>
+<p>8 网页上的 url 访问静态 css 等资源 ，怎么配置的 </p>
 
       </div>
       
@@ -326,7 +362,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#网易互娱-0819"><span class="nav-number">1.</span> <span class="nav-text">网易互娱 0819</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网易0826"><span class="nav-number">2.</span> <span class="nav-text">网易0826</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网易0903-hr"><span class="nav-number">3.</span> <span class="nav-text">网易0903 hr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小米-0901"><span class="nav-number">4.</span> <span class="nav-text">小米 0901</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#网易互娱-0819"><span class="nav-number">1.</span> <span class="nav-text">网易互娱 0819</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网易0826"><span class="nav-number">2.</span> <span class="nav-text">网易0826</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网易0903-hr"><span class="nav-number">3.</span> <span class="nav-text">网易0903 hr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小米-0901"><span class="nav-number">4.</span> <span class="nav-text">小米 0901</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小米0916"><span class="nav-number">5.</span> <span class="nav-text">小米0916</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -381,6 +417,8 @@
 
         
 
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
 <div class="copyright">
   
   &copy; 
@@ -390,8 +428,6 @@
   </span>
   <span class="author" itemprop="copyrightHolder">小熊一号</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
-  </div>
 
         
 
@@ -427,6 +463,10 @@
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 
