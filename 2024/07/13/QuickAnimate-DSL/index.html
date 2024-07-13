@@ -1,0 +1,680 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" href="/img/icon.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一句话描述： 使用 Kotlin DSL （Domain-Specific Language，领域特定语言）和 ValueAnimator 实现一个动画框架，以 DSL 的方式来方便、快速的实现对 view 的各种属性动画。 通过 Kotlin DSL 的方式来组合针对 view 的多个属性的动画，用于快速、简单的实现复杂的组合动画效果。简单又好用——使用示例： 12345678910111213">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QuickAnimate DSL">
+<meta property="og:url" content="https://xcxyh.github.io/2024/07/13/QuickAnimate-DSL/index.html">
+<meta property="og:site_name" content="xiong的精神世界">
+<meta property="og:description" content="一句话描述： 使用 Kotlin DSL （Domain-Specific Language，领域特定语言）和 ValueAnimator 实现一个动画框架，以 DSL 的方式来方便、快速的实现对 view 的各种属性动画。 通过 Kotlin DSL 的方式来组合针对 view 的多个属性的动画，用于快速、简单的实现复杂的组合动画效果。简单又好用——使用示例： 12345678910111213">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-13T11:05:02.000Z">
+<meta property="article:modified_time" content="2024-07-13T11:35:56.833Z">
+<meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>QuickAnimate DSL - xiong的精神世界</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>xiong的精神世界</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="QuickAnimate DSL"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-13 19:05" pubdate>
+          2024年7月13日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">QuickAnimate DSL</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>一句话描述：</p>
+<p>使用 Kotlin DSL （Domain-Specific Language，领域特定语言）和 ValueAnimator 实现一个动画框架，以 DSL 的方式来方便、快速的实现对 view 的各种属性动画。</p>
+<p>通过 Kotlin DSL 的方式来组合针对 view 的多个属性的动画，用于快速、简单的实现复杂的组合动画效果。简单又好用——使用示例：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">animateTest</span><span class="hljs-params">(view: <span class="hljs-type">View</span>)</span></span> &#123;<br>    <span class="hljs-keyword">val</span> controller: Animators.Controller = quickAnimate &#123;<br>        together &#123;<br>            play &#123;<br>                targets = listOf(view)<br>                duration = <span class="hljs-number">300L</span><br>                interpolator = LinearInterpolator()<br>                translationX(<span class="hljs-number">0f</span>, <span class="hljs-number">100f</span>)<br>            &#125;<br>            play &#123;<br>                targets = listOf(view)<br>                duration = <span class="hljs-number">300L</span><br>                interpolator = LinearInterpolator()<br>                translationY(<span class="hljs-number">0f</span>, <span class="hljs-number">100f</span>)<br>            &#125;<br>        &#125;<br>        onStart = &#123;&#125;<br>        onEnd = &#123;&#125;<br>    &#125;<br>    <span class="hljs-comment">// 开始动画</span><br>    controller.start()<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Animators 类： quickAnimate { } 代码块中的 receiver 实现类。通过 封装 Controller 的方式对外提供控制动画的接口。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">quickAnimate</span><span class="hljs-params">(<span class="hljs-keyword">init</span>: <span class="hljs-type">Animators</span>.() -&gt; <span class="hljs-type">Unit</span>)</span></span>: Animators.Controller<br></code></pre></td></tr></table></figure>
+
+<p>SingleAnimator 类： 具体的 动画动作  封装类 ，也就是 play { } 代码块中的receiver 实现类。负责完成单个属性动画。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">play</span><span class="hljs-params">(anim: <span class="hljs-type">SingleAnimator</span>.() -&gt; <span class="hljs-type">Unit</span>)</span></span><br></code></pre></td></tr></table></figure>
+
+<p>同时也支持多个动画的组合动画，通过 together 包裹的 动画会同时执行。否则，默认所有动画都是 串行执行。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">together</span><span class="hljs-params">(<span class="hljs-keyword">init</span>: <span class="hljs-type">Animators</span>.() -&gt; <span class="hljs-type">Unit</span>)</span></span><br></code></pre></td></tr></table></figure>
+
+<p>最后，提供一个控制类 Animators.Controller ，用于 控制 动画的 开始 、取消，暂停 等操作。</p>
+<p>API 接口设计如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">quickAnimate</span><span class="hljs-params">(<span class="hljs-keyword">init</span>: <span class="hljs-type">Animators</span>.() -&gt; <span class="hljs-type">Unit</span>)</span></span>: Animators.Controller<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animators</span> &#123;<br><br>	<span class="hljs-keyword">class</span> <span class="hljs-title class_">Controller</span> &#123;<br>		<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">start</span><span class="hljs-params">()</span></span><br>				<br>		<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">cancel</span><span class="hljs-params">()</span></span><br>				<br>		<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">pause</span><span class="hljs-params">()</span></span><br>				<br>		<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">resume</span><span class="hljs-params">()</span></span><br>				<br>		<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">isRunning</span><span class="hljs-params">()</span></span>: <span class="hljs-built_in">Boolean</span><br>	&#125;<br>		<br>	<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">play</span><span class="hljs-params">(anim: <span class="hljs-type">SingleAnimator</span>.() -&gt; <span class="hljs-type">Unit</span>)</span></span><br>		<br>	<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">together</span><span class="hljs-params">(<span class="hljs-keyword">init</span>: <span class="hljs-type">Animators</span>.() -&gt; <span class="hljs-type">Unit</span>)</span></span><br>		<br>	<span class="hljs-keyword">class</span> <span class="hljs-title class_">SingleAnimator</span> &#123;<br>		<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于 具体的View 的属性动画，主要利用以下API 来实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">public</span> static &lt;T&gt; ObjectAnimator ofFloat(T target, Property&lt;T, <span class="hljs-built_in">Float</span>&gt; property, float... values)<br></code></pre></td></tr></table></figure>
+
+<p><code>ObjectAnimator</code> 是 Android 动画框架中的一个类，专门用于执行属性动画。<code>ObjectAnimator</code> 可以对目标对象的某个属性执行动画，例如透明度、旋转角度、位置等。</p>
+<p><strong><code>Property&lt;T, Float&gt; property</code></strong>: 目标对象的属性。<code>Property</code> 是一个属性的抽象表示，这里可以传入以下属性：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">View.ALPHA<br>View.ROTATION<br>View.TRANSLATION_X<br>View.TRANSLATION_Y<br>......<br></code></pre></td></tr></table></figure>
+
+<p><strong><code>float... values</code></strong>:  动画的关键帧值序列。可以传入多个值，动画将依次在这些值之间进行插值。</p>
+<p>对于单个动画，可以提供以下配置属性，用于配置动画的 view对象、动画时长、插值器、repeatMode 等参数。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">var</span> duration: <span class="hljs-built_in">Long</span> = <span class="hljs-number">0L</span><br><span class="hljs-keyword">var</span> targets: List&lt;View?&gt; = emptyList()<br><span class="hljs-keyword">var</span> interpolator: TimeInterpolator? = <span class="hljs-literal">null</span><br><span class="hljs-keyword">var</span> repeatMode: <span class="hljs-built_in">Int</span> = ValueAnimator.RESTART<br><span class="hljs-keyword">var</span> repeatCount: <span class="hljs-built_in">Int</span> = <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<p>单个动画使用示例：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">play &#123;<br>	targets = listOf(view)<br>	duration = <span class="hljs-number">300L</span><br>	interpolator = LinearInterpolator()<br>	repeatMode = ValueAnimator.RESTART<br>	repeatCount = <span class="hljs-number">0</span><br>	translationY(<span class="hljs-number">0f</span>, <span class="hljs-number">100f</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>注意：这里只是完成了动画的配置，并没有真正开始动画，需要通过 Animators.Controller 来统一来控制动画的 开始 、暂停、继续、取消等。</p>
+<p>完整源码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">package</span> com.example.helloworld<br><br><span class="hljs-keyword">import</span> android.animation.*<br><span class="hljs-keyword">import</span> android.util.Log<br><span class="hljs-keyword">import</span> android.util.Property<br><span class="hljs-keyword">import</span> android.view.View<br><span class="hljs-keyword">import</span> android.view.animation.LinearInterpolator<br><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">quickAnimate</span><span class="hljs-params">(<span class="hljs-keyword">init</span>: <span class="hljs-type">Animators</span>.() -&gt; <span class="hljs-type">Unit</span>)</span></span>: Animators.Controller &#123;<br>    <span class="hljs-keyword">val</span> animators = Animators().apply(<span class="hljs-keyword">init</span>)<br>    <span class="hljs-keyword">val</span> animSet = AnimatorSet()<br>    animSet.addListener(<span class="hljs-keyword">object</span> : Animator.AnimatorListener &#123;<br>        <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onAnimationStart</span><span class="hljs-params">(animation: <span class="hljs-type">Animator</span>?)</span></span> &#123;<br>            animators.onStart?.invoke()<br>        &#125;<br>        <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onAnimationEnd</span><span class="hljs-params">(animation: <span class="hljs-type">Animator</span>?)</span></span> &#123;<br>            animators.onEnd?.invoke()<br>        &#125;<br>        <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onAnimationCancel</span><span class="hljs-params">(animation: <span class="hljs-type">Animator</span>?)</span></span> &#123;<br>        &#125;<br>        <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onAnimationRepeat</span><span class="hljs-params">(animation: <span class="hljs-type">Animator</span>?)</span></span> &#123;<br>        &#125;<br>    &#125;)<br>    Log.i(<span class="hljs-string">&quot;xcc&quot;</span>, <span class="hljs-string">&quot;quick anim: <span class="hljs-subst">$&#123;animators.getAnimatorList()&#125;</span>&quot;</span>)<br>    animSet.playSequentially(animators.getAnimatorList())<br>    <span class="hljs-keyword">return</span> Animators.Controller(animSet)<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animators</span> &#123;<br><br>    <span class="hljs-keyword">var</span> onStart: (() -&gt; <span class="hljs-built_in">Unit</span>)? = <span class="hljs-literal">null</span><br><br>    <span class="hljs-keyword">var</span> onEnd: (() -&gt; <span class="hljs-built_in">Unit</span>)? = <span class="hljs-literal">null</span><br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> anims: MutableList&lt;Animator&gt; = mutableListOf()<br><br>    <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">getAnimatorList</span><span class="hljs-params">()</span></span> = anims.toList()<br><br>    <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">play</span><span class="hljs-params">(anim: <span class="hljs-type">SingleAnimator</span>.() -&gt; <span class="hljs-type">Unit</span>)</span></span> &#123;<br>        <span class="hljs-keyword">val</span> animator = SingleAnimator().apply(anim).createAnimator()<br>        Log.i(<span class="hljs-string">&quot;xcc&quot;</span>, <span class="hljs-string">&quot;add anim: <span class="hljs-variable">$animator</span>&quot;</span>)<br>        anims.add(animator)<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">together</span><span class="hljs-params">(<span class="hljs-keyword">init</span>: <span class="hljs-type">Animators</span>.() -&gt; <span class="hljs-type">Unit</span>)</span></span> &#123;<br>        <span class="hljs-keyword">val</span> animSet = Animators().apply(<span class="hljs-keyword">init</span>).createAnimator()<br>        Log.i(<span class="hljs-string">&quot;xcc&quot;</span>, <span class="hljs-string">&quot;add animSet: <span class="hljs-variable">$animSet</span>&quot;</span>)<br>        anims.add(animSet)<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">createAnimator</span><span class="hljs-params">()</span></span>: Animator &#123;<br>        <span class="hljs-keyword">val</span> animSet = AnimatorSet()<br>        animSet.addListener(<span class="hljs-keyword">object</span> : Animator.AnimatorListener &#123;<br>            <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onAnimationStart</span><span class="hljs-params">(animation: <span class="hljs-type">Animator</span>?)</span></span> &#123;<br>                onStart?.invoke()<br>            &#125;<br>            <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onAnimationEnd</span><span class="hljs-params">(animation: <span class="hljs-type">Animator</span>?)</span></span> &#123;<br>                onEnd?.invoke()<br>            &#125;<br>            <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onAnimationCancel</span><span class="hljs-params">(animation: <span class="hljs-type">Animator</span>?)</span></span> &#123;<br>            &#125;<br>            <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onAnimationRepeat</span><span class="hljs-params">(animation: <span class="hljs-type">Animator</span>?)</span></span> &#123;<br>            &#125;<br>        &#125;)<br>        animSet.playTogether(anims.toList())<br>        <span class="hljs-keyword">return</span> animSet<br>    &#125;<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Controller</span>(<span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> animator: Animator) &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">start</span><span class="hljs-params">()</span></span> &#123;<br>            animator.start()<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">cancel</span><span class="hljs-params">()</span></span>&#123;<br>            animator.cancel()<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">pause</span><span class="hljs-params">()</span></span> &#123;<br>            animator.pause()<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">resume</span><span class="hljs-params">()</span></span> &#123;<br>            animator.resume()<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">isRunning</span><span class="hljs-params">()</span></span>: <span class="hljs-built_in">Boolean</span> &#123;<br>            <span class="hljs-keyword">return</span> animator.isRunning<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">SingleAnimator</span> &#123;<br><br>        <span class="hljs-keyword">var</span> duration: <span class="hljs-built_in">Long</span> = <span class="hljs-number">0L</span><br>        <span class="hljs-keyword">var</span> targets: List&lt;View?&gt; = emptyList()<br>        <span class="hljs-keyword">var</span> interpolator: TimeInterpolator? = <span class="hljs-literal">null</span><br>        <span class="hljs-keyword">var</span> repeatMode: <span class="hljs-built_in">Int</span> = ValueAnimator.RESTART<br>        <span class="hljs-keyword">var</span> repeatCount: <span class="hljs-built_in">Int</span> = <span class="hljs-number">0</span><br><br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> animList: MutableList&lt;Animator&gt; = mutableListOf()<br><br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">createAnimator</span><span class="hljs-params">()</span></span>: Animator &#123;<br>            <span class="hljs-keyword">val</span> animSet = AnimatorSet()<br>            animSet.duration = <span class="hljs-keyword">this</span>.duration<br>            animSet.interpolator = <span class="hljs-keyword">this</span>.interpolator<br>            animSet.playSequentially(animList.toList())<br>            <span class="hljs-keyword">return</span> animSet<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">translationY</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">            <span class="hljs-keyword">vararg</span> values: <span class="hljs-type">Float</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">            onUpdate: ((<span class="hljs-type">animation</span>: <span class="hljs-type">ValueAnimator</span>) -&gt; <span class="hljs-type">Unit</span>)? = <span class="hljs-literal">null</span></span></span><br><span class="hljs-params"><span class="hljs-function">        )</span></span> &#123;<br>            anim(property = View.TRANSLATION_Y, values = values, onUpdate = onUpdate)<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">translationX</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">            <span class="hljs-keyword">vararg</span> values: <span class="hljs-type">Float</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">            onUpdate: ((<span class="hljs-type">animation</span>: <span class="hljs-type">ValueAnimator</span>) -&gt; <span class="hljs-type">Unit</span>)? = <span class="hljs-literal">null</span></span></span><br><span class="hljs-params"><span class="hljs-function">        )</span></span> &#123;<br>            anim(property = View.TRANSLATION_X, values = values, onUpdate = onUpdate)<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">alpha</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">            <span class="hljs-keyword">vararg</span> values: <span class="hljs-type">Float</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">            onUpdate: ((<span class="hljs-type">animation</span>: <span class="hljs-type">ValueAnimator</span>) -&gt; <span class="hljs-type">Unit</span>)? = <span class="hljs-literal">null</span></span></span><br><span class="hljs-params"><span class="hljs-function">        )</span></span> &#123;<br>            anim(property = View.ALPHA, values = values, onUpdate = onUpdate)<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">rotate</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">            <span class="hljs-keyword">vararg</span> values: <span class="hljs-type">Float</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">            onUpdate: ((<span class="hljs-type">animation</span>: <span class="hljs-type">ValueAnimator</span>) -&gt; <span class="hljs-type">Unit</span>)? = <span class="hljs-literal">null</span></span></span><br><span class="hljs-params"><span class="hljs-function">        )</span></span> &#123;<br>            anim(property = View.ROTATION, values = values, onUpdate = onUpdate)<br>        &#125;<br><br>        <span class="hljs-comment">// add more view property here...</span><br><br>        <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">anim</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">            property: <span class="hljs-type">Property</span>&lt;<span class="hljs-type">View</span>, <span class="hljs-built_in">Float</span>&gt;,</span></span><br><span class="hljs-params"><span class="hljs-function">            <span class="hljs-keyword">vararg</span> values: <span class="hljs-type">Float</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">            onUpdate: ((<span class="hljs-type">animation</span>: <span class="hljs-type">ValueAnimator</span>) -&gt; <span class="hljs-type">Unit</span>)? = <span class="hljs-literal">null</span></span></span><br><span class="hljs-params"><span class="hljs-function">        )</span></span> &#123;<br>            targets.forEach &#123;<br>                <span class="hljs-keyword">if</span> (it == <span class="hljs-literal">null</span>) &#123;<br>                    <span class="hljs-keyword">return</span><span class="hljs-symbol">@forEach</span><br>                &#125;<br>                <span class="hljs-keyword">val</span> anim = ObjectAnimator.ofFloat(it, property, *values)<br>                anim.addUpdateListener &#123; animation -&gt;<br>                    onUpdate?.invoke(animation)<br>                &#125;<br>                anim.duration = <span class="hljs-keyword">this</span>.duration<br>                anim.interpolator = <span class="hljs-keyword">this</span>.interpolator<br>                anim.repeatMode = <span class="hljs-keyword">this</span>.repeatMode<br>                anim.repeatCount = <span class="hljs-keyword">this</span>.repeatCount<br>                animList.add(anim)<br>            &#125;<br>        &#125;<br><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">var</span> controller: Animators.Controller? = <span class="hljs-literal">null</span><br><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">animateTest</span><span class="hljs-params">(view: <span class="hljs-type">View</span>)</span></span> &#123;<br>    controller = quickAnimate &#123;<br>        together &#123;<br>            play &#123;<br>                targets = listOf(view)<br>                duration = <span class="hljs-number">300L</span><br>                interpolator = LinearInterpolator()<br>                translationX(view.translationX, view.translationX + <span class="hljs-number">100f</span>)<br>            &#125;<br>            play &#123;<br>                targets = listOf(view)<br>                duration = <span class="hljs-number">300L</span><br>                interpolator = LinearInterpolator()<br>                translationY(view.translationY, view.translationY + <span class="hljs-number">100f</span>) &#123;<br>                    Log.i(<span class="hljs-string">&quot;xcc&quot;</span>, <span class="hljs-string">&quot;on update: <span class="hljs-subst">$&#123;it.animatedValue&#125;</span>&quot;</span>)<br>                &#125;<br>            &#125;<br>        &#125;<br>        play &#123;<br>            targets = listOf(view)<br>            duration = <span class="hljs-number">300L</span><br>            interpolator = LinearInterpolator()<br>            alpha(<span class="hljs-number">0f</span>, <span class="hljs-number">1f</span>)<br>        &#125;<br>        play &#123;<br>            targets = listOf(view)<br>            duration = <span class="hljs-number">300L</span><br>            interpolator = LinearInterpolator()<br>            rotate(<span class="hljs-number">0f</span>, <span class="hljs-number">360f</span>)<br>        &#125;<br>        onStart = &#123;<br>            Log.i(<span class="hljs-string">&quot;xcc&quot;</span>, <span class="hljs-string">&quot;onStart&quot;</span>)<br>        &#125;<br>        onEnd = &#123;<br>            Log.i(<span class="hljs-string">&quot;xcc&quot;</span>, <span class="hljs-string">&quot;onEnd&quot;</span>)<br>        &#125;<br>    &#125;<br>    controller?.start()<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Android-%E5%BC%80%E5%8F%91/" class="category-chain-item">Android 开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Android/" class="print-no-link">#Android</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>QuickAnimate DSL</div>
+      <div>https://xcxyh.github.io/2024/07/13/QuickAnimate-DSL/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/13/AirBnb-Mavericks-%E6%A1%86%E6%9E%B6%E6%8E%A2%E7%A9%B6/" title="AirBnb Mavericks 框架探究">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AirBnb Mavericks 框架探究</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/06/Android-%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%EF%BC%88%E7%AC%94%E8%AE%B0%E6%B5%81%EF%BC%89/" title="Android 构建流程（笔记流）">
+                        <span class="hidden-mobile">Android 构建流程（笔记流）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

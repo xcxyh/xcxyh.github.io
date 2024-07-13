@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" href="/img/icon.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Mavericks 是 Airbnb 的 Android MVI 框架，是一种响应式的 UI 框架。 Mavericks 建立在以下现有技术和概念之上：  Kotlin 语言 Android Architecture Components（Lifecycle、ViewModel 等） Kotlin Flow React (概念)  Mavericks 吸收了来自 React 的响应式思想，同时 M">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AirBnb Mavericks 框架探究">
+<meta property="og:url" content="https://xcxyh.github.io/2024/07/13/AirBnb-Mavericks-%E6%A1%86%E6%9E%B6%E6%8E%A2%E7%A9%B6/index.html">
+<meta property="og:site_name" content="xiong的精神世界">
+<meta property="og:description" content="Mavericks 是 Airbnb 的 Android MVI 框架，是一种响应式的 UI 框架。 Mavericks 建立在以下现有技术和概念之上：  Kotlin 语言 Android Architecture Components（Lifecycle、ViewModel 等） Kotlin Flow React (概念)  Mavericks 吸收了来自 React 的响应式思想，同时 M">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407131912670.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407131912371.png">
+<meta property="article:published_time" content="2024-07-13T11:05:28.000Z">
+<meta property="article:modified_time" content="2024-07-13T11:32:35.402Z">
+<meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="Mavericks">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407131912670.png">
+  
+  
+  
+  <title>AirBnb Mavericks 框架探究 - xiong的精神世界</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>xiong的精神世界</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AirBnb Mavericks 框架探究"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-13 19:05" pubdate>
+          2024年7月13日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AirBnb Mavericks 框架探究</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Mavericks 是 Airbnb 的 Android MVI 框架，是一种响应式的 UI 框架。</p>
+<p>Mavericks 建立在以下现有技术和概念之上：</p>
+<ul>
+<li>Kotlin 语言</li>
+<li>Android Architecture Components（Lifecycle、ViewModel 等）</li>
+<li>Kotlin Flow</li>
+<li>React (概念)</li>
+</ul>
+<p>Mavericks 吸收了来自 React 的响应式思想，同时 Mavericks 依赖了 Kotlin、AAC（Android Architecture Components）、Flow 等技术，实现了一个 Android 原生的响应式 UI 框架。</p>
+<p>指路-&gt;：<a target="_blank" rel="noopener" href="https://github.com/airbnb/mavericks">https://github.com/airbnb/mavericks</a></p>
+<p>This is what it looks like:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">data</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloWorldState</span>(<span class="hljs-keyword">val</span> title: String = <span class="hljs-string">&quot;Hello World&quot;</span>) : MavericksState<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Refer to the wiki for how to set up your base ViewModel.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloWorldViewModel</span>(initialState: HelloWorldState) : MavericksViewModel&lt;HelloWorldState&gt;(initialState) &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">getMoreExcited</span><span class="hljs-params">()</span></span> = setState &#123; copy(title = <span class="hljs-string">&quot;<span class="hljs-variable">$title</span>!&quot;</span>) &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloWorldFragment</span> : <span class="hljs-type">Fragment</span>(R.layout.hello_world_fragment), MavericksView &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> viewModel: HelloWorldViewModel <span class="hljs-keyword">by</span> fragmentViewModel()<br><br>    <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">invalidate</span><span class="hljs-params">()</span></span> = withState(viewModel) &#123; state -&gt;<br>        <span class="hljs-comment">// Update your views with the latest state here.</span><br>        <span class="hljs-comment">// This will get called any time your state changes and the viewLifecycleOwner is STARTED.</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>依赖：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">dependencies &#123;<br>  implementation <span class="hljs-string">&#x27;com.airbnb.android:mavericks:x.y.z&#x27;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>官方文档网站：<a target="_blank" rel="noopener" href="https://airbnb.io/mavericks/#/">Mavericks Docs (airbnb.io)</a></p>
+<p>Mavericks 建立在  <a target="_blank" rel="noopener" href="https://developer.android.com/jetpack">Android Jetpack</a>  和  <a target="_blank" rel="noopener" href="https://developer.android.com/kotlin/coroutines">Kotlin 协程</a>之上，因此可以将其视为对 Google 标准库集的补充，而不是背离。</p>
+<p>Mavericks 的 1.0 版本 MVRX 是建立在 Rxjava 的基础之上，但是，在如今大部分 APP 都切换到 kotlin 协程之后，很多 App 都不再有 RxJava 的依赖了，因此，AirBnb 使用 Kotlin Flow 重写了该框架，也就是 Mavericks 2.0。</p>
+<p>为什么我们需要它？</p>
+<ol>
+<li>减少 50%到 75%代码，更简洁高效的开发</li>
+<li>真正的响应式，数据与 UI 解耦，更清晰的代码</li>
+<li>与 Kotlin、AAC 的结合与包容，更符合技术趋势</li>
+<li>React 思想在安卓的最佳实践</li>
+</ol>
+<p>单向数据流、响应式 UI 架构模式：</p>
+<p>MVI（Model-View-Intent） 和 React 是两种常用的 UI 架构模式，分别用于 Android 和前端开发。MVI 和 React 都是现代 UI 架构模式，强调单向数据流和不可变状态。尽管它们应用于不同的平台，但它们在设计理念上有许多相似之处，特别是在单向数据流的概念上。</p>
+<h3 id="MVI（Model-View-Intent）"><a href="#MVI（Model-View-Intent）" class="headerlink" title="MVI（Model-View-Intent）"></a>MVI（Model-View-Intent）</h3><p>MVI 是一种用于 Android 应用的架构模式，它强调单向数据流和不可变状态。MVI 由三个主要部分组成：</p>
+<ol>
+<li><strong>Model</strong>: 表示应用的状态。Model 通常是不可变的，这意味着每次状态变化都会创建一个新的 Model 实例。</li>
+<li><strong>View</strong>: 负责呈现 UI 并接收用户输入。View 将用户输入转换为 Intent。</li>
+<li><strong>Intent</strong>: 表示用户的意图或动作。Intent 被发送到 Model，Model 根据 Intent 更新状态。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407131912670.png" srcset="/img/loading.gif" lazyload alt="单向数据流"></p>
+<h4 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h4><ol>
+<li><strong>用户交互</strong>: 用户与 View 交互，触发一个 Intent。</li>
+<li><strong>Intent 处理</strong>: Intent 被发送到 Model，Model 处理 Intent 并更新状态。</li>
+<li><strong>状态更新</strong>: 更新后的状态通过单向数据流传递回 View，更新 UI。</li>
+</ol>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">data</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewState</span>(<span class="hljs-keyword">val</span> count: <span class="hljs-built_in">Int</span>)<br><br><span class="hljs-keyword">sealed</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewIntent</span> &#123;<br>    <span class="hljs-keyword">object</span> Increment : ViewIntent()<br>    <span class="hljs-keyword">object</span> Decrement : ViewIntent()<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainViewModel</span> : <span class="hljs-type">ViewModel</span>() &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> _viewState = MutableStateFlow(ViewState(<span class="hljs-number">0</span>))<br>    <span class="hljs-keyword">val</span> viewState: StateFlow&lt;ViewState&gt; = _viewState<br><br>    <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">processIntent</span><span class="hljs-params">(intent: <span class="hljs-type">ViewIntent</span>)</span></span> &#123;<br>        <span class="hljs-keyword">when</span> (intent) &#123;<br>            <span class="hljs-keyword">is</span> ViewIntent.Increment -&gt; _viewState.value = _viewState.value.copy(count = _viewState.value.count + <span class="hljs-number">1</span>)<br>            <span class="hljs-keyword">is</span> ViewIntent.Decrement -&gt; _viewState.value = _viewState.value.copy(count = _viewState.value.count - <span class="hljs-number">1</span>)<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-meta">@Composable</span><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">MainScreen</span><span class="hljs-params">(viewModel: <span class="hljs-type">MainViewModel</span>)</span></span> &#123;<br>    <span class="hljs-keyword">val</span> viewState <span class="hljs-keyword">by</span> viewModel.viewState.collectAsState()<br>    Column &#123;<br>        Text(<span class="hljs-string">&quot;Count: <span class="hljs-subst">$&#123;viewState.count&#125;</span>&quot;</span>)<br>        Button(onClick = &#123; viewModel.processIntent(ViewIntent.Increment) &#125;) &#123;<br>            Text(<span class="hljs-string">&quot;Increment&quot;</span>)<br>        &#125;<br>        Button(onClick = &#123; viewModel.processIntent(ViewIntent.Decrement) &#125;) &#123;<br>            Text(<span class="hljs-string">&quot;Decrement&quot;</span>)<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="React-Redux"><a href="#React-Redux" class="headerlink" title="React + Redux"></a>React + Redux</h3><p>React 是一个用于构建用户界面的 JavaScript 库。React 也强调单向数据流和不可变状态。React 的核心概念包括：</p>
+<ol>
+<li><strong>Component</strong>: React 应用由组件组成。每个组件描述了 UI 的一部分。</li>
+<li><strong>State</strong>: 组件可以拥有状态。状态变化会触发组件重新渲染。</li>
+<li><strong>Props</strong>: 组件可以接收外部传入的数据，这些数据称为 Props。</li>
+</ol>
+<p>Redux 是一个用于 JavaScript 应用的状态管理库，通常与 React 一起使用，但也可以与其他 JavaScript 框架或库一起使用。Redux 提供了一种可预测的方式来管理应用的状态，使得状态变化更加透明和可调试。</p>
+<p>Redux 的设计基于几个核心概念：</p>
+<ol>
+<li><strong>单一数据源（Single Source of Truth）</strong>:<ul>
+<li>应用的整个状态被存储在一个对象树中，这个对象树只存在于一个单一的 store 中。</li>
+</ul>
+</li>
+<li><strong>状态是只读的（State is Read-Only）</strong>:<ul>
+<li>唯一改变状态的方法是触发一个 action。这样可以确保状态的变化是可预测的和可追踪的。</li>
+</ul>
+</li>
+<li><strong>使用纯函数来执行修改（Changes are Made with Pure Functions）</strong>:<ul>
+<li>为了描述状态树如何通过 actions 转变成下一个状态，你需要编写纯函数（reducers）。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407131912371.png" srcset="/img/loading.gif" lazyload alt="Redux"></p>
+<h4 id="数据流-1"><a href="#数据流-1" class="headerlink" title="数据流"></a>数据流</h4><ol>
+<li><strong>用户交互</strong>: 用户与组件交互，触发状态变化。</li>
+<li><strong>状态更新</strong>: 状态变化会触发组件重新渲染。</li>
+<li><strong>单向数据流</strong>: 数据从父组件流向子组件，子组件接收事件更改状态，状态改变触发 UI 更新。</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactDOM</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Provider</span>, useDispatch, useSelector &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-redux&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; createStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;redux&quot;</span>;<br><br><span class="hljs-comment">// Reducer</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">counter</span>(<span class="hljs-params">state = <span class="hljs-number">0</span>, action</span>) &#123;<br>  <span class="hljs-keyword">switch</span> (action.<span class="hljs-property">type</span>) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;INCREMENT&quot;</span>:<br>      <span class="hljs-keyword">return</span> state + <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;DECREMENT&quot;</span>:<br>      <span class="hljs-keyword">return</span> state - <span class="hljs-number">1</span>;<br>    <span class="hljs-attr">default</span>:<br>      <span class="hljs-keyword">return</span> state;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 创建 Store</span><br><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(counter);<br><br><span class="hljs-comment">// React 组件</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Counter</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> count = <span class="hljs-title function_">useSelector</span>(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> state);<br>  <span class="hljs-keyword">const</span> dispatch = <span class="hljs-title function_">useDispatch</span>();<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Count: &#123;count&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> dispatch(&#123; type: &quot;INCREMENT&quot; &#125;)&#125;&gt;Increment<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> dispatch(&#123; type: &quot;DECREMENT&quot; &#125;)&#125;&gt;Decrement<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>  );<br>&#125;<br><br><span class="hljs-comment">// 渲染应用</span><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<br>  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Provider</span> <span class="hljs-attr">store</span>=<span class="hljs-string">&#123;store&#125;</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">Counter</span> /&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">Provider</span>&gt;</span></span>,<br>  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;root&quot;</span>)<br>);<br></code></pre></td></tr></table></figure>
+
+<p>MVI 和 React + Redux 两者具有相同的响应式思想和架构模式：</p>
+<ol>
+<li><strong>不可变状态</strong>:<ul>
+<li><strong>MVI</strong>: 状态是不可变的，每次状态变化都会创建一个新的状态对象。</li>
+<li><strong>React + Redux</strong>: Redux 强调使用不可变状态，每次状态变化都会创建一个新的状态对象。</li>
+</ul>
+</li>
+<li><strong>单向数据流</strong>:<ul>
+<li><strong>MVI</strong>: 数据流是单向的，从 Intent 到 Model，再从 Model 到 View。</li>
+<li><strong>React + Redux</strong>: 数据流也是单向的，从 Action 到 Reducer，再从 Store 到 View。</li>
+</ul>
+</li>
+<li><strong>纯函数</strong>:<ul>
+<li><strong>MVI</strong>: Model 更新是通过纯函数处理的，即 Reducer。</li>
+<li><strong>React + Redux</strong>: Redux 中的 Reducer 是纯函数，负责根据 Action 更新状态。</li>
+</ul>
+</li>
+</ol>
+<h3 id="Airbnb-Mavericks-框架"><a href="#Airbnb-Mavericks-框架" class="headerlink" title="Airbnb Mavericks 框架"></a>Airbnb Mavericks 框架</h3><p>而对于 Airbnb 的 Mavericks 来说，也是借鉴和继承了相同的响应式思想，下面我们可以来对比一下：</p>
+<p><strong>状态不可变：</strong></p>
+<p>MavericksState 的状态使用 <code>data class</code> 定义，是不可变的，要修改状态，必须用<code>data class</code> 的<code>clone</code>方法。每次状态变化，都需要重新创建一个新的对象。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs jsx">data <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserState</span>(<br>    val <span class="hljs-attr">score</span>: <span class="hljs-title class_">Int</span> = <span class="hljs-number">0</span>,<br>    val <span class="hljs-attr">previousHighScore</span>: <span class="hljs-title class_">Int</span> = <span class="hljs-number">150</span>,<br>    val <span class="hljs-attr">livesLeft</span>: <span class="hljs-title class_">Int</span> = <span class="hljs-number">99</span>,<br>) : <span class="hljs-title class_">MavericksState</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>单向数据流：</strong></p>
+<p>通过 kotlin flow 实现 数据 （state）的单向流动。</p>
+<p>状态更新：Mavericks 通过 setState 方法，异步更新 state，由于 state 为 <code>data class</code> ，更新状态时直接使用 copy 方法获取新对象。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs jsx">protected fun <span class="hljs-title function_">setState</span>(<span class="hljs-params">reducer: S.() -&gt; S</span>) &#123;<br><br>&#125;<br><span class="hljs-comment">// example:</span><br>setState &#123; <span class="hljs-title function_">copy</span>(yourProp = newValue) &#125;<br><br><span class="hljs-comment">//状态发送：</span><br>private suspend fun <span class="hljs-title function_">flushQueuesOnce</span>(<span class="hljs-params"></span>) &#123;<br>        select&lt;<span class="hljs-title class_">Unit</span>&gt; &#123;<br>            setStateChannel.<span class="hljs-property">onReceive</span> &#123; reducer -&gt;<br>                val newState = state.<span class="hljs-title function_">reducer</span>()<br>                <span class="hljs-keyword">if</span> (newState != state) &#123;<br>                    state = newState<br>                    stateSharedFlow.<span class="hljs-title function_">emit</span>(newState) <span class="hljs-comment">// 发送状态</span><br>                &#125;<br>            &#125;<br>            withStateChannel.<span class="hljs-property">onReceive</span> &#123; block -&gt;<br>                <span class="hljs-title function_">block</span>(state)<br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>状态监听：最新的状态 通过 <strong>stateSharedFlow</strong> 发送，通过 onEach 监听 收集 flow 中的最新状态。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-comment">// Invoked whenever propA changes only.</span><br><span class="hljs-title function_">onEach</span>(<span class="hljs-params">YourState::propA</span>) &#123; a -&gt;<br>&#125;<br><span class="hljs-comment">// Invoked whenever propA, propB, or propC changes only.</span><br><span class="hljs-title function_">onEach</span>(<span class="hljs-params">YourState::propA, YourState::propB, YourState::propC</span>) &#123; a, b, c -&gt;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>纯函数：</strong></p>
+<p>Mavericks 中的 setState { } 代码块函数，也就是 reducer: S.() -&gt; S 这部分是纯函数。</p>
+<p>纯函数（Pure Function）是函数式编程中的一个重要概念。一个函数要被认为是纯函数，需要满足以下两个条件：</p>
+<ol>
+<li><strong>确定性</strong>：对于相同的输入，函数总是返回相同的输出。</li>
+<li><strong>无副作用</strong>：函数的执行不会影响外部状态，也不会依赖于外部可变状态。</li>
+</ol>
+<p>在 Mavericks，会对 reducer 函数执行两次， 进行纯函数检查：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs jsx">val firstState = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">reducer</span>()<br>val secondState = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">reducer</span>()<br><br><span class="hljs-keyword">if</span> (firstState != secondState) &#123; &#125;<br></code></pre></td></tr></table></figure>
+
+<p>例如，如下写法 reducer 就不是纯函数，对于相同的输入，两次执行结果不一致。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jsx">setState &#123; <span class="hljs-title function_">copy</span>(time = <span class="hljs-title class_">System</span>.<span class="hljs-title function_">currentTimeMillis</span>()) &#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="怎么使用？"><a href="#怎么使用？" class="headerlink" title="怎么使用？"></a>怎么使用？</h3><p>添加依赖：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs jsx">dependencies &#123;<br>  implementation <span class="hljs-string">&#x27;com.airbnb.android:mavericks:x.y.z&#x27;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>初始化（在 Application onCreate 时初始化）：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SampleApplication</span> : <span class="hljs-type">Application</span>() &#123;<br>    <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onCreate</span><span class="hljs-params">()</span></span> &#123;<br>        <span class="hljs-keyword">super</span>.onCreate()<br>        **Mavericks.initialize(<span class="hljs-keyword">this</span>)**<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs jsx">data <span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloWorldState</span>(val <span class="hljs-attr">title</span>: <span class="hljs-title class_">String</span> = <span class="hljs-string">&quot;Hello World&quot;</span>) : <span class="hljs-title class_">MavericksState</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Refer to the wiki for how to set up your base ViewModel.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloWorldViewModel</span>(<span class="hljs-attr">initialState</span>: <span class="hljs-title class_">HelloWorldState</span>) : <span class="hljs-title class_">MavericksViewModel</span>&lt;<span class="hljs-title class_">HelloWorldState</span>&gt;(initialState) &#123;<br>    fun <span class="hljs-title function_">getMoreExcited</span>() = setState &#123; <span class="hljs-title function_">copy</span>(title = <span class="hljs-string">&quot;$title!&quot;</span>) &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloWorldFragment</span> : <span class="hljs-title class_">Fragment</span>(R.<span class="hljs-property">layout</span>.<span class="hljs-property">hello_world_fragment</span>), <span class="hljs-title class_">MavericksView</span> &#123;<br>    private val <span class="hljs-attr">viewModel</span>: <span class="hljs-title class_">HelloWorldViewModel</span> by <span class="hljs-title function_">fragmentViewModel</span>()<br><br>    override fun <span class="hljs-title function_">invalidate</span>() = <span class="hljs-title function_">withState</span>(<span class="hljs-params">viewModel</span>) &#123; state -&gt;<br>        <span class="hljs-comment">// Update your views with the latest state here.</span><br>        <span class="hljs-comment">// This will get called any time your state changes and the viewLifecycleOwner is STARTED.</span><br>    &#125;<br><br>    fun <span class="hljs-title function_">initView</span>(<span class="hljs-params"></span>) &#123;<br>		    viewModel.<span class="hljs-title function_">onEach</span>(<span class="hljs-params">HelloWorldState::title</span>) &#123; title -&gt;<br>				    <span class="hljs-comment">// Update views</span><br>				    text_view.<span class="hljs-property">text</span> = title<br>		    &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>数据流的流转过程如下：</p>
+<ol>
+<li>通过 ViewModel 更新 State</li>
+<li>ViewModel 接收数据</li>
+<li>通过 setState 更新 state</li>
+<li>MavericksState 发生变化后回调 invalidate 方法</li>
+<li>通过 withState 获取 state，更新 UI</li>
+<li>可以通过 onEach 监听 state 中某一个或多个属性的变化。</li>
+</ol>
+<h3 id="Mavericks-结合-Compose"><a href="#Mavericks-结合-Compose" class="headerlink" title="Mavericks 结合 Compose"></a>Mavericks 结合 Compose</h3><figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fix"><span class="hljs-attr">💡 Mavericks + Compose =</span>=<span class="hljs-string"> Redux/Mobx + React</span><br></code></pre></td></tr></table></figure>
+
+<p>使用 Compose 构建 UI，Mavericks 可用于业务逻辑、数据获取、对象依赖注入等，有点类似于 Redux 和 React 的关系，Redux 用于数据管理和业务逻辑，React 组件负责构建 UI。</p>
+<p>结合 compose 使用需要添加依赖：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">implementation <span class="hljs-string">&#x27;com.airbnb.android:mavericks-compose:x.y.z&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>新建状态 和 ViewModel：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">data</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CounterState</span>(<br>    <span class="hljs-keyword">val</span> count: <span class="hljs-built_in">Int</span> = <span class="hljs-number">0</span>,<br>) : MavericksState<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CounterViewModel</span>(initialState: CounterState) : MavericksViewModel&lt;CounterState&gt;(initialState) &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">incrementCount</span><span class="hljs-params">()</span></span> = setState &#123; copy(count = count + <span class="hljs-number">1</span>) &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>只需要在 Composable 函数里调用  <code>mavericksViewModel()</code>  来获取 ViewModel 实例。其默认关联的 LifecycleOwner 为 <code>LocalLifecycleOwner</code>，意味着该  <code>LocalLifeyclerOwner</code>  下的所有 Composable 将获取到相同的 ViewModel 实例。一般为 当前 Fragment 的 LifecycleOwner。如果使用 mavericksActivityViewModel 则 当前 ViewModel 的 LifecycleOwner 为 当前 Fragment 所在的 Activity，对于同一个 Activity，mavericksActivityViewModel 拿到的 都是同一个 ViewModel 实例。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-meta">@Composable</span><br>    <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">IncrementNavigationCountButton</span><span class="hljs-params">()</span></span> &#123;<br>        <span class="hljs-keyword">val</span> navScopedViewModel: CounterViewModel = mavericksViewModel()<br>        Button(onClick = navScopedViewModel::incrementCount) &#123;<br>            Text(<span class="hljs-string">&quot;Increment Navigation Scoped Count&quot;</span>)<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>要订阅 ViewModel 里的状态变化，Mavericks 提供了  <code>ViewModel.collectAsState()</code>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-comment">// This will get or create a ViewModel scoped to the closest LocalLifecycleOwner which, in this case, is the NavHost.</span><br><span class="hljs-keyword">val</span> navScopedViewModel: CounterViewModel = mavericksViewModel()<br><span class="hljs-comment">// This will get or create a ViewModel scoped to the Activity.</span><br><span class="hljs-keyword">val</span> activityScopedViewModel: CounterViewModel = mavericksActivityViewModel()<br><br><span class="hljs-keyword">val</span> navScopedCount <span class="hljs-keyword">by</span> navScopedViewModel.collectAsState(CounterState::count)<br><span class="hljs-keyword">val</span> activityScopedCount <span class="hljs-keyword">by</span> activityScopedViewModel.collectAsStateWithLifecycle(CounterState::count)<br></code></pre></td></tr></table></figure>
+
+<p>通过 属性委托的方式 ，获取到 State 中的状态和属性。要优化使用  <code>collectAsState()</code>，不同 Composable 访问不同的状态属性，在重组时候可以最大限度地减少状态更改时需要完成的工作。因此在 Composable 里订阅状态属性比订阅整个状态更理想。</p>
+<h3 id="核心源码探究"><a href="#核心源码探究" class="headerlink" title="核心源码探究"></a>核心源码探究</h3><p><strong>怎么检查是否是纯函数？</strong></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">stateStore.<span class="hljs-keyword">set</span> &#123;<br>	<span class="hljs-keyword">val</span> firstState = <span class="hljs-keyword">this</span>.reducer()<br>	<span class="hljs-keyword">val</span> secondState = <span class="hljs-keyword">this</span>.reducer()<br><br>	<span class="hljs-keyword">if</span> (firstState != secondState) &#123; &#125;<br><br>	firstState<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在 Mavericks 调试模式中，当调用 setState 时，会对 reducer 函数执行两次， 进行纯函数检查，如果不是 纯函数， 会抛出 IllegalArgumentException（仅调试模式）。</p>
+<p><strong>shared flow 还是 state flow？</strong></p>
+<p><strong><code>SharedFlow</code></strong>  在 Mavericks 中被用来处理事件流和状态更新。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> stateSharedFlow = MutableSharedFlow&lt;S&gt;(<br>        replay = <span class="hljs-number">1</span>,<br>        extraBufferCapacity = SubscriberBufferSize,<br>        onBufferOverflow = BufferOverflow.SUSPEND,<br>).apply &#123; tryEmit(initialState) &#125;<br><br> <span class="hljs-meta">@InternalMavericksApi</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">val</span> SubscriberBufferSize = <span class="hljs-number">63</span><br></code></pre></td></tr></table></figure>
+
+<p><strong><code>replay</code></strong>  参数指定了  <strong><code>SharedFlow</code></strong>  应该缓存多少个最新的值，并且在新的订阅者开始收集时重放这些值。这里设置为 1， 代表有新的订阅者时，会立即发送当前最新值，也就是这里的消息订阅是 “粘性的”。这减少了订阅者错过重要状态更新的风险。</p>
+<p><strong><code>extraBufferCapacity</code></strong>  参数指定了额外的缓冲区容量。<code>SubscriberBufferSize</code>是一个常量值 63，表示额外的缓冲区大小。这个缓冲区用于存储在订阅者还没有准备好处理新值时发送的值。这有助于避免丢失事件。是一个“背压”参数，背压（Backpressure）是指在处理数据流时，消费者无法跟上生产者的速度，从而导致数据积压的问题。当有慢速消费者时，这里会为其缓存状态。</p>
+<p><strong><code>BufferOverflow.SUSPEND</code></strong>  表示当缓冲区已满时，新的值将会被挂起，直到有空间可用。这确保了不会丢失任何事件，但可能会导致发送方挂起，直到缓冲区有空间。</p>
+<p>sharedFlow 和 StateFlow 比较：</p>
+<p>StateFlow 就是一个 replaySize&#x3D;1 的 sharedFlow。同时它必须有一个初始值，此外，每次更新数据都会和旧数据做一次比较，只有不同时候才会更新数值。</p>
+<p>StateFlow<strong>重点在状态</strong>，ui 永远有状态，所以 StateFlow 必须有初始值，同时对 ui 而言，过期的状态毫无意义，所以 stateFLow 永远更新最新的数据（和 liveData 相似），所以必须有粘滞度&#x3D;1 的粘滞事件，让 ui 状态保持到最新。</p>
+<p>SharedFlow<strong>侧重在事件</strong>，当某个事件触发，发送到队列之中，按照挂起或者非挂起、缓存策略等将事件发送到接受方，在具体使用时，SharedFlow 更适合通知 ui 界面的一些事件，比如 toast 等，也适合作为 viewModel 和 repository 之间的桥梁用作数据的传输。</p>
+<p>结论：</p>
+<p>这里 Mavericks 使用 SharedFlow 来 实现一个 StateFlow 用于 State 状态的 保存和更新。</p>
+<p><strong>withstate 和 setstate 怎么保证时序？</strong></p>
+<p>💡 viewModel 中的 withState 和 View 中的 withState 区别：</p>
+<p>viewModel 中的 withState 是 异步的 block，通过 这个 withState 拿到的状态可以保证是最新的状态。View 中的 withState 是 同步的 block，直接执行 View 中的 withState 获取到的状态不能保证是最新的 state 状态。</p>
+<p>我们应该尽量在 invalidate 或者 onEach、onAsync 环境中调用 View 中的 withState。<br>因为这三个方法都是在子线程中执行完 state 的变更后回调到主线程的，所以这里调 withState 获取到的肯定是最新的状态。</p>
+<p>withState 队列 与 setState 队列</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> setStateChannel = Channel&lt;S.() -&gt; S&gt;(capacity = Channel.UNLIMITED)<br><span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> withStateChannel = Channel&lt;(S) -&gt; <span class="hljs-built_in">Unit</span>&gt;(capacity = Channel.UNLIMITED)<br><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">suspend</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">flushQueuesOnce</span><span class="hljs-params">()</span></span> &#123;<br>        select&lt;<span class="hljs-built_in">Unit</span>&gt; &#123;<br>            setStateChannel.onReceive &#123; reducer -&gt;<br>                <span class="hljs-keyword">val</span> newState = state.reducer()<br>                <span class="hljs-keyword">if</span> (newState != state) &#123;<br>                    state = newState<br>                    stateSharedFlow.emit(newState)<br>                &#125;<br>            &#125;<br>            withStateChannel.onReceive &#123; block -&gt;<br>                block(state)<br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong><code>select</code></strong>  是一个 Kotlin 协程中的多路复用选择器，它允许在多个挂起函数中选择一个首先完成的函数。它的作用类似于  <strong><code>select</code></strong>  语句在 Go 语言中的作用。</p>
+<p>这样保证了所有<strong>待处理</strong>的  <strong><code>setState</code></strong> reducer 将在每一个  <strong><code>withState</code></strong> lambda 之前运行。</p>
+<p>假设你有以下两个操作：</p>
+<ol>
+<li><strong><code>setState &#123; ... &#125;</code></strong></li>
+<li><strong><code>withState &#123; ... &#125;</code></strong></li>
+</ol>
+<p>在调用  <code>flushQueuesOnce</code>  之前，<code>setState</code>  操作会被放入  <code>setStateChannel</code>  中，而  <code>withState</code>  操作会被放入  <code>withStateChannel</code>  中。<code>flushQueuesOnce</code>  函数会确保首先处理  <code>setStateChannel</code>  中的所有消息，然后再处理  <code>withStateChannel</code>  中的消息。这确保了在  <code>withState</code>  操作执行时，状态已经是最新的。</p>
+<p><strong>invalidate 效率问题探究</strong></p>
+<p>首先<code>invalidate</code>的思路本身没有问题，它和 React 中的<code>render</code>是保持一致的，但是 React 中是有 Virtual Dom 的 diff 算法来确定哪些节点需要真正更新的，如果没有这样的机制，就会造成效率问题。</p>
+<p>在单纯 Mavericks 环境下，我们应该使用<code>invalidate()</code>吗？</p>
+<p>我认为是不应该的，因为 Mavericks 没有这样的 diff 机制来保证局部刷新（可以通过 Airbnb 的 另一个框架 Epoxy 借助 Recyclerview 实现的 diff 机制来保证局部刷新，但是这又是另一回事了，在有了 Compose 之后，Epoxy 就显得有点鸡肋了）。所以我们在单纯 Mavericks 环境下应该尽量使用<code>onEach</code>来对指定的属性进行监听和订阅。</p>
+<h3 id="State-中便捷更新-List-Map-的扩展方法"><a href="#State-中便捷更新-List-Map-的扩展方法" class="headerlink" title="State 中便捷更新 List&#x2F;Map 的扩展方法"></a>State 中便捷更新 List&#x2F;Map 的扩展方法</h3><p>list：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-comment">// 增删</span><br>setState &#123; copy(list = list - newList) &#125;<br>setState &#123; copy(list = list + newList) &#125;<br><span class="hljs-comment">// 修改</span><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-type">&lt;T&gt;</span> List<span class="hljs-type">&lt;T&gt;</span>.<span class="hljs-title">update</span><span class="hljs-params">(newValue: (<span class="hljs-type">T</span>) -&gt; <span class="hljs-type">T</span>, finder: (<span class="hljs-type">T</span>) -&gt; <span class="hljs-type">Boolean</span>)</span></span> =<br>    indexOfFirst(finder).let &#123; index -&gt;<br>        <span class="hljs-keyword">if</span> (index &gt;= <span class="hljs-number">0</span>) copy(index, newValue(<span class="hljs-keyword">get</span>(index))) <span class="hljs-keyword">else</span> <span class="hljs-keyword">this</span><br>    &#125;<br><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-type">&lt;T&gt;</span> List<span class="hljs-type">&lt;T&gt;</span>.<span class="hljs-title">copy</span><span class="hljs-params">(i: <span class="hljs-type">Int</span>, value: <span class="hljs-type">T</span>)</span></span>: List&lt;T&gt; = toMutableList().apply &#123; <span class="hljs-keyword">set</span>(i, value) &#125;<br><br>setState &#123; copy(list = list.update(&#123; it.copy(checked = <span class="hljs-literal">true</span>) &#125;, &#123; it.id == id &#125;)) &#125;<br></code></pre></td></tr></table></figure>
+
+<p>map:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-comment">// 修改</span><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-type">&lt;K, V&gt;</span> Map<span class="hljs-type">&lt;K, V&gt;</span>.<span class="hljs-title">copy</span><span class="hljs-params">(<span class="hljs-keyword">vararg</span> pairs: <span class="hljs-type">Pair</span>&lt;<span class="hljs-type">K</span>, V&gt;)</span></span> =<br>    HashMap&lt;K, V&gt;(size + pairs.size).apply &#123;<br>        putAll(<span class="hljs-keyword">this</span><span class="hljs-symbol">@copy</span>)<br>        pairs.forEach &#123; put(it.first, it.second) &#125;<br>    &#125;<br><br><span class="hljs-comment">// 删除</span><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-type">&lt;K, V&gt;</span> Map<span class="hljs-type">&lt;K, V&gt;</span>.<span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-keyword">vararg</span> keys: <span class="hljs-type">K</span>)</span></span> =<br>    HashMap&lt;K, V&gt;(size - keys.size).apply &#123;<br>        <span class="hljs-keyword">this</span><span class="hljs-symbol">@delete</span>.entries.asSequence()<br>            .filter &#123; it.key !<span class="hljs-keyword">in</span> keys &#125;<br>            .forEach &#123; put(it.key, it.value) &#125;<br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a target="_blank" rel="noopener" href="https://airbnb.io/mavericks/#/">Mavericks Docs (airbnb.io)</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7077226398854676493">Mavericks Meet Jetpack Compose - 掘金 (juejin.cn)</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Android-%E5%BC%80%E5%8F%91/" class="category-chain-item">Android 开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Mavericks/" class="print-no-link">#Mavericks</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AirBnb Mavericks 框架探究</div>
+      <div>https://xcxyh.github.io/2024/07/13/AirBnb-Mavericks-框架探究/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/13/QuickAnimate-DSL/" title="QuickAnimate DSL">
+                        <span class="hidden-mobile">QuickAnimate DSL</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -19,7 +19,7 @@
     <meta name="description" content="最近遇到一个需求，需要输入框布局附着在软键盘上面，随着软键盘的上移下移动画而移动。要做到这一点，需要监听键盘的高度，而且最好是在键盘弹起的时候，每一帧都有一个高度的回调，这样，我们监听键盘高度的变化，对我们的输入框布局做transY动画 ，即可实现 输入框附着在键盘之上随之上下移动的动画效果了。 想要实现的效果：  但是，经过对android 键盘高度监听相关方法的了解，发现事情并没有那么简单。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Keyboard 高度监听实践">
-<meta property="og:url" content="http://example.com/2024/06/30/Android-Keyboard-%E9%AB%98%E5%BA%A6%E7%9B%91%E5%90%AC%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:url" content="https://xcxyh.github.io/2024/06/30/Android-Keyboard-%E9%AB%98%E5%BA%A6%E7%9B%91%E5%90%AC%E5%AE%9E%E8%B7%B5/index.html">
 <meta property="og:site_name" content="xiong的精神世界">
 <meta property="og:description" content="最近遇到一个需求，需要输入框布局附着在软键盘上面，随着软键盘的上移下移动画而移动。要做到这一点，需要监听键盘的高度，而且最好是在键盘弹起的时候，每一帧都有一个高度的回调，这样，我们监听键盘高度的变化，对我们的输入框布局做transY动画 ，即可实现 输入框附着在键盘之上随之上下移动的动画效果了。 想要实现的效果：  但是，经过对android 键盘高度监听相关方法的了解，发现事情并没有那么简单。">
 <meta property="og:locale" content="zh_CN">
@@ -72,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -386,7 +386,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>Android Keyboard 高度监听实践</div>
-      <div>http://example.com/2024/06/30/Android-Keyboard-高度监听实践/</div>
+      <div>https://xcxyh.github.io/2024/06/30/Android-Keyboard-高度监听实践/</div>
     </div>
     <div class="license-meta">
       
