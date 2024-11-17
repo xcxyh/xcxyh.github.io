@@ -1,0 +1,837 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" href="/img/icon.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Jetpack Compose 是一个声明式 UI 框架，旨在简化 Android 应用的 UI 开发。它通过可组合函数（Composable functions）来描述 UI，这些函数可以动态响应状态变化。   Compose 声明式 UI ，数据沿层次结构向下传递，渲染UI；事件沿层次结构向上传递，更新数据状态。 Compose 的动画系统是全新的，不依赖于传统的 View 动画或属性动画。它">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Compose 动画">
+<meta property="og:url" content="https://xcxyh.github.io/2024/11/17/Compose-%E5%8A%A8%E7%94%BB/index.html">
+<meta property="og:site_name" content="xiong的精神世界">
+<meta property="og:description" content="Jetpack Compose 是一个声明式 UI 框架，旨在简化 Android 应用的 UI 开发。它通过可组合函数（Composable functions）来描述 UI，这些函数可以动态响应状态变化。   Compose 声明式 UI ，数据沿层次结构向下传递，渲染UI；事件沿层次结构向上传递，更新数据状态。 Compose 的动画系统是全新的，不依赖于传统的 View 动画或属性动画。它">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161612714.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161612781.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161612985.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161612315.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161613491.png">
+<meta property="article:published_time" content="2024-11-17T13:25:58.000Z">
+<meta property="article:modified_time" content="2024-11-17T13:44:03.277Z">
+<meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="Compose">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161612714.png">
+  
+  
+  
+  <title>Compose 动画 - xiong的精神世界</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>xiong的精神世界</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Compose 动画"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-17 21:25" pubdate>
+          2024年11月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Compose 动画</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Jetpack Compose 是一个声明式 UI 框架，旨在简化 Android 应用的 UI 开发。它通过可组合函数（Composable functions）来描述 UI，这些函数可以动态响应状态变化。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161612714.png" srcset="/img/loading.gif" lazyload alt="Data"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161612781.png" srcset="/img/loading.gif" lazyload alt="Events"></p>
+<p>Compose 声明式 UI ，数据沿层次结构向下传递，渲染UI；事件沿层次结构向上传递，更新数据状态。</p>
+<p>Compose 的动画系统是全新的，不依赖于传统的 View 动画或属性动画。它为可组合函数创建了专门的动画 API，支持更灵活的动画实现。</p>
+<p>虽然，Compose 基本脱离了 view 系统，但是 在Android平台上，其底层依然是基于Canvas 的 自定义View，也就是通过一个自定义的 <code>View（AndroidComposeView）</code>，去对它的 <code>onMeasure()</code>、<code>onLayout()</code>、<code>onDraw()</code>、<code>dispatchTouchEvent()</code> 等等方法进行深度定制，来实现「在同一个 <code>View</code> 的内部完成整个 UI 组件树」这样的效果。也就是在 Compose 代码里面，你写的一个包含了多层复杂组件的完整界面，它实际上有可能全都被绘制在了同一个 <code>View</code> 上，并且触摸事件也都是由同一个 <code>View</code> 来进行实际承载和识别的。</p>
+<p>所以，理论上，通过 view 能实现的效果，都可以通过Compose 来实现，而且 Compose 有一套全新的 动画 API，支持实现 更复杂更丰富的动画效果，实际上，对于实现一个复杂的动画效果，通过Compose来实现的难度是要低于通过 View系统来实现的难度的。</p>
+<p>并且，Compose 通过重组（Recomposition）机制优化性能，只重新绘制发生变化的部分，这在处理动画时表现尤为出色。原生 View 在处理静态内容时性能优秀，但在动态更新频繁的场景中可能会出现性能瓶颈，因为每次状态变化都可能导致整个视图树的重绘。</p>
+<h4 id="与-View-系统的对比"><a href="#与-View-系统的对比" class="headerlink" title="与 View 系统的对比"></a>与 View 系统的对比</h4><table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>Jetpack Compose 动画</strong></th>
+<th><strong>原生 View 动画</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>架构</strong></td>
+<td>声明式 UI，使用可组合函数来定义动画</td>
+<td>命令式编程，通过直接操作 View 对象来实现动画</td>
+</tr>
+<tr>
+<td><strong>动画 API</strong></td>
+<td>提供多种高级和低级 API，支持自定义动画</td>
+<td>使用 <strong><code>ObjectAnimator</code><strong>、</strong><code>ViewPropertyAnimator</code></strong> 等传统 API</td>
+</tr>
+<tr>
+<td><strong>学习曲线</strong></td>
+<td>需要适应新的声明式编程模型，学习成本较高</td>
+<td>对于已有 Android 开发经验的开发者较为熟悉，学习成本低</td>
+</tr>
+<tr>
+<td><strong>性能优化</strong></td>
+<td>通过重组机制优化性能，只更新变化部分</td>
+<td>在复杂布局中可能导致性能瓶颈，需要手动管理状态</td>
+</tr>
+<tr>
+<td><strong>动画效果</strong></td>
+<td>支持基于物理特性的动画（如弹簧效果）</td>
+<td>需要分别处理基于时长和物理特性的动画，使用不同 API</td>
+</tr>
+<tr>
+<td><strong>灵活性</strong></td>
+<td>高度灵活，可通过状态管理轻松控制动画</td>
+<td>灵活性较低，需手动管理状态和视图的生命周期</td>
+</tr>
+<tr>
+<td><strong>适应性</strong></td>
+<td>自动适应不同屏幕密度和分辨率</td>
+<td>需手动调整以适应不同设备的屏幕特性</td>
+</tr>
+<tr>
+<td><strong>社区支持</strong></td>
+<td>新兴技术，社区支持逐渐增加</td>
+<td>成熟稳定，有大量文档和社区资源</td>
+</tr>
+</tbody></table>
+<p>Compose 提供了多种动画 API，包括高级和低级 API。高级 API如 <strong><code>AnimatedVisibility</code></strong> 和 <strong><code>AnimatedContent</code></strong> 简化了复杂的动画实现，而低级 API 如 <strong><code>Animatable</code></strong> 和 <strong><code>TargetBasedAnimation</code></strong> 则允许开发者进行更精细的控制。</p>
+<h4 id="低级别动画API："><a href="#低级别动画API：" class="headerlink" title="低级别动画API："></a>低级别动画API：</h4><p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161612985.png" srcset="/img/loading.gif" lazyload alt="Animatable API"></p>
+<p><code>Animatable</code>：基于协程的单值动画，通过 <code>animateTo</code> 更改值时为值添加动画效果</p>
+<p><a target="_blank" rel="noopener" href="https://developer.android.com/reference/kotlin/androidx/compose/animation/core/Animation?hl=zh-cn"><code>Animation</code></a> 是可用的最低级别的 Animation API。到目前为止，我们看到的许多动画都是基于 Animation 构建的。<code>Animation</code> 子类型有两种：<a target="_blank" rel="noopener" href="https://developer.android.com/reference/kotlin/androidx/compose/animation/core/TargetBasedAnimation?hl=zh-cn"><code>TargetBasedAnimation</code></a> 和 <a target="_blank" rel="noopener" href="https://developer.android.com/reference/kotlin/androidx/compose/animation/core/DecayAnimation?hl=zh-cn"><code>DecayAnimation</code></a>。</p>
+<p><code>Animatable</code> 的许多功能（包括 <code>animateTo</code>）以挂起函数的形式提供。这意味着，它们需要封装在适当的协程作用域内。例如，可以使用 <code>LaunchedEffect</code> 可组合项针对指定键值的时长创建一个作用域。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-comment">// Start out gray and animate to green/red based on `ok`</span><br><span class="hljs-keyword">val</span> color = remember &#123; Animatable(Color.Gray) &#125;<br>LaunchedEffect(ok) &#123;<br>    color.animateTo(<span class="hljs-keyword">if</span> (ok) Color.Green <span class="hljs-keyword">else</span> Color.Red)<br>&#125;<br>Box(<br>    Modifier<br>        .fillMaxSize()<br>        .background(color.value)<br>)<br></code></pre></td></tr></table></figure>
+
+<p><code>animate*AsState</code> 函数是最简单的 API，可将即时值变化呈现为动画值。它由 <code>Animatable</code> 提供支持，后者是一种基于协程的 API，用于为单个值添加动画效果。<code>updateTransition</code> 可创建过渡对象，用于管理多个动画值，并且根据状态变化运行这些值。<code>rememberInfiniteTransition</code> 与其类似，不过，它会创建一个无限过渡对象，以管理多个无限期运行的动画。</p>
+<p><a target="_blank" rel="noopener" href="https://developer.android.com/reference/kotlin/androidx/compose/animation/core/package-summary?hl=zh-cn#animateDpAsState(androidx.compose.ui.unit.Dp,androidx.compose.animation.core.AnimationSpec,kotlin.String,kotlin.Function1)"><code>animate*AsState</code></a> 函数是 Compose 中最简单的动画 API，用于为单个值添加动画效果。只需提供目标值（或结束值），该 API 就会从当前值开始向指定值播放动画。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">var</span> enabled <span class="hljs-keyword">by</span> remember &#123; mutableStateOf(<span class="hljs-literal">true</span>) &#125;<br><br><span class="hljs-keyword">val</span> alpha: <span class="hljs-built_in">Float</span> <span class="hljs-keyword">by</span> animateFloatAsState(<span class="hljs-keyword">if</span> (enabled) <span class="hljs-number">1f</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0.5f</span>, label = <span class="hljs-string">&quot;alpha&quot;</span>)<br>Box(<br>    Modifier<br>        .fillMaxSize()<br>        .graphicsLayer(alpha = alpha)<br>        .background(Color.Red)<br>)<br></code></pre></td></tr></table></figure>
+
+<p>使用 Transition 同时为多个属性添加动画效果，Transition 可管理一个或多个动画作为其子项，并在多种状态之间同时运行这些动画。这里的状态可以是任何数据类型。而且可以传递 <code>transitionSpec</code> 参数，为过渡状态变化的每个组合指定不同的 <code>AnimationSpec</code>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">enum</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BoxState</span> &#123;<br>    Collapsed,<br>    Expanded<br>&#125;<br><br><span class="hljs-keyword">val</span> color <span class="hljs-keyword">by</span> transition.animateColor(<br>    transitionSpec = &#123;<br>        <span class="hljs-keyword">when</span> &#123;<br>            BoxState.Expanded isTransitioningTo BoxState.Collapsed -&gt;<br>                spring(stiffness = <span class="hljs-number">50f</span>)<br><br>            <span class="hljs-keyword">else</span> -&gt;<br>                tween(durationMillis = <span class="hljs-number">500</span>)<br>        &#125;<br>    &#125;, label = <span class="hljs-string">&quot;color&quot;</span><br>) &#123; state -&gt;<br>    <span class="hljs-keyword">when</span> (state) &#123;<br>        BoxState.Collapsed -&gt; MaterialTheme.colorScheme.primary<br>        BoxState.Expanded -&gt; MaterialTheme.colorScheme.background<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong><code>rememberInfiniteTransition</code></strong> 创建无限重复的动画，动画一进入组合阶段就开始运行，除非被移除，否则不会停止。可以使用 <code>rememberInfiniteTransition</code> 创建 <code>InfiniteTransition</code> 的实例。可以使用 <code>animateColor</code>、<code>animatedFloat</code> 或 <code>animatedValue</code> 添加子动画。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">val</span> infiniteTransition = rememberInfiniteTransition(label = <span class="hljs-string">&quot;infinite&quot;</span>)<br><span class="hljs-keyword">val</span> color <span class="hljs-keyword">by</span> infiniteTransition.animateColor(<br>    initialValue = Color.Red,<br>    targetValue = Color.Green,<br>    animationSpec = infiniteRepeatable(<br>        animation = tween(<span class="hljs-number">1000</span>, easing = LinearEasing),<br>        repeatMode = RepeatMode.Reverse<br>    ),<br>    label = <span class="hljs-string">&quot;color&quot;</span><br>)<br><br>Box(<br>    Modifier<br>        .fillMaxSize()<br>        .background(color)<br>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="高级-API："><a href="#高级-API：" class="headerlink" title="高级 API："></a>高级 API：</h4><p><code>AnimatedVisibility</code> ：用于控制组件的显示与隐藏，能够在组件进入或退出时添加动画效果。可以通过 <strong><code>enter</code></strong> 和 <strong><code>exit</code></strong> 参数来自定义进入和退出动画。 一旦退出动画完成，内容会被从组合树中移除，从而释放资源。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-meta">@Composable</span><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">AnimatedVisibilityExample</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> visible <span class="hljs-keyword">by</span> remember &#123; mutableStateOf(<span class="hljs-literal">true</span>) &#125;<br><br>    Column(modifier = Modifier.padding(<span class="hljs-number">16.</span>dp)) &#123;<br>        Button(onClick = &#123; visible = !visible &#125;) &#123;<br>            Text(<span class="hljs-string">&quot;Toggle Visibility&quot;</span>)<br>        &#125;<br><br>        AnimatedVisibility(<br>            visible = visible, <br>            enter = slideInVertically(initialOffsetY = &#123; -<span class="hljs-number">40</span> &#125;) + fadeIn(),<br>            exit = slideOutVertically(targetOffsetY = &#123; <span class="hljs-number">40</span> &#125;) + fadeOut()<br>    ) &#123;<br>            Text(<br>                text = <span class="hljs-string">&quot;This text will appear and disappear with animation!&quot;</span>,<br>                modifier = Modifier.padding(top = <span class="hljs-number">16.</span>dp)<br>            )<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>animateContentSize</code>：当组件的大小发生变化时，自动调整其内容的大小并添加平滑过渡效果，适用于动态内容变化的场景。主要用于在其子组件的大小发生变化时自动执行平滑的动画过渡。可以通过传入**<code>transitionSpec</code>** 参数自定义进入和退出动画效果。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-meta">@Composable</span><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">AnimateContentSizeExample</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> expanded <span class="hljs-keyword">by</span> remember &#123; mutableStateOf(<span class="hljs-literal">false</span>) &#125;<br>    <span class="hljs-keyword">val</span> shortText = <span class="hljs-string">&quot;Hello&quot;</span><br>    <span class="hljs-keyword">val</span> longText = <span class="hljs-string">&quot;Hello, this is a longer text that spans multiple lines.&quot;</span><br><br>    Box(<br>        modifier = Modifier<br>            .background(Color.Blue, RoundedCornerShape(<span class="hljs-number">8.</span>dp))<br>            .clickable &#123; expanded = !expanded &#125;<br>            .padding(<span class="hljs-number">16.</span>dp)<br>            .animateContentSize() <span class="hljs-comment">// 应用 animateContentSize 修饰符</span><br>    ) &#123;<br>        Text(<br>            text = <span class="hljs-keyword">if</span> (expanded) longText <span class="hljs-keyword">else</span> shortText,<br>            color = Color.White<br>        )<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>AnimatedContent</code> ：用于在状态变化时平滑地切换内容，适合需要根据状态动态更新UI的场合。例如，当一个text 内容需要动态变化时，添加动画效果。同样可以通过 <strong><code>transitionSpec</code></strong> 参数自定义进入和退出动画效果，包括大小变化、透明度变化等。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-meta">@Composable</span><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-type">&lt;S&gt;</span> <span class="hljs-title">AnimatedContent</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">    targetState: <span class="hljs-type">S</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">    modifier: <span class="hljs-type">Modifier</span> = Modifier,</span></span><br><span class="hljs-params"><span class="hljs-function">    transitionSpec: <span class="hljs-type">AnimatedContentTransitionScope</span>&lt;<span class="hljs-type">S</span>&gt;.() -&gt; <span class="hljs-type">ContentTransform</span> = &#123; <span class="hljs-comment">/* 默认动画 */</span> &#125;,</span></span><br><span class="hljs-params"><span class="hljs-function">    contentAlignment: <span class="hljs-type">Alignment</span> = Alignment.TopStart,</span></span><br><span class="hljs-params"><span class="hljs-function">    label: <span class="hljs-type">String</span> = <span class="hljs-string">&quot;AnimatedContent&quot;</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">    contentKey: (<span class="hljs-type">targetState</span>: <span class="hljs-type">S</span>) -&gt; <span class="hljs-type">Any</span>? = &#123; it &#125;,</span></span><br><span class="hljs-params"><span class="hljs-function">    content: @<span class="hljs-type">Composable</span> <span class="hljs-type">AnimatedContentScope</span>.(<span class="hljs-type">targetState</span>: <span class="hljs-type">S</span>) -&gt; <span class="hljs-type">Unit</span></span></span><br><span class="hljs-params"><span class="hljs-function">)</span></span><br><br><span class="hljs-meta">@Composable</span><br><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">AnimatedContentExample</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> count <span class="hljs-keyword">by</span> remember &#123; mutableStateOf(<span class="hljs-number">0</span>) &#125;<br><br>    AnimatedContent(targetState = count, transitionSpec = &#123;<br>        slideInHorizontally &#123; width -&gt; width &#125; + fadeIn() with<br>        slideOutHorizontally &#123; width -&gt; -width &#125; + fadeOut()<br>    &#125;) &#123; targetCount -&gt;<br>        Text(text = <span class="hljs-string">&quot;Count: <span class="hljs-variable">$targetCount</span>&quot;</span>)<br>    &#125;<br><br>    Row &#123;<br>        Button(onClick = &#123; count++ &#125;) &#123;<br>            Text(<span class="hljs-string">&quot;Increase&quot;</span>)<br>        &#125;<br>        Button(onClick = &#123; count-- &#125;) &#123;<br>            Text(<span class="hljs-string">&quot;Decrease&quot;</span>)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://developer.android.com/reference/kotlin/androidx/compose/animation/package-summary?hl=zh-cn#SharedTransitionLayout(androidx.compose.ui.Modifier,kotlin.Function1)"><code>SharedTransitionLayout</code></a>：共享元素动画<code>sharedElement()</code> 和<code>sharedBounds()</code>，共享元素转换可在内容保持一致的可组合项之间无缝转换。通常用于在不同屏幕之间共享元素，实现视觉上的连续性。<code>sharedElement()</code> 用于相同元素之间的过渡，而<code>sharedBounds()</code> 通常用于 不同元素之间的过渡动画。</p>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>sharedElement()</strong></th>
+<th><strong>sharedBounds()</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>适用场景</td>
+<td>内容完全相同的元素</td>
+<td>视觉上不同但共享区域的元素</td>
+</tr>
+<tr>
+<td>动画表现</td>
+<td>在转换时仅显示目标内容</td>
+<td>在转换期间显示初始内容和目标内容</td>
+</tr>
+<tr>
+<td>过渡效果控制</td>
+<td>通过 <strong><code>animatedVisibilityScope</code></strong> 控制</td>
+<td>额外支持 <strong><code>enter</code></strong> 和 <strong><code>exit</code></strong> 动画参数</td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161612315.png" srcset="/img/loading.gif" lazyload alt="Compose BOM"></p>
+<aside>
+👉 共享元素支持从 Compose 1.7.0 （BOM  2024.09.00 及以上版本）开始提供，目前处于实验阶段，这些 API 未来可能会发生变化。
+</aside>
+
+<h4 id="自定义动画效果："><a href="#自定义动画效果：" class="headerlink" title="自定义动画效果："></a>自定义动画效果：</h4><p><code>AnimationSpec</code> 是 Jetpack Compose 中用于定义动画行为的参数，允许开发者自定义动画的时间、缓动效果和其他特性。</p>
+<p> <code>tween</code>  <code>spring</code>  <strong>和 <code>keyframes</code></strong> </p>
+<ul>
+<li><strong>Tween Animation</strong>：基于时间的线性或缓动动画。</li>
+<li><strong>Spring Animation</strong>：基于物理特性创建弹簧效果。</li>
+<li><strong>Keyframe Animation</strong>：允许在特定时间点设置关键帧值。</li>
+</ul>
+<p> <strong>Tween Animation (<code>tween</code>)</strong></p>
+<p>Tween Animation（插值动画）用于在指定时间内平滑地从一个值过渡到另一个值。<code>tween</code> 是“between”（介于）的缩写，因为它介于两个值之间。</p>
+<ul>
+<li><strong><code>durationMillis</code></strong>: 动画持续时间（毫秒）。</li>
+<li><strong><code>delayMillis</code></strong>: 动画开始前的延迟（毫秒）。</li>
+<li><strong><code>easing</code></strong>: 用于定义动画速度变化的缓动函数。</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-meta">@Immutable</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TweenSpec</span>&lt;<span class="hljs-type">T</span>&gt;(<br>    <span class="hljs-keyword">val</span> durationMillis: <span class="hljs-built_in">Int</span> = DefaultDurationMillis,<br>    <span class="hljs-keyword">val</span> delay: <span class="hljs-built_in">Int</span> = <span class="hljs-number">0</span>,<br>    <span class="hljs-keyword">val</span> easing: Easing = FastOutSlowInEasing<br>) : DurationBasedAnimationSpec&lt;T&gt;<br><br><span class="hljs-meta">@Immutable</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CubicBezierEasing</span>(<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> a: <span class="hljs-built_in">Float</span>,<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> b: <span class="hljs-built_in">Float</span>,<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> c: <span class="hljs-built_in">Float</span>,<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> d: <span class="hljs-built_in">Float</span><br>) : Easing<br></code></pre></td></tr></table></figure>
+
+<p><strong>Easing</strong>是描述动画在开始和结束之间如何变化的函数。它使得动画不仅仅是线性移动，而是可以加速、减速或产生弹跳等效果。<br>也可以通过 CubicBezierEasing 自定义 用于动画速度变化的 巴塞尔曲线参数。</p>
+<p>Jetpack Compose提供了多种内置的Easing函数，适用于不同的动画需求：</p>
+<ul>
+<li><strong>LinearEasing</strong>: 匀速运动，整个动画过程中速度保持不变。</li>
+<li><strong>FastOutSlowInEasing</strong>: 动画开始时快速，然后逐渐减速，适合需要自然感的过渡。</li>
+<li><strong>LinearOutSlowInEasing</strong>: 动画开始时匀速，随后减速。</li>
+<li><strong>CubicBezierEasing</strong>: 自定义贝塞尔曲线，可以通过四个参数定义控制点，实现更复杂的运动效果。</li>
+</ul>
+<p><strong>Spring Animation (<code>spring</code>)</strong></p>
+<p>基于物理模型的动画，在起始值和结束值之间创建基于物理特性的动画，模拟弹簧的行为。</p>
+<ul>
+<li><strong><code>dampingRatio（阻尼比）</code></strong>: 控制弹簧的反弹程度，值越高，反弹越少。</li>
+<li><strong><code>stiffness（刚度）</code></strong>: 控制弹簧移动到目标 值的速度，值越高，移动越快。</li>
+</ul>
+<p><strong>阻尼比：</strong></p>
+<p>决定了弹簧动画的振荡或弹跳程度。它是一个无量纲值，影响弹簧对位移的响应：</p>
+<ul>
+<li><strong>0（无阻尼）</strong>：弹簧无限期振荡而不停止。</li>
+<li><strong>1（临界阻尼）</strong>：弹簧尽快返回到静止位置，不会振荡。</li>
+<li><strong>大于 1（过阻尼）</strong>：弹簧缓慢返回到静止位置，不会振荡。</li>
+<li><strong>小于 1（欠阻尼）</strong>：弹簧会振荡，产生弹跳效果。</li>
+</ul>
+<p>Jetpack Compose 中常用的阻尼比预定义值包括：</p>
+<ul>
+<li><strong><code>Spring.DampingRatioNoBouncy</code></strong></li>
+<li><strong><code>Spring.DampingRatioLowBouncy</code></strong></li>
+<li><strong><code>Spring.DampingRatioMediumBouncy</code></strong></li>
+<li><strong><code>Spring.DampingRatioHighBouncy</code></strong></li>
+</ul>
+<p><strong>刚度：</strong></p>
+<p>参数控制弹簧朝目标值移动的速度。它的单位通常是力每单位长度（例如，像素每秒平方）。更高的刚度值意味着更快地返回到目标位置。刚度值也可以使用预定义常量设置：</p>
+<ul>
+<li><strong><code>Spring.StiffnessLow</code></strong></li>
+<li><strong><code>Spring.StiffnessMedium</code></strong></li>
+<li><strong><code>Spring.StiffnessHigh</code></strong></li>
+</ul>
+<p><strong>从质量、刚度和阻尼值转换：</strong></p>
+<p>在物理学中，弹簧的行为也可以通过质量Mass、刚度stiffness和阻尼值damping来描述。</p>
+<p><strong>阻尼比计算</strong>：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202411161613491.png" srcset="/img/loading.gif" lazyload alt="阻尼比计算公式"></p>
+<p>这个公式允许将其他上下文中使用的阻尼值（例如 Figma 中的值）转换为 Android 弹簧动画中使用的阻尼比。</p>
+<p>更高的刚度值会导致动画更快，而更高的阻尼值则会减少弹跳效果。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-meta">@Immutable</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SpringSpec</span>&lt;<span class="hljs-type">T</span>&gt;(<br>    <span class="hljs-keyword">val</span> dampingRatio: <span class="hljs-built_in">Float</span> = Spring.DampingRatioNoBouncy,<br>    <span class="hljs-keyword">val</span> stiffness: <span class="hljs-built_in">Float</span> = Spring.StiffnessMedium,<br>    <span class="hljs-keyword">val</span> visibilityThreshold: T? = <span class="hljs-literal">null</span><br>) : FiniteAnimationSpec&lt;T&gt;<br></code></pre></td></tr></table></figure>
+
+<p>相比基于时长的 <code>AnimationSpec</code> 类型<code>tween</code>，<code>spring</code> 可以更流畅地处理中断，因为它可以在目标值在动画中变化时保证速度的连续性。<code>spring</code> 用作很多动画 API（如 <code>animate*AsState</code> 和 <code>updateTransition</code>）的默认 AnimationSpec。</p>
+<p> <strong>Keyframes Animation (<code>keyframes</code>)</strong></p>
+<p><code>keyframes</code> 会根据在动画时长内的不同时间戳中指定的快照值添加动画效果。在任何给定时间，动画值都将插值到两个关键帧值之间。对于其中每个关键帧，都可以指定 Easing 来确定插值曲线。<br>关键帧动画是通过 <strong><code>keyframes</code></strong> 函数定义的，该函数返回一个 **<code>KeyframesSpec</code>**。</p>
+<p>要定义关键帧，可以利用 KeyframesSpecConfig类，该类允许指定：</p>
+<ul>
+<li><strong>持续时间</strong>：动画的总时间。</li>
+<li><strong>关键帧值</strong>：在指定时间戳处的特定值。</li>
+<li><strong>缓动函数</strong>：可以为每个动画段应用自定义缓动，以实现不同的速度和加速度。</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">val</span> value <span class="hljs-keyword">by</span> animateFloatAsState(<br>    targetValue = <span class="hljs-number">1f</span>,<br>    animationSpec = keyframes &#123;<br>        durationMillis = <span class="hljs-number">375</span><br>        <span class="hljs-number">0.0f</span> at <span class="hljs-number">0</span> using LinearOutSlowInEasing <span class="hljs-comment">// 开始</span><br>        <span class="hljs-number">0.2f</span> at <span class="hljs-number">15</span> using FastOutLinearInEasing <span class="hljs-comment">// 第一个关键帧</span><br>        <span class="hljs-number">0.4f</span> at <span class="hljs-number">75</span> <span class="hljs-comment">// 第二个关键帧</span><br>        <span class="hljs-number">0.4f</span> at <span class="hljs-number">225</span> <span class="hljs-comment">// 第三个关键帧</span><br>    &#125;,<br>    label = <span class="hljs-string">&quot;keyframe&quot;</span><br>)<br></code></pre></td></tr></table></figure>
+
+<p>当以下情况出现时，关键帧特别有用：</p>
+<ul>
+<li>创建需要特定时机和过渡的 <strong>复杂动画</strong>。</li>
+<li>实现 <strong>编排动画</strong>，多个元素需要相互关联地移动。</li>
+<li>设计根据用户输入或其他事件动态响应的交互元素。</li>
+</ul>
+<p>Jetpack Compose的动画系统为Android开发者提供了强大而灵活的工具，使创建复杂、流畅的用户界面变得更加简单。通过深入理解和巧妙运用这些动画技术，开发者可以大大提升应用的用户体验，使界面交互更加生动有趣。随着Compose的不断发展，我们可以期待看到更多创新的动画应用，为Android应用带来更加丰富和吸引人的视觉效果。</p>
+<p><a target="_blank" rel="noopener" href="https://developer.android.com/develop/ui/compose/animation/introduction?hl=zh-cn">Compose 中的动画  |  Jetpack Compose  |  Android Developers</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Android-%E5%BC%80%E5%8F%91/" class="category-chain-item">Android 开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Compose/" class="print-no-link">#Compose</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Compose 动画</div>
+      <div>https://xcxyh.github.io/2024/11/17/Compose-动画/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/22/C++%20vscode%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" title="C++ vscode环境配置">
+                        <span class="hidden-mobile">C++ vscode环境配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
