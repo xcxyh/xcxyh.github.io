@@ -1,0 +1,842 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" href="/img/icon.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="n8n复杂工作流搭建笔记本次完成一个复杂工作流的搭建，主要功能是 通过飞书多维表格，自动化生成小红书图文内容，批量生成，并且在多维表格中批量管理，并自动发布到小红书图文平台。 本次实践主要完成以下几个方面的内容：  了解n8n与外部应用的集成方式 掌握业务流程设计思路 - 如何将手工操作转化为自动化流程 掌握小红书图文自动化工作流系统搭建方案  环境准备飞书开发者后台-自建应用飞书开发者后台地址：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="n8n工作流搭建笔记">
+<meta property="og:url" content="https://xcxyh.github.io/2025/10/26/n8n%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="xiong的精神世界">
+<meta property="og:description" content="n8n复杂工作流搭建笔记本次完成一个复杂工作流的搭建，主要功能是 通过飞书多维表格，自动化生成小红书图文内容，批量生成，并且在多维表格中批量管理，并自动发布到小红书图文平台。 本次实践主要完成以下几个方面的内容：  了解n8n与外部应用的集成方式 掌握业务流程设计思路 - 如何将手工操作转化为自动化流程 掌握小红书图文自动化工作流系统搭建方案  环境准备飞书开发者后台-自建应用飞书开发者后台地址：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142233541.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142233007.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142233099.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142233904.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234038.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234721.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234558.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234550.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234504.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234936.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234662.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234780.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234125.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234490.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234147.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234364.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234262.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235919.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235719.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235292.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235700.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235775.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235102.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235315.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235019.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235093.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235598.png">
+<meta property="og:image" content="c:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251026162954545.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235034.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236383.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236239.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236085.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236390.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236094.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236864.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236320.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236201.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236668.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236023.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236429.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237736.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237180.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237490.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237523.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237486.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237919.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237434.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237011.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237618.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237184.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142238370.png">
+<meta property="article:published_time" content="2025-10-26T04:55:41.000Z">
+<meta property="article:modified_time" content="2025-11-14T14:38:45.832Z">
+<meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="n8n">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142233541.png">
+  
+  
+  
+  <title>n8n工作流搭建笔记 - xiong的精神世界</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>xiong的精神世界</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="n8n工作流搭建笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-26 12:55" pubdate>
+          2025年10月26日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">n8n工作流搭建笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="n8n复杂工作流搭建笔记"><a href="#n8n复杂工作流搭建笔记" class="headerlink" title="n8n复杂工作流搭建笔记"></a>n8n复杂工作流搭建笔记</h1><p>本次完成一个复杂工作流的搭建，主要功能是 通过飞书多维表格，自动化生成小红书图文内容，批量生成，并且在多维表格中批量管理，并自动发布到小红书图文平台。</p>
+<p>本次实践主要完成以下几个方面的内容：</p>
+<ol>
+<li>了解n8n与外部应用的集成方式</li>
+<li>掌握<strong>业务流程设计思路</strong> - 如何将手工操作转化为自动化流程</li>
+<li><strong>掌握小红书图文自动化工作流系统搭建方案</strong></li>
+</ol>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="飞书开发者后台-自建应用"><a href="#飞书开发者后台-自建应用" class="headerlink" title="飞书开发者后台-自建应用"></a>飞书开发者后台-自建应用</h3><p>飞书开发者后台地址：<a target="_blank" rel="noopener" href="https://open.feishu.cn/">https://open.feishu.cn/</a></p>
+<p>得到凭证和密码，<strong>记得妥善保管，切忌泄露。</strong></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142233541.png" srcset="/img/loading.gif" lazyload alt="image-20251026125859186"></p>
+<p>选择创建企业自建应用，创建后点击权限管理，导入下列权限：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs JSON"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;scopes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;tenant&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>      <span class="hljs-string">&quot;base:record:retrieve&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;bitable:app&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;bitable:app:readonly&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;wiki:node:read&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;wiki:wiki&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;wiki:wiki:readonly&quot;</span><br>    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;user&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>确认一眼有六个权限，申请开通。</p>
+<p>然后进入到版本管理与发布页面，发布该应用的第一个版本，第一个版本发布即通过，不用审核。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142233007.png" srcset="/img/loading.gif" lazyload alt="image-20251026130145709"></p>
+<p>获取凭证和密码，切勿泄露：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142233099.png" srcset="/img/loading.gif" lazyload alt="image-20251026130234363"></p>
+<h3 id="火山引擎-AI-生图-服务配置"><a href="#火山引擎-AI-生图-服务配置" class="headerlink" title="火山引擎 AI 生图 服务配置"></a>火山引擎 AI 生图 服务配置</h3><p>访问火山引擎的即梦AI服务，登录并开通服务：<a target="_blank" rel="noopener" href="https://www.volcengine.com/product/jimeng">https://www.volcengine.com/product/jimeng</a></p>
+<p>这里选择开通 即梦生图 4.0 服务，可以先选择免费试用，有 200 张的免费额度。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142233904.png" srcset="/img/loading.gif" lazyload alt="image-20251026130455329"></p>
+<p>获取 Accass key ，API 访问密钥申请：<a target="_blank" rel="noopener" href="https://console.volcengine.com/iam/keymanage/">https://console.volcengine.com/iam/keymanage/</a></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234038.png" srcset="/img/loading.gif" lazyload alt="image-20251026131954364"></p>
+<p>点击新建密钥，后面在 n8n 中配置 凭证时会用到。这里建议先新建一个子账户，仅授权有限的权限，然后通过子账户创建 Accasskey，保证主账号的安全。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234721.png" srcset="/img/loading.gif" lazyload alt="image-20251026132917116"></p>
+<p>API 密钥就像银行卡密码，泄露会造成经济损失。永远不要把密钥硬编码在代码里。在 n8n 中 ，可以通过环境变量的形式配置，这样在分享工作流时，不会导致密钥的泄露。</p>
+<h3 id="Deepseek-API-配置"><a href="#Deepseek-API-配置" class="headerlink" title="Deepseek API 配置"></a>Deepseek API 配置</h3><p><strong>操作流程：</strong></p>
+<ol>
+<li>访问 <a target="_blank" rel="noopener" href="https://www.deepseek.com/">DeepSeek 官网</a>，点击右上角 api 开放平台。</li>
+<li>注册账号并充值（建议 ¥10 起步）</li>
+<li>获取 API Key （妥善保存，不要硬编码，如果不小心泄露，直接在这里删除掉，再新建一个key即可。）</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234558.png" srcset="/img/loading.gif" lazyload alt="image-20251026133241723"></p>
+<h2 id="n8n-凭证配置"><a href="#n8n-凭证配置" class="headerlink" title="n8n 凭证配置"></a>n8n 凭证配置</h2><h3 id="Deepseek-凭证配置："><a href="#Deepseek-凭证配置：" class="headerlink" title="Deepseek 凭证配置："></a>Deepseek 凭证配置：</h3><p>点击 Create Credential，搜索 Deepseek ，选择 Deepseek</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234550.png" srcset="/img/loading.gif" lazyload alt="image-20251026134111621"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234504.png" srcset="/img/loading.gif" lazyload alt="image-20251026134201764"></p>
+<p>最后，输入 api 可以，然后测试联通性即可。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234936.png" srcset="/img/loading.gif" lazyload alt="image-20251026134243663"></p>
+<h3 id="飞书社区节点-添加-配置凭证"><a href="#飞书社区节点-添加-配置凭证" class="headerlink" title="飞书社区节点 添加 &amp; 配置凭证"></a>飞书社区节点 添加 &amp; 配置凭证</h3><p>安装飞书节点：左下角头像 - 设置Settings，左侧 - 社区节点Community nodes，右上角 - 安装Install。</p>
+<p>输入要安装的节点名“n8n-nodes-feishu-lite”，勾选同意，Install安装。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234662.png" srcset="/img/loading.gif" lazyload alt="image-20251026134551656"></p>
+<p>配置凭证：还是 点击 Create Credential，搜索 Feishu，选择 Feishu Credentials API</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234780.png" srcset="/img/loading.gif" lazyload alt="image-20251026134629695"></p>
+<p>填入创建飞书应用时获取到的 APP ID 和 APP Sercet：保存后，看到 Connection tested successfully 即可。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234125.png" srcset="/img/loading.gif" lazyload alt="image-20251026134816156"></p>
+<h3 id="凭证环境变量配置"><a href="#凭证环境变量配置" class="headerlink" title="凭证环境变量配置"></a>凭证环境变量配置</h3><p>docker n8n 的启动可以通过docker-compose.yml文件启动，创建一个空文件夹，然后新增 docker-compose.yml文件。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234490.png" srcset="/img/loading.gif" lazyload alt="image-20251026135124911"></p>
+<p>输入以下内容：</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-comment"># docker-compose.yml</span><br><span class="hljs-attribute">services</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">n8n</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">image</span><span class="hljs-punctuation">:</span> <span class="hljs-string">n8nio/n8n:1.114.4</span><br>    <span class="hljs-attribute">container_name</span><span class="hljs-punctuation">:</span> <span class="hljs-string">n8n</span><br>    <span class="hljs-attribute">restart</span><span class="hljs-punctuation">:</span> <span class="hljs-string">unless-stopped</span><br>    <span class="hljs-attribute">ports</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5678:5678&quot;</span><br>    <span class="hljs-attribute">environment</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">N8N_HOST=localhost</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">N8N_PORT=5678</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">N8N_PROTOCOL=http</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">WEBHOOK_URL=http://localhost:5678/</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">GENERIC_TIMEZONE=Asia/Shanghai</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">TZ=Asia/Shanghai</span><br>      <span class="hljs-comment"># 数据库配置（使用 SQLite，适合小规模使用）</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">DB_TYPE=sqlite</span><br>      <span class="hljs-comment"># 火山引擎访问密钥ID</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">VOLCENGINE_ACCESS_KEY_ID=输入你的密钥ID</span><br>      <span class="hljs-comment"># 火山引擎访问密钥凭证</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">VOLCENGINE_SECRET_ACCESS_KEY=输入你的密钥KEY</span><br>      <span class="hljs-comment"># 飞书应用的APP ID</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">FIESHU_APP_ID=输入你的 APP ID</span><br>      <span class="hljs-comment"># 飞书应用的APP Secret</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">FIESHU_APP_SECRET=输入你的 APP Secret</span><br>    <span class="hljs-attribute">volumes</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">n8n_data:/home/node/.n8n</span><br>    <span class="hljs-attribute">networks</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">n8n-network</span><br><br><span class="hljs-attribute">volumes</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">n8n_data</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">external</span><span class="hljs-punctuation">:</span> <span class="hljs-string">true</span><br>  <br><span class="hljs-attribute">networks</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">n8n-network</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">driver</span><span class="hljs-punctuation">:</span> <span class="hljs-string">bridge</span><br><span class="hljs-attribute">dns</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">8.8.8.8</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">1.1.1.1</span><br></code></pre></td></tr></table></figure>
+
+<p>然后在该yml 文件所在目录下，打开 cmd 或者是 终端，输入命令启动 n8n:</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-comment"># 启动服务</span><br>docker compose up -d<br><span class="hljs-comment"># 停止服务</span><br>docker compose <span class="hljs-literal">stop</span><br></code></pre></td></tr></table></figure>
+
+<p>在docker-compose.yml文件中，可以在 environment 下配置我们自己的环境变量，配置完成后，重启docker即可（不是重启服务，而是重启整个docker 生效）。</p>
+<h3 id="自定义凭证配置器"><a href="#自定义凭证配置器" class="headerlink" title="自定义凭证配置器"></a>自定义凭证配置器</h3><p>新建一个 workflow，然后添加一个 edit fields 节点，重命名为凭证配置器。</p>
+<p>首先，bitableURL 链接那里，打开自己的多维表格，复制地址栏的链接过来。可以参考我这个模板：<a target="_blank" rel="noopener" href="https://nte01pdmx2.feishu.cn/wiki/XMBpw45JGivVKck5i62c0oHxnfE?table=tblL1NZMRxxxBVzJ&view=vewKljSG6K">‌⁠‍‍⁠﻿‍‍‬‍‍‬‌‬‌‌‌﻿﻿‌‍‌‍﻿⁠n8n+飞书多维表格自动化生成小红书图文模板 - 飞书云文档</a></p>
+<p>然后依次通过以上配置好的环境变量，配置 该配置配置器，配置完成后执行，即可看到正确的变量，爆红没关系。能正常获取到正确的值就行了。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234147.png" srcset="/img/loading.gif" lazyload alt="image-20251026142825670"></p>
+<h2 id="工作流模板导入："><a href="#工作流模板导入：" class="headerlink" title="工作流模板导入："></a>工作流模板导入：</h2><p>模板文件：</p>
+<p>导入工作流方式：</p>
+<p>① 可以直接打开模版内容，把里面的代码 Ctrl + A 全选，Ctrl + C 复制。在N8N界面中，新建一个空白工作流，Ctrl + V 粘贴。</p>
+<p>② 下载工作流的json格式，在N8N界面中，新建一个空白工作流，右上角三个点…，Import From File。</p>
+<p>导入后你会发现：</p>
+<ul>
+<li><strong>有些节点显示红色警告</strong>：这是正常的，表示需要重新配置凭据。</li>
+<li>对于同一类型的节点，配置好凭证后，其他每个红色警告节点，确保做一下双击，引入凭证。</li>
+</ul>
+<p>这里我们本地测试的时候，可以把 主工作流 和 子工作流分开：</p>
+<p>主工作流：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234364.png" srcset="/img/loading.gif" lazyload alt="image-20251026154514516"></p>
+<p>子工作流：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142234262.png" srcset="/img/loading.gif" lazyload alt="image-20251026154541066"></p>
+<h2 id="工作流执行："><a href="#工作流执行：" class="headerlink" title="工作流执行："></a>工作流执行：</h2><h3 id="飞书多维表格-webhook-触发配置"><a href="#飞书多维表格-webhook-触发配置" class="headerlink" title="飞书多维表格 webhook 触发配置"></a>飞书多维表格 webhook 触发配置</h3><p>如果是在本地docker 运行的 n8n，首先需要安装一个内网穿透工具，让外网能够访问到本地的 localhost。</p>
+<h6 id="下载ngrok"><a href="#下载ngrok" class="headerlink" title="下载ngrok"></a>下载ngrok</h6><p>地址：<a target="_blank" rel="noopener" href="https://ngrok.com/download">https://ngrok.com/download</a></p>
+<p>下载对应系统的版本，比如Windows的64位。</p>
+<h6 id="注册ngrok账号"><a href="#注册ngrok账号" class="headerlink" title="注册ngrok账号"></a>注册ngrok账号</h6><p>地址：<a target="_blank" rel="noopener" href="https://dashboard.ngrok.com/">https://dashboard.ngrok.com/</a></p>
+<p>注册好登录，这里会有一个Authtoken，后面需要用到。</p>
+<h6 id="设置认证，只需要一次"><a href="#设置认证，只需要一次" class="headerlink" title="设置认证，只需要一次"></a>设置认证，只需要一次</h6><p>在终端运行以下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Plain">ngrok config add-authtoken 你的Authtoken放这里<br></code></pre></td></tr></table></figure>
+
+<h6 id="d-启动内网穿透（关键步骤）"><a href="#d-启动内网穿透（关键步骤）" class="headerlink" title="d.启动内网穿透（关键步骤）"></a>d.启动内网穿透（关键步骤）</h6><p>确保n8n正在本地运行，然后在终端执行这一条命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Plain">ngrok http 5678<br></code></pre></td></tr></table></figure>
+
+<p>5678是默认端口号，如果在一开始的配置里面有更改过端口号，就改成自定义的那个。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235919.png" srcset="/img/loading.gif" lazyload alt="image-20251026155824745"></p>
+<p>复制Forwarding这里的地址：<a target="_blank" rel="noopener" href="https://nontractably-overfamiliar-aisha.ngrok-free.dev/">https://nontractably-overfamiliar-aisha.ngrok-free.dev</a> </p>
+<p>配置 webhook节点：搜索节点 webhook，配置如下：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235719.png" srcset="/img/loading.gif" lazyload alt="image-20251026160855411"></p>
+<p>配置 飞书多维表格 Header Auth account：自定义 name 和 value，name 可以叫 api-key， value 可以是随机生成的一串随机数，或者你自定义的密码，后面在飞书webhook那里会用到作为header 请求校验。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235292.png" srcset="/img/loading.gif" lazyload alt="image-20251026160720075"></p>
+<p>复制出 production url：<a target="_blank" rel="noopener" href="http://localhost:5678/webhook/35ade536-ef50-41b9-a828-0987f5467800">http://localhost:5678/webhook/35ade536-ef50-41b9-a828-0987f5467800</a></p>
+<p>然后 将 <a target="_blank" rel="noopener" href="http://localhost:5678/">http://localhost:5678</a> 替换为 <a target="_blank" rel="noopener" href="https://nontractably-overfamiliar-aisha.ngrok-free.dev/">https://nontractably-overfamiliar-aisha.ngrok-free.dev</a> ，拼接链接为：<a target="_blank" rel="noopener" href="https://nontractably-overfamiliar-aisha.ngrok-free.dev/webhook/35ade536-ef50-41b9-a828-0987f5467800">https://nontractably-overfamiliar-aisha.ngrok-free.dev/webhook/35ade536-ef50-41b9-a828-0987f5467800</a></p>
+<p>最后，将 该webhook 所在的 工作流打开启用开关：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235700.png" srcset="/img/loading.gif" lazyload alt="image-20251026161542910"></p>
+<p>好了，n8n 中的配置就完成了，现在回到 飞书多维表格中 配置触发器。</p>
+<p>打开自动化，创建一个自动化流程：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235775.png" srcset="/img/loading.gif" lazyload alt="image-20251026161144251"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235102.png" srcset="/img/loading.gif" lazyload alt="image-20251026161221078"></p>
+<p>按照上方的配置配置就可以，其中请求URL 就是我们上面拼接出来的url，请求头 就是我们在 飞书多维表格 Header Auth account 配置的 name 和value。点击保存并启用。</p>
+<p>好了，现在测试以下，在 主题那一栏新增一条记录：然后到 ngrok 监控台查看请求是否成功：<a target="_blank" rel="noopener" href="http://localhost:4040/inspect/http">ngrok - Inspect</a></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235315.png" srcset="/img/loading.gif" lazyload alt="image-20251026161401141"></p>
+<p>由于内网穿透具有一定的风险性，当不使用内网穿透的时候，直接关闭刚才执行 ngrok命令的 cmd 命令窗口就可以停止 ngrok 了。ngrok 关闭后就不会产生任何网络流量或安全风险了。</p>
+<h3 id="执行主工作流"><a href="#执行主工作流" class="headerlink" title="执行主工作流"></a>执行主工作流</h3><p>一切准备就绪，现在让我们来执行主工作流，先用社区节点版本，跑通整个流程，比较简单。主工作流如下：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235019.png" srcset="/img/loading.gif" lazyload alt="image-20251026162758775"></p>
+<p>现在来检查下各个节点的配置是否正确：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235093.png" srcset="/img/loading.gif" lazyload alt="image-20251026162859466"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235598.png" srcset="/img/loading.gif" lazyload alt="image-20251026162747519"></p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251026162954545.png" srcset="/img/loading.gif" lazyload alt="image-20251026162954545"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142235034.png" srcset="/img/loading.gif" lazyload alt="image-20251026164341185"></p>
+<p>其中，对于过滤条件的设置如下：也就是把触发器中的条件用代码翻译了一下：可以参考飞书的开发文档来配置：<a target="_blank" rel="noopener" href="https://open.feishu.cn/document/docs/bitable-v1/app-table-record/record-filter-guide">记录筛选参数填写说明 - 服务端 API - 开发文档 - 飞书开放平台</a></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236383.png" srcset="/img/loading.gif" lazyload alt="image-20251026163921704"></p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs prolog">&#123;<br>  <span class="hljs-string">&quot;filter&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;conjunction&quot;</span>: <span class="hljs-string">&quot;and&quot;</span>,<br>    <span class="hljs-string">&quot;conditions&quot;</span>: [<br>      &#123;<br>        <span class="hljs-string">&quot;field_name&quot;</span>: <span class="hljs-string">&quot;主题&quot;</span>,<br>        <span class="hljs-string">&quot;operator&quot;</span>: <span class="hljs-string">&quot;isNotEmpty&quot;</span>,<br>        <span class="hljs-string">&quot;value&quot;</span>: []<br>      &#125;,<br>      &#123;<br>        <span class="hljs-string">&quot;field_name&quot;</span>: <span class="hljs-string">&quot;状态&quot;</span>,<br>        <span class="hljs-string">&quot;operator&quot;</span>: <span class="hljs-string">&quot;doesNotContain&quot;</span>,<br>        <span class="hljs-string">&quot;value&quot;</span>: [<br>          <span class="hljs-string">&quot;已完成&quot;</span>,<br>          <span class="hljs-string">&quot;失败&quot;</span>,<br>          <span class="hljs-string">&quot;生成中&quot;</span><br>        ]<br>      &#125;<br>    ]<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236239.png" srcset="/img/loading.gif" lazyload alt="image-20251026164048500"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236085.png" srcset="/img/loading.gif" lazyload alt="image-20251026164130010"></p>
+<p>到这里，主工作流就执行完成了，将主工作流中的参数都收集起来，就可以去执行子工作流了。</p>
+<h3 id="执行子工作流"><a href="#执行子工作流" class="headerlink" title="执行子工作流"></a>执行子工作流</h3><p>由前面的步骤 可以知道，我们把 主工作流 和子工作流分开在两个 workflow 文件中了，那如何把 主子工作流关联起来呢？</p>
+<p>首先，获取子工作流id：</p>
+<p>打开设置：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236390.png" srcset="/img/loading.gif" lazyload alt="image-20251026165927287"></p>
+<p>复制以下id：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236094.png" srcset="/img/loading.gif" lazyload alt="image-20251026170006659"></p>
+<p>然后回到主工作流，在最后一个节点中配置刚刚获取的子工作流 workflow 的id 即可。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236864.png" srcset="/img/loading.gif" lazyload alt="image-20251026170037399"></p>
+<p>通过飞书触发一下主工作流，然后自动执行子工作流结果如下：（有四条记录，所以子工作流 执行了四个，且是同时执行的，这也体现出了子工作流的优势，就是并行批量执行。）</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236320.png" srcset="/img/loading.gif" lazyload alt="image-20251026170201679"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236201.png" srcset="/img/loading.gif" lazyload alt="image-20251026165755104"></p>
+<p>搞定了主子工作流的关联关系，现在让我们来真正跑通整个子工作流，完成整个case。</p>
+<p>首先，先 hook 一下 trigger 节点，配置一个手动触发节点 用于调试。如下图所示，我们把主工作流中的节点复制过来，然后配置一个手动触发器，来用于调试</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236668.png" srcset="/img/loading.gif" lazyload alt="image-20251026172209513"></p>
+<p>把 workflow 节点中的字段 用 一个 edit fields 来复刻代替即可，如下图所示：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236023.png" srcset="/img/loading.gif" lazyload alt="image-20251026172142175"></p>
+<p>执行过程中发现 修改文档 提示失败无权限，这里需要在文档中添加当前创建的应用，并授予编辑权限：（太坑了，都没地方提到这一点）</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142236429.png" srcset="/img/loading.gif" lazyload alt="image-20251026174032092"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237736.png" srcset="/img/loading.gif" lazyload alt="image-20251026173945201"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237180.png" srcset="/img/loading.gif" lazyload alt="image-20251026174109134"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237490.png" srcset="/img/loading.gif" lazyload alt="image-20251026174201840"></p>
+<p>继续执行，发现有部分节点失败，原因是我们mock 的节点 和之前真实的节点对不上，现在先临时修改，后面调通之后，再修改回去即可：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237523.png" srcset="/img/loading.gif" lazyload alt="image-20251026174716535"></p>
+<p>修改生图模型，模块里面的生图模型是 即梦 3.1 模型： jimeng_t2i_v31，我们的是 即梦4.0模型，jimeng_t2i_v40</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237486.png" srcset="/img/loading.gif" lazyload alt="image-20251026181017702"></p>
+<p>这里遇到权限问题：生成失败，提示 AccessDenied (通过对子用户授权视觉智能权限解决)</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237919.png" srcset="/img/loading.gif" lazyload alt="image-20251026181821996"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237434.png" srcset="/img/loading.gif" lazyload alt="image-20251026195730847"></p>
+<p>这里上传图片到飞书，需要使用云空间，上传到云空间，然后获取到file token 给到 多维表格中展示。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237011.png" srcset="/img/loading.gif" lazyload alt="image-20251026184851586"></p>
+<p>最终将回写的结果填入到多维表格中：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237618.png" srcset="/img/loading.gif" lazyload alt="image-20251026201936809"></p>
+<p>调通整个子工作流流程之后，修改回去，跑通整个流程：（整个运行流程耗时 5 分钟）</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142237184.png" srcset="/img/loading.gif" lazyload alt="image-20251026201746174"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142238370.png" srcset="/img/loading.gif" lazyload alt="image-20251026203037333"></p>
+<p>总结：</p>
+<ol>
+<li>飞书开放平台API的使用 还是有一定的门槛的，需要对着开发文档，填写正确的请求参数。</li>
+<li>有一些隐藏的坑点，例如 文档要添加应用才能编辑，子用户需要额外授权才可以使用 生图API 接口等。</li>
+<li>crediential的配置还是比较多和复杂的，很容易出错。</li>
+<li>第一次接触飞书图片上传的人，可能不知道上传图片需要上传到云空间，而不是直接上传到对应的多维表格中去。</li>
+<li>飞书社区节点还是比较方便，简单看了下 通用API模板，其中的配置更复杂，但是比价通用，不再局限在单一平台，而是只要有openapi的平台都可以支持，是一套通用的能力。但本质上就是 curl 的构建，包括 url、header、query、body 等，也不会复杂到哪里去，照着api文档构建就行了。</li>
+</ol>
+<p>接下来的工作：</p>
+<ol>
+<li><p>给工作流加上 自动发布到指定小红书账号的能力。</p>
+</li>
+<li><p>把 热点检索工作流  + 图文生成自动发布小红书工作流起来，自动定时抓取热门主题，定时发布到小红书 账号矩阵等 更高阶的玩法。</p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/n8n/" class="print-no-link">#n8n</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>n8n工作流搭建笔记</div>
+      <div>https://xcxyh.github.io/2025/10/26/n8n工作流搭建笔记/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/11/14/%E4%BD%8E%E6%88%90%E6%9C%AC%E4%BD%BF%E7%94%A8-claude-code/" title="低成本使用 claude code">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">低成本使用 claude code</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/22/SharedTransitionObserver-%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98/" title="SharedTransitionObserver 内存泄漏问题">
+                        <span class="hidden-mobile">SharedTransitionObserver 内存泄漏问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
