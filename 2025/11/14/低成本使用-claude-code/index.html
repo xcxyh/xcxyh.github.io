@@ -16,15 +16,22 @@
   <meta name="author" content="xcxyh">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="低成本使用Cluade codeClaude Code 是由 Anthropic 推出的一个“agentic coding 工具”——也就是说，它不仅仅是一个简单的代码补全工具，而是能够“理解你的代码库、执行常见任务、做多文件修改、解释代码、甚至做 git 操作”的终端&#x2F;IDE 工具。  它通常以 CLI（命令行界面）方式运行，也可以在 IDE 插件中进行集成。你在终端里输入自然语言，比">
+<meta property="og:type" content="article">
 <meta property="og:title" content="低成本使用 claude code">
 <meta property="og:url" content="https://xcxyh.github.io/2025/11/14/%E4%BD%8E%E6%88%90%E6%9C%AC%E4%BD%BF%E7%94%A8-claude-code/index.html">
 <meta property="og:site_name" content="xiong的精神世界">
+<meta property="og:description" content="低成本使用Cluade codeClaude Code 是由 Anthropic 推出的一个“agentic coding 工具”——也就是说，它不仅仅是一个简单的代码补全工具，而是能够“理解你的代码库、执行常见任务、做多文件修改、解释代码、甚至做 git 操作”的终端&#x2F;IDE 工具。  它通常以 CLI（命令行界面）方式运行，也可以在 IDE 插件中进行集成。你在终端里输入自然语言，比">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142329027.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142328471.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142357248.png">
 <meta property="article:published_time" content="2025-11-14T14:42:24.000Z">
-<meta property="article:modified_time" content="2025-11-14T14:42:24.229Z">
+<meta property="article:modified_time" content="2025-11-14T16:07:38.946Z">
 <meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="ai coding">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142329027.png">
   
   
   
@@ -217,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          635 字
         
       </span>
     
@@ -228,7 +235,7 @@
         
         
         
-          1 分钟
+          6 分钟
         
       </span>
     
@@ -270,7 +277,35 @@
             
               <div class="markdown-body">
                 
-                
+                <h1 id="低成本使用Cluade-code"><a href="#低成本使用Cluade-code" class="headerlink" title="低成本使用Cluade code"></a>低成本使用Cluade code</h1><p>Claude Code 是由 Anthropic 推出的一个“agentic coding 工具”——也就是说，它不仅仅是一个简单的代码补全工具，而是能够“理解你的代码库、执行常见任务、做多文件修改、解释代码、甚至做 git 操作”的终端&#x2F;IDE 工具。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142329027.png" srcset="/img/loading.gif" lazyload alt="image-20251114232908619"></p>
+<p>它通常以 CLI（命令行界面）方式运行，也可以在 IDE 插件中进行集成。你在终端里输入自然语言，比如 “请分析这个模块的依赖”／“帮我重构这些类”之类，它就能够理解并执行。它可以<strong>理解整个代码库上下文</strong>，而不仅仅局限于当前文件。比如它可以扫描项目目录、理解结构、理解依赖关系。</p>
+<p>但是，在中国，想要正常使用 Claude code 确并不容易，即使通过一些手段解决了订阅问题。也不时会担心遭到 禁用、封号。</p>
+<p>环境要求：node js 版本 &gt;&#x3D; 20 </p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript">nvm install latest<br>nvm use latest<br><span class="hljs-built_in">npm</span> install -g @anthropic-ai/claude-code<br><span class="hljs-built_in">npm</span> install -g @musistudio/claude-code-router<br></code></pre></td></tr></table></figure>
+
+<p>claude-code-router 全局配置(推荐，没有该文件就创建一个)：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">C:\Users\&lt;你的用户名&gt;\.claude-code-router\config.json<br></code></pre></td></tr></table></figure>
+
+<p>Router 会在启动时自动扫描用户目录下的配置文件。</p>
+<p>当然，也可以有项目级配置(适合放到当前项目下目录下启动)：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">D:\Projects\claude-code-router\<span class="hljs-built_in">config</span>.<span class="hljs-keyword">json</span><br><span class="hljs-keyword"></span><br>ccr --<span class="hljs-built_in">config</span> <span class="hljs-built_in">config</span>.<span class="hljs-keyword">json</span><br></code></pre></td></tr></table></figure>
+
+<p>在 claude-code-router.config.json 中加入以下配置：（这里使用火山引擎的api，便宜模型还多）</p>
+<p>api key 获取页面：<a target="_blank" rel="noopener" href="https://www.volcengine.com/docs/82379/1361424">API Key 管理–火山方舟大模型服务平台-火山引擎</a></p>
+<p>模型开通页面：<a target="_blank" rel="noopener" href="https://www.volcengine.com/docs/82379/1159200">开通管理–火山方舟大模型服务平台-火山引擎</a></p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs prolog">&#123;<br>    <span class="hljs-string">&quot;LOG&quot;</span>: true,<br>    <span class="hljs-string">&quot;Providers&quot;</span>: [<br>      &#123;<br>        <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;volcengine&quot;</span>,<br>        <span class="hljs-string">&quot;api_base_url&quot;</span>: <span class="hljs-string">&quot;https://ark.cn-beijing.volces.com/api/v3/chat/completions&quot;</span>,<br>        <span class="hljs-string">&quot;api_key&quot;</span>: <span class="hljs-string">&quot;你的火山 api key&quot;</span>,<br>        <span class="hljs-string">&quot;models&quot;</span>: [<br>          <span class="hljs-string">&quot;kimi-k2-250711&quot;</span>,<br>          <span class="hljs-string">&quot;doubao-seed-1-6-250615&quot;</span>,<br>          <span class="hljs-string">&quot;doubao-seed-1-6-thinking-250615&quot;</span><br>        ]<br>      &#125;<br>    ],<br>    <span class="hljs-string">&quot;Router&quot;</span>: &#123;<br>      <span class="hljs-string">&quot;default&quot;</span>: <span class="hljs-string">&quot;volcengine,kimi-k2-250711&quot;</span>,<br>      <span class="hljs-string">&quot;background&quot;</span>: <span class="hljs-string">&quot;volcengine,kimi-k2-250711&quot;</span>,<br>      <span class="hljs-string">&quot;think&quot;</span>: <span class="hljs-string">&quot;volcengine,doubao-seed-1-6-thinking-250715&quot;</span>,<br>      <span class="hljs-string">&quot;longContext&quot;</span>: <span class="hljs-string">&quot;volcengine,kimi-k2-250711&quot;</span><br>    &#125;<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>配置完毕之后，直接新建一个项目目录，然后进入到项目目录下，cmd，然后输入以下命令启动。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 启动 claude code</span><br>ccr code<br><span class="hljs-comment"># 如果报错可以重启重新加载一下配置 </span><br>ccr restart<br></code></pre></td></tr></table></figure>
+
+<p>如果你遇到了一些登录认证相关的问题，也可以配置以下环境变量，禁用 prompt caching 功能。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">DISABLE_PROMPT_CACHING</span> = <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142328471.png" srcset="/img/loading.gif" lazyload alt="image-20251114232846470"></p>
+<p>输入命令后，可以看到如下页面就是配置成功：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202511142357248.png" srcset="/img/loading.gif" lazyload alt="image-20251114235755013"></p>
+
                 
               </div>
             
@@ -278,6 +313,13 @@
             <div>
               <div class="post-metas my-3">
   
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ai-coding/" class="print-no-link">#ai coding</a>
+      
+    </div>
   
 </div>
 
