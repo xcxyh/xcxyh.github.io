@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="740" viewBox="0 0 1200 740" role="img" aria-labelledby="title desc">
+  <title id="title">资产的不可能三角</title>
+  <desc id="desc">安全性、流动性和收益率三个目标通常无法同时拉满</desc>
+  <defs>
+    <linearGradient id="edgeA" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#5d7894"/><stop offset="1" stop-color="#718c82"/></linearGradient>
+    <linearGradient id="edgeB" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#718c82"/><stop offset="1" stop-color="#b66f52"/></linearGradient>
+    <linearGradient id="edgeC" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#b66f52"/><stop offset="1" stop-color="#5d7894"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="9" stdDeviation="12" flood-color="#26323a" flood-opacity="0.12"/></filter>
+    <pattern id="paper" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="4" cy="7" r="0.7" fill="#384b56" opacity="0.07"/><circle cx="16" cy="15" r="0.5" fill="#384b56" opacity="0.05"/></pattern>
+  </defs>
+
+  <rect width="1200" height="740" rx="28" fill="#f6f1e7"/>
+  <rect width="1200" height="740" rx="28" fill="url(#paper)"/>
+  <text x="70" y="76" fill="#26323a" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="36" font-weight="700">资产的不可能三角</text>
+  <text x="70" y="113" fill="#65737b" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="20">安全、灵活、回报高，通常无法在同一项资产上同时拉满</text>
+
+  <path d="M600 205L335 545" fill="none" stroke="url(#edgeA)" stroke-width="22" stroke-linecap="round" opacity="0.88"/>
+  <path d="M335 545L865 545" fill="none" stroke="url(#edgeB)" stroke-width="22" stroke-linecap="round" opacity="0.88"/>
+  <path d="M865 545L600 205" fill="none" stroke="url(#edgeC)" stroke-width="22" stroke-linecap="round" opacity="0.88"/>
+
+  <g filter="url(#shadow)">
+    <circle cx="600" cy="205" r="60" fill="#fffaf1" stroke="#5d7894" stroke-width="5"/>
+    <path d="M600 169l27 10v19c0 22-11 37-27 45-16-8-27-23-27-45v-19z" fill="#dbe3eb"/>
+    <path d="M587 199l8 8 16-19" fill="none" stroke="#5d7894" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="600" y="290" text-anchor="middle" fill="#26323a" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="25" font-weight="700">安全性</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <circle cx="335" cy="545" r="60" fill="#fffaf1" stroke="#718c82" stroke-width="5"/>
+    <path d="M307 531h56v34h-56zM316 531v-10h38v10M341 548h14" fill="none" stroke="#718c82" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="335" y="630" text-anchor="middle" fill="#26323a" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="25" font-weight="700">流动性</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <circle cx="865" cy="545" r="60" fill="#fffaf1" stroke="#b66f52" stroke-width="5"/>
+    <path d="M839 564v-34M855 564v-22M871 564v-41M887 564v-55" fill="none" stroke="#b66f52" stroke-width="8" stroke-linecap="round"/>
+    <text x="865" y="630" text-anchor="middle" fill="#26323a" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="25" font-weight="700">收益率</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="455" y="346" width="290" height="126" rx="26" fill="#fffaf1"/>
+    <text x="600" y="396" text-anchor="middle" fill="#26323a" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="25" font-weight="700">先问这笔钱的任务</text>
+    <text x="600" y="433" text-anchor="middle" fill="#65737b" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="18">再决定优先保住哪两个角</text>
+  </g>
+
+  <text x="70" y="704" fill="#8a6540" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="18">提示：如果一款产品声称三者兼得，先找清楚风险、期限和限制条件。</text>
+</svg>
