@@ -1,0 +1,747 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最近工作时，我发现自己已经极度依赖 Codex。 写代码用 Codex，查问题用 Codex，遇到线上故障，第一反应还是把上下文扔给 Codex。 以前接手一个需求，我会顺着调用链一点点往下看，把业务逻辑、数据结构和各种边界情况捋清楚。现在很少了。 我对系统还有一个模糊的全局认识，知道大概有哪些模块，数据从哪里来、往哪里走。但再往下的实现细节，很多时候是 Agent 在理解，不是我在理解。 效率当">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 的蛮荒时代结束了，我们该开始算账了">
+<meta property="og:url" content="https://xcxyh.github.io/2026/08/08/AI-%E7%9A%84%E8%9B%AE%E8%8D%92%E6%97%B6%E4%BB%A3%E7%BB%93%E6%9D%9F%E4%BA%86%EF%BC%8C%E6%88%91%E4%BB%AC%E8%AF%A5%E5%BC%80%E5%A7%8B%E7%AE%97%E8%B4%A6%E4%BA%86/index.html">
+<meta property="og:site_name" content="Xiong&#39;s Blogs">
+<meta property="og:description" content="最近工作时，我发现自己已经极度依赖 Codex。 写代码用 Codex，查问题用 Codex，遇到线上故障，第一反应还是把上下文扔给 Codex。 以前接手一个需求，我会顺着调用链一点点往下看，把业务逻辑、数据结构和各种边界情况捋清楚。现在很少了。 我对系统还有一个模糊的全局认识，知道大概有哪些模块，数据从哪里来、往哪里走。但再往下的实现细节，很多时候是 Agent 在理解，不是我在理解。 效率当">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-08T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-07T16:29:31.551Z">
+<meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="职场">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>AI 的蛮荒时代结束了，我们该开始算账了 - Xiong&#39;s Blogs</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Xiong&#39;s Blogs</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AI 的蛮荒时代结束了，我们该开始算账了"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-08 12:00" pubdate>
+          2026年8月8日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AI 的蛮荒时代结束了，我们该开始算账了</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>最近工作时，我发现自己已经极度依赖 Codex。</p>
+<p>写代码用 Codex，查问题用 Codex，遇到线上故障，第一反应还是把上下文扔给 Codex。</p>
+<p>以前接手一个需求，我会顺着调用链一点点往下看，把业务逻辑、数据结构和各种边界情况捋清楚。现在很少了。</p>
+<p>我对系统还有一个模糊的全局认识，知道大概有哪些模块，数据从哪里来、往哪里走。但再往下的实现细节，很多时候是 Agent 在理解，不是我在理解。</p>
+<p>效率当然提高了。</p>
+<p>以前可能要折腾一天的问题，现在一两个小时就能解决。有些陌生项目，我甚至不需要完全读懂，就能让 Codex 帮我定位、修改、测试和提交。</p>
+<p>但这种状态持续一段时间后，我开始有点后怕。</p>
+<blockquote>
+<p><strong>AI 替我干的，究竟只是代码实现，还是我理解系统的能力？</strong></p>
+</blockquote>
+<h2 id="Token-要开始算-ROI-了"><a href="#Token-要开始算-ROI-了" class="headerlink" title="Token 要开始算 ROI 了"></a>Token 要开始算 ROI 了</h2><p>前几年大家探索 AI，多少有点不计成本。</p>
+<p>模型出来了就试，Agent 更新了就装。十几个 Prompt 不行就继续跑，跑偏了再开一个新会话。大家都想知道 AI 的能力边界到底在哪里，Token 烧了也就烧了。</p>
+<p>这个阶段正在结束。</p>
+<p>我们部门最近也开始认真看 AI 预算。按目前的消耗算下来，一个人的 AI 额度，差不多已经到了半个实习生的工资。</p>
+<p>更有意思的是，Token 消耗呈现出非常明显的二八分布：</p>
+<ul>
+<li>前 5% 的人，消耗了大约 40% 的 Token；</li>
+<li>前 20% 的人，消耗了大约 80% 的 Token。</li>
+</ul>
+<p>这不一定是坏事。</p>
+<p>如果一个人多花了十倍 Token，做出了二十倍的产出，那当然值得。问题是，有些 Token 只是烧掉了，并没有变成代码、产品、收入或者可复用的工作流。</p>
+<p>以前我们问的是：AI 能不能干这件事？</p>
+<p>以后应该会问：</p>
+<p>这件事值不值得交给 AI？该用最强的模型，还是便宜模型就够了？花掉 100 美元 Token，最后到底换回来了什么？</p>
+<p>AI 不再是一张无限额度的体验卡。它开始变成一项需要核算产出的生产成本。</p>
+<p>蛮荒时代结束的第一个标志，就是财务开始进场。</p>
+<h2 id="只会写代码的研发，确实危险了"><a href="#只会写代码的研发，确实危险了" class="headerlink" title="只会写代码的研发，确实危险了"></a>只会写代码的研发，确实危险了</h2><p>Coding 是目前被通用 Agent 渗透最深的行业。</p>
+<p>Claude Fable 5、GPT-5.6 Sol、Kimi K3、DeepSeek V4 Flash，开放权重和闭源模型都在快速进步。尤其是通用 Agent，它已经不只是补全几行代码，而是可以读项目、查资料、改文件、运行测试，甚至自己发现问题。</p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2607.24653">Kimi K3 的技术报告</a>里，已经直接把 Coding 和 Agent 能力放在核心位置。OpenAI 的企业报告也显示，企业 API 推理 Token 消耗在一年内增长了约 320 倍，Coding 是最早被系统化改造的工作之一。<a target="_blank" rel="noopener" href="https://openai.com/business/guides-and-resources/the-state-of-enterprise-ai-2025-report/">OpenAI 企业 AI 报告</a></p>
+<blockquote>
+<p><strong>如果一个研发只会把需求翻译成代码，却不懂业务、不懂用户，也不能判断什么值得做，那这个就已经非常危险了。</strong></p>
+</blockquote>
+<p>代码当然不会消失。</p>
+<p>但“按照别人写好的需求，把代码实现出来”这部分工作的价格，会越来越低。因为 Agent 干得更快，不会累，还能同时开很多个。</p>
+<p>以后真正值钱的，是定义问题、理解业务、判断取舍和为结果负责。</p>
+<p>AI 可以帮你实现一个功能，但它不会天然知道这个功能是不是伪需求。它可以生成十套技术方案，却不知道公司现在最应该解决的是留存、转化还是现金流。</p>
+<p>只会写代码的人，不一定马上失业。</p>
+<p>但只会写代码这件事，已经越来越难构成护城河了。</p>
+<h2 id="视频生成结束“儿童时代”"><a href="#视频生成结束“儿童时代”" class="headerlink" title="视频生成结束“儿童时代”"></a>视频生成结束“儿童时代”</h2><p>另一个已经被深度渗透的行业，是影视创作。</p>
+<p>Seedance 2.0 发布以后，视频模型在一致性、多镜头叙事、音画生成和控制能力上继续进步。<a target="_blank" rel="noopener" href="https://seed.bytedance.com/blog/seedance-2-0-official-launch">字节跳动 Seed 团队</a>已经不再把它描述成简单的“文生视频工具”，而是在处理复杂世界和连续叙事。</p>
+<p>到了 8 月，MiniMax H3 模型的开源，进一步降低了大家的使用限制和门槛。<a target="_blank" rel="noopener" href="https://minimaxi.com/blog/minimax-h3">MiniMax H3</a>可以生成带原生立体声音频的视频，也在向更高分辨率、更完整的创作流程发展。</p>
+<p>这类模型已经不只是给普通人做几个炫酷镜头了。</p>
+<p>它越来越像是给导演、广告团队、短剧团队和专业影视从业者准备的生产工具。真正懂镜头、表演、节奏和叙事的人的能力，会被它放大得非常多。</p>
+<p>反过来，原来依靠模板、素材搬运和低成本重复生产吃饭的团队，护城河会塌得最快。</p>
+<p>以前拍一条电商广告，需要场地、模特、摄影、灯光和后期。以后可能只需要商品素材、一个懂产品的人，再加一套生成工作流。</p>
+<p>不是创作消失了。是生产创作的门槛和成本都变了。</p>
+<h2 id="视频模型可能还连接着机器人"><a href="#视频模型可能还连接着机器人" class="headerlink" title="视频模型可能还连接着机器人"></a>视频模型可能还连接着机器人</h2><p>如果一个模型可以稳定生成符合现实物理规律的视频，它学到的就不只是“画面长什么样”，还包括物体如何运动、碰撞会发生什么、人如何操作工具。这类模型也被称为世界模型。</p>
+<p>机器人训练最缺的东西之一，恰好是大量高质量的现实世界数据。真实采集很慢、很贵，还有安全风险。如果视频世界模型可以生成足够可靠的训练环境和操作数据，就能补充真实数据，加快机器人的训练和验证。</p>
+<p>现在已经有研究把视频生成用于合成训练数据、虚拟评测环境和机器人动作规划。例如 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2606.17030">Qwen-RobotWorld</a>就在探索这条路。</p>
+<p>当然，生成视频不等于模型真的理解物理世界。合成数据也不能完全代替真实数据。</p>
+<p>但这条路线已经很清楚了。</p>
+<p>人类已经给机器人准备好了身体、手、脸和负责运动控制的“小脑”。现在缺的是一个可以理解环境、长期规划并处理意外的“大脑”。</p>
+<p>以后也许会出现一种相对通用的机器人大脑，可以适配不同形态的机器人。到了那个时候，机器人就不只是展会上翻跟头，而是真的可以进入工厂、商店和家庭。</p>
+<h2 id="下一个战场，是坐在电脑前的所有人"><a href="#下一个战场，是坐在电脑前的所有人" class="headerlink" title="下一个战场，是坐在电脑前的所有人"></a>下一个战场，是坐在电脑前的所有人</h2><p>很多人觉得 AI 热潮是不是快结束了。我的看法正好相反。</p>
+<p>Coding 只是最先被打穿的行业。绝大部分职业、公司和组织，对 AI 的利用还停留在写文案、做总结、查资料的阶段。</p>
+<p>Coding 之后，下一个竞争最激烈的方向，大概率是办公 Agent。</p>
+<p>WorkBuddy 已经把自己定义成能够完成策略、分析和交付的 AI 工作台；豆包、飞书以及其他办公产品，也都在向 Work Agent 靠近。</p>
+<p>这和聊天机器人不是一回事。</p>
+<p>聊天机器人告诉你怎么做。Work Agent 直接进入工作流，读取资料、调用工具、跨应用处理任务，最后把结果交回来。</p>
+<p>一旦这套能力成熟，受影响的就不只是程序员了。</p>
+<p>运营、行政、财务、客服、销售支持、数据分析，以及大量靠电脑、表格、邮件和 PPT 完成的工作，都会被重新计算需要多少人。</p>
+<p>过去一两年，个人已经通过 AI 提效了，但组织还没有完全反应过来。</p>
+<p>很多公司的汇报链条、审批流程、绩效制度和岗位划分，仍然是按照“人类亲手完成每一个步骤”设计的。员工提效了一倍，不代表公司真的多赚了一倍，因为大量时间依旧浪费在协作、等待和重复沟通上。</p>
+<p>Work Agent 要改的，就是这一层。</p>
+<p>所以传统打工人暂时还有一点时间。</p>
+<p>不是因为 AI 做不到，而是组织还没改完。</p>
+<h2 id="AGI-可能还很远，但自我改进已经开始了"><a href="#AGI-可能还很远，但自我改进已经开始了" class="headerlink" title="AGI 可能还很远，但自我改进已经开始了"></a>AGI 可能还很远，但自我改进已经开始了</h2><p>未来最值得关注的方向之一，是 RSI。</p>
+<p>它的全称是 Recursive Self-Improvement，也就是递归式自我改进：AI 不只是完成任务，还参与改进模型、训练流程、评测系统和下一代 AI。</p>
+<p>我认为 RSI 可能是通往 AGI 的重要前置能力，但它并不等于 AGI 已经实现。</p>
+<p>目前出现的更多还是有边界的自我优化。目标、环境、算力和评测标准依然由人类提供。真正开放式、能够持续提升自身能力的 RSI，仍然存在很多技术和安全问题。<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2607.07663">相关研究</a>也把当前能力与开放式递归改进做了区分。</p>
+<p>但哪怕只看现在，事情也已经足够疯狂了。</p>
+<blockquote>
+<p><strong>人类让一堆沙子学会了思考。</strong></p>
+</blockquote>
+<p>我们把沙子提纯，刻上电路，通上电，堆进机房。最后，这些东西开始写代码、画画、生成电影，并参与设计下一代 AI。这是我们这个时代正在发生的事情。</p>
+<h2 id="我们现在该做什么"><a href="#我们现在该做什么" class="headerlink" title="我们现在该做什么"></a>我们现在该做什么</h2><p>AI 带给职场人的确实是危机。</p>
+<p>但对个体户、小团队和小公司来说，这可能也是非常难得的一段红利期。过去需要十几个人才能运转的业务，以后两三个人配合一组 Agent 就有机会完成。</p>
+<p>未来很可能属于超级个体。</p>
+<p>我们大概率无法在一家公司里安稳干到退休。既然迟早有一天要离开职场，那就没必要等到公司替我们做决定以后才开始准备。</p>
+<p>我现在比较相信四件事。</p>
+<p>第一，开始经营自己。</p>
+<p>起一个号，持续输出，建立自己的名字、作品和信用。平台会变化，账号也可能做不起来，但你积累下来的内容、用户关系和行业认知，都是可以带走的数字资产。</p>
+<p>第二，找一个足够垂直的方向。</p>
+<p>不要一上来就想着做平台、做生态。先解决一小群人的一个具体问题，跑通从获客、交付到收钱的闭环。哪怕一个月只赚几千块，它也是工资之外的一条路。</p>
+<p>第三，把身体和现金流放在前面。</p>
+<p>未来也许真的有一天，大部分人不需要工作。但在那一天到来之前，我们还得先活下去。健康、应急资金和稳定的家庭关系，才是一个人真正承担风险的底仓。</p>
+<p>第四，在自己理解的范围内，长期关注 AI 公司。</p>
+<p>High conviction 不是看到 AI 两个字就买，也不是拿生活费赌未来。真正的相信，是看得懂公司的能力、商业模式和价格，然后愿意用长期资金承受波动。</p>
+<p>因为相信，所以愿意花时间研究。研究明白了，才谈得上看见。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>我不觉得 AI 快结束了。</p>
+<p>真正结束的，是不计成本烧 Token、把 AI 当玩具到处试用的阶段。</p>
+<p>下一阶段，企业会开始算 ROI，岗位会开始重新定价，组织会开始重构。每个人也要回答一个更现实的问题：</p>
+<p>如果有一天，公司不再需要现在的我，我靠什么生活？</p>
+<p>这个答案不能等到失业那天再找。</p>
+<p>从现在开始，把工作当成现金流，把 AI 当成杠杆，把业余时间变成自己的作品、用户和资产。</p>
+<p>有一天离开职场时，最好不是被人赶出去。</p>
+<p>而是你已经有地方可去。</p>
+<blockquote>
+<p>本文是个人对 AI、职业与投资的阶段性思考，不构成职业规划或投资建议。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/%E8%81%8C%E5%9C%BA/" class="print-no-link">#职场</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI 的蛮荒时代结束了，我们该开始算账了</div>
+      <div>https://xcxyh.github.io/2026/08/08/AI-的蛮荒时代结束了，我们该开始算账了/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/07/15/%E5%85%B3%E4%BA%8E%E7%90%86%E8%B4%A2%EF%BC%8C%E6%88%91%E6%9B%B4%E5%9C%A8%E6%84%8F%E7%9A%84%E6%98%AF%E4%B8%8D%E8%A2%AB%E9%92%B1%E9%80%BC%E5%88%B0%E5%A2%99%E8%A7%92/" title="普通人理财入门：钱到底应该怎么分配？">
+                        <span class="hidden-mobile">普通人理财入门：钱到底应该怎么分配？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

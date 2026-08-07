@@ -1,0 +1,676 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="刚看完杨强、唐杰、姚顺雨和林俊旸几位一线的对谈, 文章链接在这里：唐杰&#x2F;杨植麟&#x2F;林俊旸&#x2F;姚顺雨罕见同台，“基模四杰”开聊中国AGI 通过访谈记录能看到几位一线大佬对“下一场仗”怎么打的清醒认知。抛开那些宏大的叙事，这里总结了几个更底层的洞见： 一、 模型价值的分化：To B 与 To C 的不同路径 To B（企业端）：智能即生产力    ◦ 核心逻辑：在企业场景下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="走出Scaling Law的幻觉：AGI的下一场仗怎么打？">
+<meta property="og:url" content="https://xcxyh.github.io/2026/01/11/%E8%B5%B0%E5%87%BAScaling-Law%E7%9A%84%E5%B9%BB%E8%A7%89%EF%BC%9AAGI%E7%9A%84%E4%B8%8B%E4%B8%80%E5%9C%BA%E4%BB%97%E6%80%8E%E4%B9%88%E6%89%93%EF%BC%9F/index.html">
+<meta property="og:site_name" content="Xiong&#39;s Blogs">
+<meta property="og:description" content="刚看完杨强、唐杰、姚顺雨和林俊旸几位一线的对谈, 文章链接在这里：唐杰&#x2F;杨植麟&#x2F;林俊旸&#x2F;姚顺雨罕见同台，“基模四杰”开聊中国AGI 通过访谈记录能看到几位一线大佬对“下一场仗”怎么打的清醒认知。抛开那些宏大的叙事，这里总结了几个更底层的洞见： 一、 模型价值的分化：To B 与 To C 的不同路径 To B（企业端）：智能即生产力    ◦ 核心逻辑：在企业场景下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202601110007983.png">
+<meta property="article:published_time" content="2026-01-10T16:01:52.000Z">
+<meta property="article:modified_time" content="2026-03-01T03:24:10.172Z">
+<meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="AI blog insight">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202601110007983.png">
+  
+  
+  
+  <title>走出Scaling Law的幻觉：AGI的下一场仗怎么打？ - Xiong&#39;s Blogs</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Xiong&#39;s Blogs</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="走出Scaling Law的幻觉：AGI的下一场仗怎么打？"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-11 00:01" pubdate>
+          2026年1月11日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">走出Scaling Law的幻觉：AGI的下一场仗怎么打？</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202601110007983.png" srcset="/img/loading.gif" lazyload alt="AGI-Next 访谈"></p>
+<p>刚看完杨强、唐杰、姚顺雨和林俊旸几位一线的对谈, 文章链接在这里：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/IToXOrPJ-fi3B3sJQuxLpQ">唐杰&#x2F;杨植麟&#x2F;林俊旸&#x2F;姚顺雨罕见同台，“基模四杰”开聊中国AGI</a></p>
+<p>通过访谈记录能看到几位一线大佬对“下一场仗”怎么打的清醒认知。抛开那些宏大的叙事，这里总结了几个更底层的洞见：</p>
+<h2 id="一、-模型价值的分化：To-B-与-To-C-的不同路径"><a href="#一、-模型价值的分化：To-B-与-To-C-的不同路径" class="headerlink" title="一、 模型价值的分化：To B 与 To C 的不同路径"></a>一、 模型价值的分化：To B 与 To C 的不同路径</h2><ol>
+<li><strong>To B（企业端）：智能即生产力</strong></li>
+</ol>
+<p>  ◦ <strong>核心逻辑</strong>：在企业场景下，智能水平直接等同于生产力，智能越高价值越大。</p>
+<p>  ◦ <strong>付费意愿</strong>：用户愿意为最强模型支付溢价，因为更强的模型可以降低人类监控和容错的成本。</p>
+<p>  ◦ <strong>垂直领域应用</strong>：<strong>Coding（编程）</strong> 正在重塑计算机行业，人类开始转向用英语与电脑交流。</p>
+<ol start="2">
+<li><strong>To C（消费端）：从智能深度转向“上下文（Context）”</strong></li>
+</ol>
+<p>  ◦ <strong>现状</strong>：普通用户在日常使用中（如搜索增强）往往无法完全激发出顶尖模型的极限智能。</p>
+<p>  ◦ <strong>核心价值</strong>：未来的突破点在于利用<strong>额外的 Context</strong>（如个人聊天记录、生活环境信息、实时体感等）来提供个性化价值，而不仅仅是堆砌预训练规模。</p>
+<h2 id="二、-下一代技术范式：自主学习与智能效率"><a href="#二、-下一代技术范式：自主学习与智能效率" class="headerlink" title="二、 下一代技术范式：自主学习与智能效率"></a>二、 下一代技术范式：自主学习与智能效率</h2><ol>
+<li><strong>自主学习（Autonomous Learning）</strong></li>
+</ol>
+<p>  ◦ <strong>爆发时间</strong>：预计在 <strong>2026 年</strong> 就能看到明显的信号。</p>
+<p>  ◦ <strong>本质变革</strong>：它不仅仅是方法论的更新，更是任务与数据的演进，AI 将在特定场景（如科学探索或编程）中像博士生一样自我进化。</p>
+<ol start="2">
+<li><strong>智能效率（Intelligence Efficiency）</strong></li>
+</ol>
+<p>  ◦ <strong>瓶颈与挑战</strong>：盲目增加 Scaling（规模化）的收益正在递减，且计算成本巨大。</p>
+<p>  ◦ <strong>新目标</strong>：业界应追求以更少的资源投入获得更大的智能增量。</p>
+<p>  ◦ <strong>学术视角</strong>：杨强教授提出借鉴人类的<strong>“睡眠机制”</strong>来清理记忆噪音，解决模型因“哥德尔不完备定理”导致的无法自证清白（幻觉）问题。</p>
+<h2 id="三、-Agent（智能体）战略：从工具到自动化系统"><a href="#三、-Agent（智能体）战略：从工具到自动化系统" class="headerlink" title="三、 Agent（智能体）战略：从工具到自动化系统"></a>三、 Agent（智能体）战略：从工具到自动化系统</h2><ol>
+<li><strong>长程任务流</strong>：</li>
+</ol>
+<p>  ◦ 未来的 Agent 将不再局限于简单的对话，而是能自主处理长达 <strong>1-2 周</strong> 的复杂任务流。</p>
+<p>  ◦ <strong>模型即产品</strong>：基础模型公司趋向于将模型、环境交互和应用垂直整合，Agent 本身就是产品。</p>
+<ol start="2">
+<li><strong>长尾问题的魅力</strong>：</li>
+</ol>
+<p>  ◦ AGI 最大的魅力在于解决全世界任何角落都找不到标准答案的<strong>长尾难题</strong>。</p>
+<p>  ◦ 通过<strong>强化学习（RL）</strong>，现在修复特定场景下的长尾问题比以往更加容易且高效。</p>
+<h2 id="四、-全球竞争：中国的优势与挑战"><a href="#四、-全球竞争：中国的优势与挑战" class="headerlink" title="四、 全球竞争：中国的优势与挑战"></a>四、 全球竞争：中国的优势与挑战</h2><ol>
+<li><strong>现状评估</strong>：</li>
+</ol>
+<p>  ◦ 中国在<strong>工程效率、人才储备、复现能力和局部创新</strong>上表现出色。</p>
+<p>  ◦ 林俊旸预测，中国公司在未来 3-5 年引领全球的概率约为 **20%**。</p>
+<ol start="2">
+<li><strong>核心瓶颈</strong>：</li>
+</ol>
+<p>  ◦ <strong>硬件限制</strong>：算力（光刻机&#x2F;芯片产能）是主要的客观瓶颈。</p>
+<p>  ◦ <strong>市场环境</strong>：To B 市场的付费意愿和文化尚不成熟。</p>
+<p>  ◦ <strong>研究文化</strong>：中国倾向于做确定性高、刷榜明显的任务，而缺乏像硅谷那样对“不确定性”和“冒险范式”的探索精神。</p>
+<p>未来的 AGI 竞争将从“算力军备竞赛”转向<strong>“智能进化竞赛”</strong>。中国团队需要走出榜单束缚，在有限的算力条件下利用“穷则思变”的韧性，通过自主学习和解决真实的长尾问题来实现弯道超车。</p>
+<p> 如果说大模型的前三年是<strong>“炼金术”时代</strong>，大家都在比谁的炉子大（算力）和谁的矿多（数据）；那么接下来的三年将进入<strong>“生命演化”时代</strong>。模型不再只是被动接受投喂，而是要学会在复杂的社会环境和工作流中“独立行走”（Agent）并“自我思考”（自主学习），甚至要学会像人类一样通过“睡觉”（清理噪音）来保持清醒。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI-blog-insight/" class="print-no-link">#AI blog insight</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>走出Scaling Law的幻觉：AGI的下一场仗怎么打？</div>
+      <div>https://xcxyh.github.io/2026/01/11/走出Scaling-Law的幻觉：AGI的下一场仗怎么打？/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年1月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/01/11/%E5%9C%A8%E4%B8%AD%E5%9B%BD%EF%BC%8C%E7%A8%B3%E5%AE%9A%E5%A5%BD%E7%94%A8%E7%9A%84-AI-coding-%E5%B7%A5%E5%85%B7%E5%92%8C%E6%A8%A1%E5%9E%8B/" title="在中国，稳定好用的 AI coding 套装">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">在中国，稳定好用的 AI coding 套装</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/12/21/%E4%BB%8E%E4%B8%80%E6%9D%A1%E5%B0%8F%E7%BA%A2%E4%B9%A6%E7%88%86%E5%B8%96%E5%88%B0-AI-%E7%94%9F%E5%9B%BE%E5%8F%98%E7%8E%B0/" title="从一条小红书爆帖到 AI 生图变现">
+                        <span class="hidden-mobile">从一条小红书爆帖到 AI 生图变现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

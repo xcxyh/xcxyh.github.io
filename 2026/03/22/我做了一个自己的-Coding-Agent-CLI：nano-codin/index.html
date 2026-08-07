@@ -1,0 +1,788 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="我做了一个自己的 Coding Agent CLI：nano-codin做 AI Coding 这件事，过去一段时间我一直更关心 workflow，而不是单次 demo。 我会长期看各种 agent、编排框架、CLI 工具，也会自己把它们接进真实开发流程里跑。但越用越明显的一点是：很多东西都能“演示会写代码”，却很难真正稳定地进入终端工作流。它们可能很聪明，也可能很炫，但一到持续修改、反复验证、上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我做了一个自己的 Coding Agent CLI：nano-codin">
+<meta property="og:url" content="https://xcxyh.github.io/2026/03/22/%E6%88%91%E5%81%9A%E4%BA%86%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84-Coding-Agent-CLI%EF%BC%9Anano-codin/index.html">
+<meta property="og:site_name" content="Xiong&#39;s Blogs">
+<meta property="og:description" content="我做了一个自己的 Coding Agent CLI：nano-codin做 AI Coding 这件事，过去一段时间我一直更关心 workflow，而不是单次 demo。 我会长期看各种 agent、编排框架、CLI 工具，也会自己把它们接进真实开发流程里跑。但越用越明显的一点是：很多东西都能“演示会写代码”，却很难真正稳定地进入终端工作流。它们可能很聪明，也可能很炫，但一到持续修改、反复验证、上">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-22T11:41:00.000Z">
+<meta property="article:modified_time" content="2026-03-22T11:41:18.831Z">
+<meta property="article:author" content="xcxyh">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>我做了一个自己的 Coding Agent CLI：nano-codin - Xiong&#39;s Blogs</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Xiong&#39;s Blogs</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="我做了一个自己的 Coding Agent CLI：nano-codin"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-03-22 19:41" pubdate>
+          2026年3月22日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">我做了一个自己的 Coding Agent CLI：nano-codin</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="我做了一个自己的-Coding-Agent-CLI：nano-codin"><a href="#我做了一个自己的-Coding-Agent-CLI：nano-codin" class="headerlink" title="我做了一个自己的 Coding Agent CLI：nano-codin"></a>我做了一个自己的 Coding Agent CLI：nano-codin</h1><p>做 AI Coding 这件事，过去一段时间我一直更关心 workflow，而不是单次 demo。</p>
+<p>我会长期看各种 agent、编排框架、CLI 工具，也会自己把它们接进真实开发流程里跑。但越用越明显的一点是：很多东西都能“演示会写代码”，却很难真正稳定地进入终端工作流。它们可能很聪明，也可能很炫，但一到持续修改、反复验证、上下文收敛、失败恢复这些工程细节上，就开始变得不可控。</p>
+<p>所以我决定自己做一个。</p>
+<p>这个项目叫 <strong>nano-codin</strong>。它不是为了证明 agent 能写代码，而是为了验证另一件更重要的事：<strong>一个 Coding Agent，到底怎样才能真正进入工程工作流。</strong></p>
+<h2 id="为什么我要自己做-nano-codin"><a href="#为什么我要自己做-nano-codin" class="headerlink" title="为什么我要自己做 nano-codin"></a>为什么我要自己做 nano-codin</h2><p>如果只是“让大模型帮我改几行代码”，其实市场上已经有很多选择了。</p>
+<p>但我真正想要的，不是一个会表演的 agent，而是一个能长期待在 terminal 里的工程组件。它应该能理解 repo，先探索，再计划，再执行，再验证，最后给出结构化总结。更重要的是，它要能解释自己在做什么，为什么这么做，做错了怎么收回来。</p>
+<p>换句话说，我想要的不是一个黑盒助手，而是一个 <strong>可观察、可恢复、可约束、可扩展</strong> 的最小化内核。</p>
+<p>这也是 nano-codin 的出发点。</p>
+<h2 id="一句话介绍-nano-codin"><a href="#一句话介绍-nano-codin" class="headerlink" title="一句话介绍 nano-codin"></a>一句话介绍 nano-codin</h2><p><strong>nano-codin 是一个基于 TypeScript、LangGraph 和 Ink 构建的 Coding Agent CLI。</strong></p>
+<p>它的目标很直接：在终端里完成一条完整的 coding loop，包括代码理解、任务规划、文件修改、命令验证，以及最后的结果总结。</p>
+<p>它不是一个 all-in-one 平台，也不是一个追求 feature list 的大而全产品。相反，我刻意把边界收得很窄，把核心做得更硬：</p>
+<ul>
+<li>单代理 ReAct loop</li>
+<li>phase-aware workflow</li>
+<li>显式 Tool Registry</li>
+<li>分层上下文</li>
+<li>sandbox policy</li>
+<li>recovery &#x2F; compression &#x2F; checkpoint</li>
+</ul>
+<p>我更愿意把它看成一个 <strong>production-oriented minimal agent runtime</strong>。</p>
+<h2 id="我想解决的，不只是“调用大模型写代码”"><a href="#我想解决的，不只是“调用大模型写代码”" class="headerlink" title="我想解决的，不只是“调用大模型写代码”"></a>我想解决的，不只是“调用大模型写代码”</h2><p>这类工具最容易被误解的一点，就是大家会把“会写代码”当作目标本身。</p>
+<p>但在真实工程里，问题从来不只是生成代码。真正麻烦的是这些：</p>
+<ul>
+<li>上下文不断膨胀，模型开始忘事</li>
+<li>还没想清楚就直接改文件</li>
+<li>改完以后没有验证，却直接宣布完成</li>
+<li>shell 命令和文件修改没有约束，任务很容易失控</li>
+<li>中途报错后，整个执行轨迹无法恢复</li>
+</ul>
+<p>所以我给 nano-codin 定的几条设计原则很简单：</p>
+<ul>
+<li><strong>small core</strong></li>
+<li><strong>explicit state</strong></li>
+<li><strong>safe execution</strong></li>
+</ul>
+<p>比起“再接一个酷炫能力”，我更在意状态是不是显式的，动作是不是可审计的，失败之后能不能继续跑。</p>
+<h2 id="nano-codin-的核心能力"><a href="#nano-codin-的核心能力" class="headerlink" title="nano-codin 的核心能力"></a>nano-codin 的核心能力</h2><p>从实现上看，nano-codin 现在已经具备了一条比较完整的最小闭环。</p>
+<h3 id="1-ReAct-单代理循环"><a href="#1-ReAct-单代理循环" class="headerlink" title="1. ReAct 单代理循环"></a>1. ReAct 单代理循环</h3><p>核心执行模型仍然是经典的 ReAct：<code>Thought -&gt; Action -&gt; Observation</code>。但我没有把它停留在 prompt pattern，而是把它放进了 LangGraph 的状态图里，让 agent 的状态、步数、phase、recovery history 都有明确归属。</p>
+<h3 id="2-Phase-aware-workflow"><a href="#2-Phase-aware-workflow" class="headerlink" title="2. Phase-aware workflow"></a>2. Phase-aware workflow</h3><p>我把任务过程拆成了五个阶段：</p>
+<p><code>discover -&gt; plan -&gt; execute -&gt; verify -&gt; finalize</code></p>
+<p>这件事看起来很朴素，但它直接解决了很多“玩具 Agent”最常见的问题。尤其是 discover 和 execute 被明确分开之后，agent 不会刚看两眼 repo 就立刻开始乱改。</p>
+<h3 id="3-Tool-Registry"><a href="#3-Tool-Registry" class="headerlink" title="3. Tool Registry"></a>3. Tool Registry</h3><p>工具层被收敛成一个显式 registry，目前分成四类：</p>
+<ul>
+<li><code>fs</code>: <code>ls</code>、<code>tree</code>、<code>grep</code>、<code>repo_index_query</code>、<code>read_context</code></li>
+<li><code>edit</code>: <code>view</code>、<code>create</code>、<code>insert</code>、<code>str_replace</code></li>
+<li><code>shell</code>: <code>bash</code></li>
+<li><code>planning</code>: <code>todo</code>、<code>delegate</code>、<code>summarize_changes</code></li>
+</ul>
+<p>这很重要，因为 agent 的能力边界，不应该藏在 prompt 里，而应该体现在工具协议里。</p>
+<h3 id="4-Layered-context"><a href="#4-Layered-context" class="headerlink" title="4. Layered context"></a>4. Layered context</h3><p>nano-codin 不是只喂聊天记录。它会从三个层级加载上下文：</p>
+<ul>
+<li><code>AGENTS.md</code></li>
+<li><code>.nanocodin/context.md</code></li>
+<li><code>.nanocodin/memory.md</code></li>
+</ul>
+<p>前者更像 repo 级行为约束，后两者更像项目背景和持久记忆。这样做的好处是，context 不再只有“这一轮对话里说过什么”，而是开始有结构。</p>
+<h3 id="5-Repo-index-compression-recovery-delegate"><a href="#5-Repo-index-compression-recovery-delegate" class="headerlink" title="5. Repo index &#x2F; compression &#x2F; recovery &#x2F; delegate"></a>5. Repo index &#x2F; compression &#x2F; recovery &#x2F; delegate</h3><p>这是我觉得它逐渐脱离 demo 感的关键部分：</p>
+<ul>
+<li><code>RepoIndexer</code> 会做增量索引，支持 <code>repo_index_query</code></li>
+<li><code>CompressionManager</code> 会在上下文压力过高时压缩历史轨迹，保留最近步骤并生成结构化 session memory</li>
+<li><code>RecoveryEngine</code> 会对常见错误做单步恢复，比如 schema 错误、命令不存在、测试脚本缺失</li>
+<li><code>delegate</code> 支持轻量级只读子任务，把探索工作局部外包，再把结果结构化带回主流程</li>
+</ul>
+<p>这些都不是最显眼的 feature，但它们决定了一个 agent 是不是能连续工作。</p>
+<h3 id="6-Provider-routing"><a href="#6-Provider-routing" class="headerlink" title="6. Provider routing"></a>6. Provider routing</h3><p>模型接入层支持 OpenAI-compatible 和 Anthropic-compatible 路由，同时支持自定义 base URL。这个设计不花哨，但它让 nano-codin 更容易放进不同团队现有的 provider 体系里，而不是强绑定单一平台。</p>
+<h2 id="这项目最关键的设计取舍"><a href="#这项目最关键的设计取舍" class="headerlink" title="这项目最关键的设计取舍"></a>这项目最关键的设计取舍</h2><p>很多选择不是“不会做”，而是“故意不先做”。</p>
+<h3 id="为什么先做单代理，而不是-multi-agent"><a href="#为什么先做单代理，而不是-multi-agent" class="headerlink" title="为什么先做单代理，而不是 multi-agent"></a>为什么先做单代理，而不是 multi-agent</h3><p>我并不反对 multi-agent，但我对它的优先级判断一直比较保守。</p>
+<p>因为在大多数 coding task 里，先把一个 agent 的状态管理、计划约束、验证闭环和恢复机制打磨清楚，比把三个 agent 同时拉起来更重要。单代理先跑稳，才能知道哪些能力真的需要 delegation，哪些只是把问题拆得更复杂。</p>
+<p>所以 nano-codin 现在有 <code>delegate</code>，但它仍然是以单代理主循环为核心。这是有意为之。</p>
+<h3 id="为什么优先做-CLI，而不是-GUI"><a href="#为什么优先做-CLI，而不是-GUI" class="headerlink" title="为什么优先做 CLI，而不是 GUI"></a>为什么优先做 CLI，而不是 GUI</h3><p>Coding Agent 最自然的落点，本来就应该是 terminal。</p>
+<p>终端里已经有 repo、shell、git、test runner、package manager。CLI 不是妥协，而是最短路径。先把 agent 放进已有工作流，比先做一个更漂亮的外壳更重要。</p>
+<p>这也是为什么我用了 Ink 做终端 UI，而不是先去做一层 web console。</p>
+<h3 id="为什么强调-plan-gate-verify-gate-sandbox-policy"><a href="#为什么强调-plan-gate-verify-gate-sandbox-policy" class="headerlink" title="为什么强调 plan gate &#x2F; verify gate &#x2F; sandbox policy"></a>为什么强调 plan gate &#x2F; verify gate &#x2F; sandbox policy</h3><p>如果一个 agent 可以直接修改文件、执行命令、最后还自己宣布“完成了”，那它默认就是不安全的。</p>
+<p>所以我把几个 gate 做成了一等公民：</p>
+<ul>
+<li><strong>plan gate</strong>: 没有 todo 列表，没有 verification goal 和 command，就不允许执行 mutating action</li>
+<li><strong>verify gate</strong>: 对“fix &#x2F; bug &#x2F; implement &#x2F; refactor”这类任务，如果没有跑验证，不允许直接 <code>final</code></li>
+<li><strong>sandbox policy</strong>: shell 命令有 <code>allow / ask / deny</code> 策略，危险命令直接拦，写操作默认需要确认</li>
+</ul>
+<p>这些机制不是为了保守，而是为了让 agent 的行为接近真实工程协作。</p>
+<h3 id="为什么-repo-index、session-memory、checkpoint-更重要"><a href="#为什么-repo-index、session-memory、checkpoint-更重要" class="headerlink" title="为什么 repo index、session memory、checkpoint 更重要"></a>为什么 repo index、session memory、checkpoint 更重要</h3><p>炫技 feature 很容易吸引注意力，但真正决定可用性的，往往是那些不起眼的系统细节。</p>
+<p>比如：</p>
+<ul>
+<li>repo index 决定它理解代码库是不是足够快</li>
+<li>session memory 决定它压缩上下文之后会不会失忆</li>
+<li>checkpoint 决定任务被打断之后能不能 <code>continue</code></li>
+</ul>
+<p>如果这些东西没有，agent 就很难从一次性演示变成可持续使用的工具。</p>
+<h2 id="架构是怎么组织的"><a href="#架构是怎么组织的" class="headerlink" title="架构是怎么组织的"></a>架构是怎么组织的</h2><p>nano-codin 的目录不复杂，但边界切得比较清楚。</p>
+<h3 id="入口装配层：src-index-ts"><a href="#入口装配层：src-index-ts" class="headerlink" title="入口装配层：src/index.ts"></a>入口装配层：<code>src/index.ts</code></h3><p>这里负责 runtime 装配：加载 <code>.env</code>、解析 runtime config、读取 context sources、初始化 repo index、组装 Tool Registry、创建 <code>CodingAgentGraph</code>，最后挂到 Ink 控制台。</p>
+<p>它不做复杂决策，只负责把依赖拼好。</p>
+<h3 id="Agent-内核：src-agent"><a href="#Agent-内核：src-agent" class="headerlink" title="Agent 内核：src/agent/"></a>Agent 内核：<code>src/agent/</code></h3><p>这里是系统真正的心脏。</p>
+<ul>
+<li><code>agentGraph.ts</code> 负责 LangGraph 状态机和 agent 主循环</li>
+<li><code>reactLoop.ts</code> 负责 prompt 输入输出结构、response parse、execution state formatting</li>
+</ul>
+<p>也就是说，<code>src/agent/</code> 处理的是“agent 如何思考和流转”，而不是“具体干什么活”。</p>
+<h3 id="Tool-层：src-tools"><a href="#Tool-层：src-tools" class="headerlink" title="Tool 层：src/tools/"></a>Tool 层：<code>src/tools/</code></h3><p>所有能力都通过 Tool Registry 暴露，schema 用 Zod 做约束。这样工具既有统一入口，也有明确的输入验证，不需要把行为隐藏在 prompt 约定里。</p>
+<p>这是我很坚持的一点：<strong>能力应该被注册，不应该被暗示。</strong></p>
+<h3 id="横切服务：src-services"><a href="#横切服务：src-services" class="headerlink" title="横切服务：src/services/"></a>横切服务：<code>src/services/</code></h3><p>这一层承载的是工程性能力：</p>
+<ul>
+<li><code>configLoader</code></li>
+<li><code>contextLoader</code></li>
+<li><code>repoIndexer</code></li>
+<li><code>compressionManager</code></li>
+<li><code>recoveryEngine</code></li>
+<li><code>sessionCheckpoint</code></li>
+<li><code>agentPolicy</code></li>
+<li><code>executionSummary</code></li>
+</ul>
+<p>这些文件单看都不“性感”，但它们基本决定了 nano-codin 不是一个脚本，而是一个 runtime。</p>
+<h3 id="Prompt-层：src-prompts"><a href="#Prompt-层：src-prompts" class="headerlink" title="Prompt 层：src/prompts/"></a>Prompt 层：<code>src/prompts/</code></h3><p>prompt 不只是 system text，还包括模板化渲染和 execution-state 注入。换句话说，prompt 在这里是显式资源，而不是散落在代码里的字符串。</p>
+<h3 id="终端-UI：src-ui"><a href="#终端-UI：src-ui" class="headerlink" title="终端 UI：src/ui/"></a>终端 UI：<code>src/ui/</code></h3><p>UI 层负责把 agent 的运行状态实时展示出来，包括 thought、action、observation、phase、todo 状态、verification 状态和最新 snapshot。它不改变 agent 逻辑，只负责把执行过程变得可见。</p>
+<p>这就是模块边界的核心原则：<strong>agent 做决策，tool 做动作，service 做保障，UI 做可视化。</strong></p>
+<h2 id="一个典型任务是怎么跑起来的"><a href="#一个典型任务是怎么跑起来的" class="headerlink" title="一个典型任务是怎么跑起来的"></a>一个典型任务是怎么跑起来的</h2><p>如果把 nano-codin 的执行过程压缩成一条主线，大概是这样：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs text">User Task<br>  -&gt; Build Prompt<br>  -&gt; Model decides Thought / Action<br>  -&gt; ToolRegistry validates and executes<br>  -&gt; Observation returns to agent<br>  -&gt; Phase gate checks plan / verify<br>  -&gt; Final summary<br></code></pre></td></tr></table></figure>
+
+<p>再展开一点，会看到几个关键节点：</p>
+<ol>
+<li>用户在 terminal 里输入任务</li>
+<li>agent 组装 system prompt、trajectory、execution state、project context</li>
+<li>模型输出 <code>Thought / Action / Action Input</code></li>
+<li>Tool Registry 做 schema 校验、权限判断和实际执行</li>
+<li>observation 回流到 agent state</li>
+<li>如果动作不合法，会被 phase gate 拦回 <code>plan</code></li>
+<li>如果验证缺失，会被 verify guard 拦回 <code>verify</code></li>
+<li>最终输出带 execution summary 的结论</li>
+</ol>
+<p>这个过程中，agent 不是一路向前冲，而是不断在“生成动作”和“被工程约束修正”之间来回校准。</p>
+<h2 id="我认为-nano-codin-和“玩具-Agent”真正拉开差距的地方"><a href="#我认为-nano-codin-和“玩具-Agent”真正拉开差距的地方" class="headerlink" title="我认为 nano-codin 和“玩具 Agent”真正拉开差距的地方"></a>我认为 nano-codin 和“玩具 Agent”真正拉开差距的地方</h2><p>如果要说一个观点最集中的地方，我会放在这里。</p>
+<p>我觉得一个 Agent 是否进入工程世界，不看它会不会调模型，也不看它能不能改文件，而看它有没有下面这些能力：</p>
+<h3 id="1-Phase-budget，防止无限探索和无效循环"><a href="#1-Phase-budget，防止无限探索和无效循环" class="headerlink" title="1. Phase budget，防止无限探索和无效循环"></a>1. Phase budget，防止无限探索和无效循环</h3><p><code>discover</code>、<code>plan</code>、<code>execute + verify</code> 都有独立 budget。这样 agent 不能无限读 repo，也不能一直卡在规划阶段自我循环。</p>
+<h3 id="2-Verify-guard，防止“没验证就宣布完成”"><a href="#2-Verify-guard，防止“没验证就宣布完成”" class="headerlink" title="2. Verify guard，防止“没验证就宣布完成”"></a>2. Verify guard，防止“没验证就宣布完成”</h3><p>这一点非常关键。很多 agent 最不靠谱的地方，不是改错了，而是没验证就说自己改对了。nano-codin 会明确阻止这种行为。</p>
+<h3 id="3-Plan-gate，防止直接乱改"><a href="#3-Plan-gate，防止直接乱改" class="headerlink" title="3. Plan gate，防止直接乱改"></a>3. Plan gate，防止直接乱改</h3><p>没有 todo，没有 verification plan，就不允许进入 mutating path。这个约束会显著降低“先动手再想”的失控概率。</p>
+<h3 id="4-Recovery-compression-checkpoint，提升连续性"><a href="#4-Recovery-compression-checkpoint，提升连续性" class="headerlink" title="4. Recovery &#x2F; compression &#x2F; checkpoint，提升连续性"></a>4. Recovery &#x2F; compression &#x2F; checkpoint，提升连续性</h3><p>能否恢复、能否压缩、能否续跑，是我判断一个 agent 是否接近工程化的重要指标。nano-codin 现在虽然还是最小实现，但已经把这三个点都放进了核心流程里。</p>
+<p>说得更直接一点：</p>
+<p><strong>一个会调用模型的 CLI，不一定是 Coding Agent。</strong></p>
+<p><strong>但一个有 phase、gate、memory、recovery、checkpoint 的 CLI，才开始像真正能进工作流的 agent runtime。</strong></p>
+<h2 id="当前还不完美的地方"><a href="#当前还不完美的地方" class="headerlink" title="当前还不完美的地方"></a>当前还不完美的地方</h2><p>当然，它现在离“完整产品”还很远。</p>
+<p>首先，nano-codin 仍然是一个最小化 CLI。它有工程骨架，但还不是完整平台。插件生态、协作能力、扩展协议、长期 memory 策略，都还在很早期的阶段。</p>
+<p>其次，复杂任务的效果仍然高度依赖模型质量和 prompt discipline。系统可以尽量约束 agent，但不能完全替代模型本身的推理质量。</p>
+<p>另外，当前 delegation 还是轻量级只读子任务，不是完整 multi-agent orchestration。这个边界是刻意收敛出来的，但也意味着它暂时不会覆盖所有复杂协作场景。</p>
+<p>我反而觉得，主动承认这些限制很重要。因为工程化不是“什么都能做”，而是“知道自己现阶段该做什么，不该做什么”。</p>
+<h2 id="为什么我会继续做这个项目"><a href="#为什么我会继续做这个项目" class="headerlink" title="为什么我会继续做这个项目"></a>为什么我会继续做这个项目</h2><p>nano-codin 对我来说，不只是一个 side project。</p>
+<p>它更像一个持续演进的实验场。很多我关心的问题，其实都可以在这个项目里验证：</p>
+<ul>
+<li>Coding Agent 的最小可靠内核应该长什么样</li>
+<li>workflow orchestration 应该在哪一层做，做到什么程度</li>
+<li>memory、planning、verification 之间怎样形成稳定闭环</li>
+<li>一个 agent runtime 怎么从“自己能用”走向“团队可复用”</li>
+</ul>
+<p>未来我会继续往几个方向推进：</p>
+<ul>
+<li>更强的 delegation 机制</li>
+<li>更稳定的 execution policy</li>
+<li>更系统化的 memory 设计</li>
+<li>更清晰的 workflow 抽象</li>
+</ul>
+<p>但这些演进，都会建立在现有这个小内核之上，而不是重新堆一个更大的黑盒。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>回到最开始那个问题：既然市面上已经有很多 AI Coding 工具了，为什么我还要自己做一个 Coding Agent？</p>
+<p>我的答案其实很简单。</p>
+<p>因为我想验证的，不是 agent 能不能写代码，而是 <strong>AI Coding 能不能从“会用”推进到“可复用、可规模化、可工程落地”</strong>。</p>
+<p>nano-codin 就是在这个问题上的一次具体实践。</p>
+<p>它还不大，也还不完美，但至少它已经不是一个只会演示的 demo 了。它开始长出 runtime、policy、memory、checkpoint 和 verification 这些真正属于工程系统的部分。</p>
+<p>如果你也在关注 Coding Agent、terminal workflow 或 agent orchestration，欢迎看看这个项目：</p>
+<ul>
+<li>GitHub: <code>https://github.com/xcxyh/nanoCodin</code></li>
+</ul>
+<p>后面我也准备继续写这个系列，把里面一些关键设计单独展开，比如 phase-aware loop、plan gate、verify guard、context compression，以及为什么我对“先把单代理做好”这件事这么执着。</p>
+<p>因为在我看来，这些看起来不那么热闹的工程细节，才是 AI Coding 真正开始落地的地方。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>我做了一个自己的 Coding Agent CLI：nano-codin</div>
+      <div>https://xcxyh.github.io/2026/03/22/我做了一个自己的-Coding-Agent-CLI：nano-codin/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年3月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/07/12/OpenMontage-ChatCut-%E7%81%AB%E4%BA%86-%E4%BB%A5%E5%90%8E%E5%81%9A-AI-%E4%BA%A7%E5%93%81%E5%8F%AF%E8%83%BD%E4%B8%8D%E9%9C%80%E8%A6%81%E5%85%88%E5%81%9A-App/" title="OpenMontage、ChatCut 火了：以后做 AI 产品，可能不需要先做 App">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OpenMontage、ChatCut 火了：以后做 AI 产品，可能不需要先做 App</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/03/17/%E7%94%A8%2050%20%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%8C%E7%9C%8B%E6%87%82%20Claude%20Code%E3%80%81Cursor%20%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/" title="用 50 行代码，看懂 Claude Code / Cursor 的底层原理">
+                        <span class="hidden-mobile">用 50 行代码，看懂 Claude Code / Cursor 的底层原理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

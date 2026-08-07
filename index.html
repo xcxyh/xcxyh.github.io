@@ -1,0 +1,790 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Xiong&#39;s Blogs">
+<meta property="og:url" content="https://xcxyh.github.io/index.html">
+<meta property="og:site_name" content="Xiong&#39;s Blogs">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="xcxyh">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Xiong&#39;s Blogs</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Xiong&#39;s Blogs</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="选择你所爱的，爱你所选择的。"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/08/AI-%E7%9A%84%E8%9B%AE%E8%8D%92%E6%97%B6%E4%BB%A3%E7%BB%93%E6%9D%9F%E4%BA%86%EF%BC%8C%E6%88%91%E4%BB%AC%E8%AF%A5%E5%BC%80%E5%A7%8B%E7%AE%97%E8%B4%A6%E4%BA%86/" target="_self">
+          AI 的蛮荒时代结束了，我们该开始算账了
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/08/AI-%E7%9A%84%E8%9B%AE%E8%8D%92%E6%97%B6%E4%BB%A3%E7%BB%93%E6%9D%9F%E4%BA%86%EF%BC%8C%E6%88%91%E4%BB%AC%E8%AF%A5%E5%BC%80%E5%A7%8B%E7%AE%97%E8%B4%A6%E4%BA%86/" target="_self">
+        <div>
+          最近工作时，我发现自己已经极度依赖 Codex。 写代码用 Codex，查问题用 Codex，遇到线上故障，第一反应还是把上下文扔给 Codex。 以前接手一个需求，我会顺着调用链一点点往下看，把业务逻辑、数据结构和各种边界情况捋清楚。现在很少了。 我对系统还有一个模糊的全局认识，知道大概有哪些模块，数据从哪里来、往哪里走。但再往下的实现细节，很多时候是 Agent 在理解，不是我在理解。 效率当
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-08 12:00" pubdate>
+              2026-08-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI/">#AI</a>
+            
+              <a href="/tags/Agent/">#Agent</a>
+            
+              <a href="/tags/%E8%81%8C%E5%9C%BA/">#职场</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/07/15/%E5%85%B3%E4%BA%8E%E7%90%86%E8%B4%A2%EF%BC%8C%E6%88%91%E6%9B%B4%E5%9C%A8%E6%84%8F%E7%9A%84%E6%98%AF%E4%B8%8D%E8%A2%AB%E9%92%B1%E9%80%BC%E5%88%B0%E5%A2%99%E8%A7%92/" target="_self">
+          普通人理财入门：钱到底应该怎么分配？
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/07/15/%E5%85%B3%E4%BA%8E%E7%90%86%E8%B4%A2%EF%BC%8C%E6%88%91%E6%9B%B4%E5%9C%A8%E6%84%8F%E7%9A%84%E6%98%AF%E4%B8%8D%E8%A2%AB%E9%92%B1%E9%80%BC%E5%88%B0%E5%A2%99%E8%A7%92/" target="_self">
+        <div>
+          这些年断断续续看了一些理财内容，也记了不少词：指数基金、复利、资产配置、保险、良性负债。单独看都懂，放到一起却很容易变成一张采购清单，好像买齐了就叫会理财。 理财不是一次购买行为，也不是想办法把每一块钱都变成收益。它更像是在不断变化的收入、支出和欲望之间找平衡。最后要解决的问题是：遇到意外时不慌，想换工作时有底气，看到市场大涨时不至于头脑发热。 钱不能一直睡觉，但有些钱就该躺着“不要让你的钱睡觉
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-07-15 12:00" pubdate>
+              2026-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%90%86%E8%B4%A2/">#理财</a>
+            
+              <a href="/tags/%E7%94%9F%E6%B4%BB/">#生活</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/07/12/OpenMontage-ChatCut-%E7%81%AB%E4%BA%86-%E4%BB%A5%E5%90%8E%E5%81%9A-AI-%E4%BA%A7%E5%93%81%E5%8F%AF%E8%83%BD%E4%B8%8D%E9%9C%80%E8%A6%81%E5%85%88%E5%81%9A-App/" target="_self">
+          OpenMontage、ChatCut 火了：以后做 AI 产品，可能不需要先做 App
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/07/12/OpenMontage-ChatCut-%E7%81%AB%E4%BA%86-%E4%BB%A5%E5%90%8E%E5%81%9A-AI-%E4%BA%A7%E5%93%81%E5%8F%AF%E8%83%BD%E4%B8%8D%E9%9C%80%E8%A6%81%E5%85%88%E5%81%9A-App/" target="_self">
+        <div>
+          最近两个 AI 视频工具很火： OpenMontage 和 ChatCut。 它们都支持 Codex、Claude Code 这类 Coding Agent。你把视频素材丢进去，说一句：  把这段 47 分钟的访谈剪成一分钟，删掉废话，把冲突最大的观点放到开头，再加上字幕和音乐。  Agent 会自己分析素材、找高光片段、改时间线、加字幕，最后给你一个可以继续修改的视频项目。 我一开始以为，这就是
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-07-12 12:19" pubdate>
+              2026-07-12
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI-Agent-%E4%BA%A7%E5%93%81%E6%80%9D%E8%80%83/">#AI,Agent,产品思考</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/03/22/%E6%88%91%E5%81%9A%E4%BA%86%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84-Coding-Agent-CLI%EF%BC%9Anano-codin/" target="_self">
+          我做了一个自己的 Coding Agent CLI：nano-codin
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/03/22/%E6%88%91%E5%81%9A%E4%BA%86%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84-Coding-Agent-CLI%EF%BC%9Anano-codin/" target="_self">
+        <div>
+          我做了一个自己的 Coding Agent CLI：nano-codin做 AI Coding 这件事，过去一段时间我一直更关心 workflow，而不是单次 demo。 我会长期看各种 agent、编排框架、CLI 工具，也会自己把它们接进真实开发流程里跑。但越用越明显的一点是：很多东西都能“演示会写代码”，却很难真正稳定地进入终端工作流。它们可能很聪明，也可能很炫，但一到持续修改、反复验证、上
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-03-22 19:41" pubdate>
+              2026-03-22
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/03/17/%E7%94%A8%2050%20%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%8C%E7%9C%8B%E6%87%82%20Claude%20Code%E3%80%81Cursor%20%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/" target="_self">
+          用 50 行代码，看懂 Claude Code / Cursor 的底层原理
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/03/17/%E7%94%A8%2050%20%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%8C%E7%9C%8B%E6%87%82%20Claude%20Code%E3%80%81Cursor%20%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/" target="_self">
+        <div>
+          用 50 行代码，看懂 Claude Code &#x2F; Cursor 的底层原理Claude Code、Cursor、Windsurf、Kode…… 这些 AI Coding Agent，你一定用过，或者至少听说过。 它们看起来像“黑科技”：自动改代码、自动分析项目、甚至还能自己拆任务。 但如果你真的拆开它们的实现，会发现一个很反直觉的事实：  它们的核心，其实非常简单。  最近看到一个开源
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-03-17 23:27" pubdate>
+              2026-03-17
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI-Coding/">#AI Coding</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/02/26/%E5%85%BB%E4%BA%86%E4%B8%AAAI%E5%91%98%E5%B7%A5%E5%90%8E-%E6%88%91%E4%B8%8D%E7%94%A8%E6%AF%8F%E5%A4%A9%E6%89%93%E5%BC%80ChatGPT%E4%BA%86/" target="_self">
+          养了个AI员工后，我不用每天打开ChatGPT了
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/02/26/%E5%85%BB%E4%BA%86%E4%B8%AAAI%E5%91%98%E5%B7%A5%E5%90%8E-%E6%88%91%E4%B8%8D%E7%94%A8%E6%AF%8F%E5%A4%A9%E6%89%93%E5%BC%80ChatGPT%E4%BA%86/" target="_self">
+        <div>
+          过去一个月，我做了5个自动化系统。 AI热点雷达：每小时自动扫描全球AI新闻，聚类检测热点，达到阈值就推送。 黄金盯盘：1小时涨跌幅超过2%就告警。我不盯盘，不用打开任何交易软件。 每日AI简报：每天9点自动生成AI新闻简报，推送到飞书。 Todo提醒：每天定时检查Todo列表，未完成的项目主动提醒。 技能系统：用嘴写Skill，定义好工作流，agent自动执行。 用的是什么？OpenClaw。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-02-26 12:00" pubdate>
+              2026-02-26
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI-OpenClaw-%E5%AE%9E%E8%B7%B5%E5%A4%8D%E7%9B%98/">#AI,OpenClaw,实践复盘</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/02/07/OpenClaw-%E6%94%AF%E6%8C%81QQ-Channels%E8%81%8A%E5%A4%A9/" target="_self">
+          OpenClaw 支持QQ Channels聊天
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/02/07/OpenClaw-%E6%94%AF%E6%8C%81QQ-Channels%E8%81%8A%E5%A4%A9/" target="_self">
+        <div>
+          今天发现了一个非常好用的让 OpenClaw 支持 QQ 聊天的插件，地址如下： https://github.com/BytePioneer-AI/openclaw-china/blob/main/doc/guides/qqbot/configuration.md 需要在 QQ 开发平台创建一个个人机器人。支持 单聊，群聊@，频道等消息渠道。 安装方式非常简单，只需要执行： 1openclaw
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-02-07 11:37" pubdate>
+              2026-02-07
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI-OpenClaw/">#AI,OpenClaw</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/02/06/OpenClaw%20%E5%A6%82%E4%BD%95%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E6%8B%A5%E6%9C%89%E4%B8%80%E5%8F%AA%E8%B5%9B%E5%8D%9A%E5%AE%A0%E7%89%A9/" target="_self">
+          OpenClaw: 如何最低成本拥有一只赛博宠物（踩坑无数~纯手打教程）
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/02/06/OpenClaw%20%E5%A6%82%E4%BD%95%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E6%8B%A5%E6%9C%89%E4%B8%80%E5%8F%AA%E8%B5%9B%E5%8D%9A%E5%AE%A0%E7%89%A9/" target="_self">
+        <div>
+          最近 clawdbot 【OpenClaw — Personal AI Assistant】火的一塌糊涂，无数人都想要拥有一个自己的聊天机器人，但是，由于这个项目还在非常初级的阶段，而且又历经三次改名，从 clawdbot 到 moltbot 再到 openclaw 才稳定下来，整个项目配置起来极其麻烦，有各种暗坑。 作为普通人，如何以最低成本拥有一个稳定的属于自己的 24小时待命的赛博宠物呢？
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-02-06 12:28" pubdate>
+              2026-02-06
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI-OpenClaw/">#AI,OpenClaw</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/02/01/Moltbook%E7%88%86%E7%81%AB%E7%9A%84%E8%83%8C%E5%90%8E%E9%83%BD%E6%98%AF%E4%BA%BA%E7%B1%BB%E5%9C%A8%E5%88%B6%E9%80%A0%E6%B7%B7%E4%B9%B1/" target="_self">
+          Moltbook爆火的背后都是人类在制造混乱
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/02/01/Moltbook%E7%88%86%E7%81%AB%E7%9A%84%E8%83%8C%E5%90%8E%E9%83%BD%E6%98%AF%E4%BA%BA%E7%B1%BB%E5%9C%A8%E5%88%B6%E9%80%A0%E6%B7%B7%E4%B9%B1/" target="_self">
+        <div>
+          最近，X 上突然上线的一个叫 Moltbook 的网站爆火了，作用是给 ClawdBot 们一个可以自由交流的社区，一个专属于AI Agents 的游乐园。 短短 2天，所有人都在疯狂刷屏式的介绍它，无数人创建的 Clawdbot 涌向了这个网站，目前上面有超过 150w 的 Ai Agents（当然，这里面是有水分的，有人利用漏洞，批量创建了很多僵尸账号），5w多条帖子，23w+ 评论。足以证明
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-02-01 11:29" pubdate>
+              2026-02-01
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AI/">#AI</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/01/18/How-to-Fix-Your-Entire-Life-in-1-Day/" target="_self">
+          How to Fix Your Entire Life in 1 Day - 转载（译文）
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/01/18/How-to-Fix-Your-Entire-Life-in-1-Day/" target="_self">
+        <div>
+          如果你和我一样，你会觉得新年决心很愚蠢。 因为大多数人改变生活的方式完全错误。他们制定这些决心，因为别人也这么做——我们把地位游戏赋予表面意义——但这些目标并不符合真正改变的要求，而真正改变的意义远比说服自己今年会更有纪律或更有效率。 如果你是这样的人，我不是来贬低你的（我写作时往往有点严厉）。我放弃的目标是我实现的十倍。我认为大多数人应该都是这样。但人们试图改变生活却几乎每次都彻底失败的事实依然
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-01-18 21:24" pubdate>
+              2026-01-18
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%96%87%E7%AB%A0%E8%BD%AC%E8%BD%BD/">#文章转载</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

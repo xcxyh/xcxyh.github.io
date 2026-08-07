@@ -1,0 +1,865 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="用 50 行代码，看懂 Claude Code &#x2F; Cursor 的底层原理Claude Code、Cursor、Windsurf、Kode…… 这些 AI Coding Agent，你一定用过，或者至少听说过。 它们看起来像“黑科技”：自动改代码、自动分析项目、甚至还能自己拆任务。 但如果你真的拆开它们的实现，会发现一个很反直觉的事实：  它们的核心，其实非常简单。  最近看到一个开源">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 50 行代码，看懂 Claude Code &#x2F; Cursor 的底层原理">
+<meta property="og:url" content="https://xcxyh.github.io/2026/03/17/%E7%94%A8%2050%20%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%8C%E7%9C%8B%E6%87%82%20Claude%20Code%E3%80%81Cursor%20%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Xiong&#39;s Blogs">
+<meta property="og:description" content="用 50 行代码，看懂 Claude Code &#x2F; Cursor 的底层原理Claude Code、Cursor、Windsurf、Kode…… 这些 AI Coding Agent，你一定用过，或者至少听说过。 它们看起来像“黑科技”：自动改代码、自动分析项目、甚至还能自己拆任务。 但如果你真的拆开它们的实现，会发现一个很反直觉的事实：  它们的核心，其实非常简单。  最近看到一个开源">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-17T15:27:00.000Z">
+<meta property="article:modified_time" content="2026-03-18T00:53:26.966Z">
+<meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="AI Coding">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>用 50 行代码，看懂 Claude Code / Cursor 的底层原理 - Xiong&#39;s Blogs</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Xiong&#39;s Blogs</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="用 50 行代码，看懂 Claude Code / Cursor 的底层原理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-03-17 23:27" pubdate>
+          2026年3月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">用 50 行代码，看懂 Claude Code / Cursor 的底层原理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="用-50-行代码，看懂-Claude-Code-Cursor-的底层原理"><a href="#用-50-行代码，看懂-Claude-Code-Cursor-的底层原理" class="headerlink" title="用 50 行代码，看懂 Claude Code &#x2F; Cursor 的底层原理"></a>用 50 行代码，看懂 Claude Code &#x2F; Cursor 的底层原理</h1><p>Claude Code、Cursor、Windsurf、Kode……</p>
+<p>这些 AI Coding Agent，你一定用过，或者至少听说过。</p>
+<p>它们看起来像“黑科技”：<br>自动改代码、自动分析项目、甚至还能自己拆任务。</p>
+<p>但如果你真的拆开它们的实现，会发现一个很反直觉的事实：</p>
+<blockquote>
+<p><strong>它们的核心，其实非常简单。</strong></p>
+</blockquote>
+<p>最近看到一个开源项目：<br>👉 <a target="_blank" rel="noopener" href="https://github.com/shareAI-lab/learn-claude-code">https://github.com/shareAI-lab/learn-claude-code</a>  </p>
+<p>它做了一件很有意思的事情：</p>
+<blockquote>
+<p>用 12 个渐进式课程，从 50 行代码开始，带你一步步实现一个 nano 版 Claude Code。</p>
+</blockquote>
+<h2 id="一句话结论"><a href="#一句话结论" class="headerlink" title="一句话结论"></a>一句话结论</h2><p>如果你只记住一句话，那就是：</p>
+<blockquote>
+<p><strong>Agent &#x3D; 一个循环（Loop）+ 一组工具（Tools）</strong></p>
+</blockquote>
+<p>甚至可以再简单一点：</p>
+<blockquote>
+<p><strong>一个 while 循环 + 一个 Bash 工具 &#x3D; 一个可用 Agent</strong></p>
+</blockquote>
+<h1 id="一、Agent-的本质：一个“会思考的循环”"><a href="#一、Agent-的本质：一个“会思考的循环”" class="headerlink" title="一、Agent 的本质：一个“会思考的循环”"></a>一、Agent 的本质：一个“会思考的循环”</h1><p>所有 AI Coding Agent，本质都是同一个执行模式：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs vim"><br>用户输入 → <span class="hljs-keyword">messages</span>（上下文） → LLM → 输出<br>↓<br>是否需要调用工具？<br>↓        ↓<br>是        否<br>↓         ↓<br>执行工具     返回结果<br>↓<br>写回 <span class="hljs-keyword">messages</span><br>↓<br>继续循环<br><br></code></pre></td></tr></table></figure>
+
+<p>用代码表达，大概就是这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">agent_loop</span>(<span class="hljs-params">messages</span>):<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        response = llm(messages, tools)<br><br>        <span class="hljs-keyword">if</span> response.stop_reason != <span class="hljs-string">&quot;tool_use&quot;</span>:<br>            <span class="hljs-keyword">return</span> response<br><br>        <span class="hljs-keyword">for</span> tool_call <span class="hljs-keyword">in</span> response.content:<br>            result = execute_tool(tool_call)<br>            messages.append(result)<br></code></pre></td></tr></table></figure>
+
+<p>就这么简单。</p>
+<h2 id="关键点有三个"><a href="#关键点有三个" class="headerlink" title="关键点有三个"></a>关键点有三个</h2><h3 id="1️⃣-Agent-不是-Prompt，而是-Runtime"><a href="#1️⃣-Agent-不是-Prompt，而是-Runtime" class="headerlink" title="1️⃣ Agent 不是 Prompt，而是 Runtime"></a>1️⃣ Agent 不是 Prompt，而是 Runtime</h3><p>很多人把 Agent 当成“高级 Prompt”。</p>
+<p>其实不是。</p>
+<blockquote>
+<p>Agent 本质是一个“持续运行的系统”。</p>
+</blockquote>
+<p>LLM 只是大脑，而这个循环，才是“生命”。</p>
+<h3 id="2️⃣-LLM-不执行，它只决策"><a href="#2️⃣-LLM-不执行，它只决策" class="headerlink" title="2️⃣ LLM 不执行，它只决策"></a>2️⃣ LLM 不执行，它只决策</h3><p>模型只负责：</p>
+<ul>
+<li>下一步做什么</li>
+<li>要不要调用工具</li>
+</ul>
+<p>真正干活的是：</p>
+<blockquote>
+<p><strong>工具（Tools）</strong></p>
+</blockquote>
+<h3 id="3️⃣-这个循环，其实是一个状态机"><a href="#3️⃣-这个循环，其实是一个状态机" class="headerlink" title="3️⃣ 这个循环，其实是一个状态机"></a>3️⃣ 这个循环，其实是一个状态机</h3><p>你可以把它理解成：</p>
+<blockquote>
+<p>一个“AI 驱动的事件循环”</p>
+</blockquote>
+<h1 id="二、为什么说：Bash-is-All-You-Need"><a href="#二、为什么说：Bash-is-All-You-Need" class="headerlink" title="二、为什么说：Bash is All You Need"></a>二、为什么说：Bash is All You Need</h1><p>项目里有一句非常经典的话：</p>
+<blockquote>
+<p><strong>The model is 80%. Code is 20%.</strong></p>
+</blockquote>
+<p>翻译一下就是：</p>
+<ul>
+<li>模型已经很聪明了</li>
+<li>你只需要给它“手”</li>
+</ul>
+<h2 id="为什么只给一个-Bash-工具就够？"><a href="#为什么只给一个-Bash-工具就够？" class="headerlink" title="为什么只给一个 Bash 工具就够？"></a>为什么只给一个 Bash 工具就够？</h2><p>因为 Bash 本质是一个“万能执行器”：</p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>读文件</td>
+<td><code>cat file.txt</code></td>
+</tr>
+<tr>
+<td>写文件</td>
+<td><code>echo &quot;xxx&quot; &gt; file.txt</code></td>
+</tr>
+<tr>
+<td>搜索代码</td>
+<td><code>grep -r &quot;xxx&quot;</code></td>
+</tr>
+<tr>
+<td>执行脚本</td>
+<td><code>python main.py</code></td>
+</tr>
+<tr>
+<td>安装依赖</td>
+<td><code>npm install</code></td>
+</tr>
+</tbody></table>
+<p>也就是说：</p>
+<blockquote>
+<p><strong>一个 Bash &#x3D; 所有工具</strong></p>
+</blockquote>
+<p>模型会自己组合这些能力，完成复杂任务。</p>
+<h2 id="一个重要的转变"><a href="#一个重要的转变" class="headerlink" title="一个重要的转变"></a>一个重要的转变</h2><p>传统开发：</p>
+<blockquote>
+<p>代码 &#x3D; 逻辑</p>
+</blockquote>
+<p>Agent 时代：</p>
+<blockquote>
+<p>模型 &#x3D; 逻辑<br>工具 &#x3D; 能力<br>代码 &#x3D; 边界</p>
+</blockquote>
+<h1 id="三、12-个-Session，其实是在搭一个“Agent-操作系统”"><a href="#三、12-个-Session，其实是在搭一个“Agent-操作系统”" class="headerlink" title="三、12 个 Session，其实是在搭一个“Agent 操作系统”"></a>三、12 个 Session，其实是在搭一个“Agent 操作系统”</h1><p>这个项目最厉害的地方，不是 demo，而是它的设计方式：</p>
+<p>👉 <strong>每一节课，只加一个能力</strong></p>
+<h2 id="Phase-1：最小-Agent"><a href="#Phase-1：最小-Agent" class="headerlink" title="Phase 1：最小 Agent"></a>Phase 1：最小 Agent</h2><table>
+<thead>
+<tr>
+<th>Session</th>
+<th>做了什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s01</td>
+<td>写一个循环</td>
+</tr>
+<tr>
+<td>s02</td>
+<td>加工具</td>
+</tr>
+</tbody></table>
+<p>👉 得到一个“能跑”的 Agent</p>
+<h2 id="Phase-2：让-Agent-变聪明"><a href="#Phase-2：让-Agent-变聪明" class="headerlink" title="Phase 2：让 Agent 变聪明"></a>Phase 2：让 Agent 变聪明</h2><table>
+<thead>
+<tr>
+<th>Session</th>
+<th>核心能力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s03</td>
+<td>任务拆解（Todo）</td>
+</tr>
+<tr>
+<td>s04</td>
+<td>子 Agent（隔离上下文）</td>
+</tr>
+<tr>
+<td>s05</td>
+<td>按需加载知识</td>
+</tr>
+<tr>
+<td>s06</td>
+<td>上下文压缩</td>
+</tr>
+</tbody></table>
+<p>👉 解决一个核心问题：</p>
+<blockquote>
+<p><strong>上下文会爆炸</strong></p>
+</blockquote>
+<h2 id="Phase-3：让-Agent-变成系统"><a href="#Phase-3：让-Agent-变成系统" class="headerlink" title="Phase 3：让 Agent 变成系统"></a>Phase 3：让 Agent 变成系统</h2><table>
+<thead>
+<tr>
+<th>Session</th>
+<th>核心能力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s07</td>
+<td>任务持久化</td>
+</tr>
+<tr>
+<td>s08</td>
+<td>后台执行</td>
+</tr>
+</tbody></table>
+<p>👉 从“函数调用”变成“系统”</p>
+<h2 id="Phase-4：多-Agent-协作"><a href="#Phase-4：多-Agent-协作" class="headerlink" title="Phase 4：多 Agent 协作"></a>Phase 4：多 Agent 协作</h2><table>
+<thead>
+<tr>
+<th>Session</th>
+<th>核心能力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s09</td>
+<td>分工</td>
+</tr>
+<tr>
+<td>s10</td>
+<td>通信协议</td>
+</tr>
+<tr>
+<td>s11</td>
+<td>自主抢任务</td>
+</tr>
+<tr>
+<td>s12</td>
+<td>目录隔离（Worktree）</td>
+</tr>
+</tbody></table>
+<p>👉 最终形态：</p>
+<blockquote>
+<p>一个“Agent 团队”</p>
+</blockquote>
+<h1 id="四、这个项目真正教你的-4-件事"><a href="#四、这个项目真正教你的-4-件事" class="headerlink" title="四、这个项目真正教你的 4 件事"></a>四、这个项目真正教你的 4 件事</h1><h2 id="1️⃣-Loop-才是核心"><a href="#1️⃣-Loop-才是核心" class="headerlink" title="1️⃣ Loop 才是核心"></a>1️⃣ Loop 才是核心</h2><p>Agent ≠ Prompt<br>Agent &#x3D; <strong>运行时系统</strong></p>
+<h2 id="2️⃣-Tool-决定能力边界"><a href="#2️⃣-Tool-决定能力边界" class="headerlink" title="2️⃣ Tool 决定能力边界"></a>2️⃣ Tool 决定能力边界</h2><p>你不是在写代码，而是在定义：</p>
+<ul>
+<li>它能做什么</li>
+<li>它怎么做</li>
+</ul>
+<h2 id="3️⃣-Context-是资源"><a href="#3️⃣-Context-是资源" class="headerlink" title="3️⃣ Context 是资源"></a>3️⃣ Context 是资源</h2><p>不是越多越好，而是要管理：</p>
+<ul>
+<li>压缩</li>
+<li>分层</li>
+<li>按需加载</li>
+</ul>
+<h2 id="4️⃣-Agent-本质是系统"><a href="#4️⃣-Agent-本质是系统" class="headerlink" title="4️⃣ Agent 本质是系统"></a>4️⃣ Agent 本质是系统</h2><p>当你走到 s07 以后，你会发现：</p>
+<ul>
+<li>有任务</li>
+<li>有状态</li>
+<li>有调度</li>
+</ul>
+<p>这已经不是函数了，而是：</p>
+<blockquote>
+<p><strong>一个轻量操作系统</strong></p>
+</blockquote>
+<h1 id="五、为什么这个项目值得看"><a href="#五、为什么这个项目值得看" class="headerlink" title="五、为什么这个项目值得看"></a>五、为什么这个项目值得看</h1><p>很多人用 Claude Code &#x2F; Cursor：</p>
+<blockquote>
+<p>觉得很强，但不知道它在干嘛</p>
+</blockquote>
+<p>这个项目做了一件很关键的事情：</p>
+<blockquote>
+<p><strong>把 Agent 从“黑盒”拆成“透明结构”</strong></p>
+</blockquote>
+<p>你不需要读几万行源码，只需要：</p>
+<ul>
+<li>50 行理解 Loop</li>
+<li>每一节理解一个能力</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>如果用一句话总结：</p>
+<blockquote>
+<p><strong>LLM 本身已经是 Agent，你只是给它一个身体。</strong></p>
+</blockquote>
+<p>你要做的事情其实只有三件：</p>
+<ul>
+<li>给它工具</li>
+<li>给它循环</li>
+<li>别挡它</li>
+</ul>
+<h1 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h1><p>GitHub：<br><a target="_blank" rel="noopener" href="https://github.com/shareAI-lab/learn-claude-code">https://github.com/shareAI-lab/learn-claude-code</a></p>
+<p>在线学习：<br><a target="_blank" rel="noopener" href="https://learn.shareai.run/zh/">https://learn.shareai.run/zh/</a></p>
+<blockquote>
+<p><strong>Bash is all you need.<br>The model is the agent.</strong></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI-Coding/" class="print-no-link">#AI Coding</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>用 50 行代码，看懂 Claude Code / Cursor 的底层原理</div>
+      <div>https://xcxyh.github.io/2026/03/17/用 50 行代码，看懂 Claude Code、Cursor 的底层原理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年3月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/03/22/%E6%88%91%E5%81%9A%E4%BA%86%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84-Coding-Agent-CLI%EF%BC%9Anano-codin/" title="我做了一个自己的 Coding Agent CLI：nano-codin">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">我做了一个自己的 Coding Agent CLI：nano-codin</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/26/%E5%85%BB%E4%BA%86%E4%B8%AAAI%E5%91%98%E5%B7%A5%E5%90%8E-%E6%88%91%E4%B8%8D%E7%94%A8%E6%AF%8F%E5%A4%A9%E6%89%93%E5%BC%80ChatGPT%E4%BA%86/" title="养了个AI员工后，我不用每天打开ChatGPT了">
+                        <span class="hidden-mobile">养了个AI员工后，我不用每天打开ChatGPT了</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

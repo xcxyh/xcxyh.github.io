@@ -1,0 +1,887 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最近 clawdbot 【OpenClaw — Personal AI Assistant】火的一塌糊涂，无数人都想要拥有一个自己的聊天机器人，但是，由于这个项目还在非常初级的阶段，而且又历经三次改名，从 clawdbot 到 moltbot 再到 openclaw 才稳定下来，整个项目配置起来极其麻烦，有各种暗坑。 作为普通人，如何以最低成本拥有一个稳定的属于自己的 24小时待命的赛博宠物呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenClaw: 如何最低成本拥有一只赛博宠物（踩坑无数~纯手打教程）">
+<meta property="og:url" content="https://xcxyh.github.io/2026/02/06/OpenClaw%20%E5%A6%82%E4%BD%95%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E6%8B%A5%E6%9C%89%E4%B8%80%E5%8F%AA%E8%B5%9B%E5%8D%9A%E5%AE%A0%E7%89%A9/index.html">
+<meta property="og:site_name" content="Xiong&#39;s Blogs">
+<meta property="og:description" content="最近 clawdbot 【OpenClaw — Personal AI Assistant】火的一塌糊涂，无数人都想要拥有一个自己的聊天机器人，但是，由于这个项目还在非常初级的阶段，而且又历经三次改名，从 clawdbot 到 moltbot 再到 openclaw 才稳定下来，整个项目配置起来极其麻烦，有各种暗坑。 作为普通人，如何以最低成本拥有一个稳定的属于自己的 24小时待命的赛博宠物呢？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061925446.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061945444.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061946367.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061947584.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061948615.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061948673.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061950185.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062000435.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062011124.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062013038.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062029284.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062032883.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062033659.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062033230.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062034183.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062035948.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062035032.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062038879.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062039900.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062040572.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062040152.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062041587.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062220770.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062044294.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062047110.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062052683.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062050573.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062056393.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062059106.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062102416.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062104503.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062104470.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062106741.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062107755.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062108304.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062108047.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062109699.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062122379.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062124238.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062126349.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062129772.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062133089.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062137390.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062212357.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062152070.png">
+<meta property="article:published_time" content="2026-02-06T04:28:30.000Z">
+<meta property="article:modified_time" content="2026-03-01T03:24:10.171Z">
+<meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="AI,OpenClaw">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061925446.png">
+  
+  
+  
+  <title>OpenClaw: 如何最低成本拥有一只赛博宠物（踩坑无数~纯手打教程） - Xiong&#39;s Blogs</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Xiong&#39;s Blogs</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OpenClaw: 如何最低成本拥有一只赛博宠物（踩坑无数~纯手打教程）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-02-06 12:28" pubdate>
+          2026年2月6日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OpenClaw: 如何最低成本拥有一只赛博宠物（踩坑无数~纯手打教程）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>最近 clawdbot 【<a target="_blank" rel="noopener" href="https://openclaw.ai/">OpenClaw — Personal AI Assistant</a>】火的一塌糊涂，无数人都想要拥有一个自己的聊天机器人，但是，由于这个项目还在非常初级的阶段，而且又历经三次改名，从 clawdbot 到 moltbot 再到 openclaw 才稳定下来，整个项目配置起来极其麻烦，有各种暗坑。</p>
+<p>作为普通人，如何以最低成本拥有一个稳定的属于自己的 24小时待命的赛博宠物呢？</p>
+<p>我探索出了一套成本极低的部署方案，那就是：亚马逊云服务器 + Minimax Coding Plan + 飞书应用 的部署方案。</p>
+<p>为啥选择这套方案？</p>
+<p>虽然说国内三大厂商迅速跟进，腾讯云、阿里云、火山引擎都出了自己的一键部署 bot的服务器方案，但是这三家的服务器都是 丐中丐版本的 2G 运行内存的实例，随便装点复杂的功能都没法用，而且网络环境又差，一些开源项目在github上，要下载都是龟速。</p>
+<p>而且由于 openclaw 更新太太太频繁了，这些云厂商的构建脚本刚出来基本就过时要换了，火山云的构建脚本就从 clawdbot 、moltbot 到 openclaw 改了好几次。</p>
+<p>经过我将三家厂商尝试了个遍的惨痛经历，最终我选择了亚马逊云部署。</p>
+<p>亚马逊云实例的优点：</p>
+<ol>
+<li>新用户选择 free plan，180 天 100 刀额度，而且不升级plan不会扣费。相当于半年免费。</li>
+<li>亚马逊云免费套餐 可以选择 2核8G运行内存的 实例，硬盘存储空间也大。比 国内的 丐中丐 云服务器强太多。</li>
+<li>网络环境极好，什么都可以下载，下载速度非常快。</li>
+</ol>
+<p>再说为什么选择 Minimax Coding Plan，因为对于 clawdbot 来说，实际使用你就会发现，这个东西非常消耗token，如果使用国内云服务器厂商提供的按量计费的方案，token消耗速度非常快，一天几十块就没了。Minimax Coding Plan 按月订阅， 按照使用额度计费，5小时 额度自动重置，省钱，巨省钱。除了订阅费，不用额外买token。</p>
+<p>最后，选择飞书就很容易理解了，飞书机器人创建简单，而且 飞书支持的消息格式丰富，再加上 openclaw 最近刚刚官方支持了 社区版最好用的 飞书插件（2k star 的那个），直接按照指引安装即可。</p>
+<h2 id="亚马逊云云服务器（Free-Plan）"><a href="#亚马逊云云服务器（Free-Plan）" class="headerlink" title="亚马逊云云服务器（Free Plan）"></a>亚马逊云云服务器（Free Plan）</h2><p>开始前的准备：</p>
+<ol>
+<li>一个良好的网络环境🙂。</li>
+<li>一个邮箱。</li>
+<li>一个国内手机号 + 国内信用卡&#x2F;借记卡 都行。</li>
+</ol>
+<p>新用户注册绑卡后即可免费使用。作为老牌云服务器提供商，亚马逊云给新用户提供了 free plan ，100 US 的免费额度：</p>
+<p>注册链接：<a target="_blank" rel="noopener" href="https://signin.aws.amazon.com/signup?request_type=register">AWS Console - Signup</a></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061925446.png" srcset="/img/loading.gif" lazyload alt="image-20260206192501990"></p>
+<p>注册过程很简单，按照指示操作即可，信用卡地址随便填国内的就行，国内手机号可以收短信验证。</p>
+<p>登录后，来到首页，选择 EC2，创建云服务器实例。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061945444.png" srcset="/img/loading.gif" lazyload alt="image-20260206194503800"></p>
+<p>左侧选择实例，启动新实例。新建名称，选择 linux 服务器。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061946367.png" srcset="/img/loading.gif" lazyload alt="image-20260206194614681"></p>
+<p>注意，这里实例类型我们选最大的 8 G 的那个：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061947584.png" srcset="/img/loading.gif" lazyload alt="image-20260206194710832"></p>
+<p>然后创建一个密钥对，用于登录，这时会下载一个 pem 文件，保存好，后续从本地电脑连接服务器要用。（服务器的钥匙）</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061948615.png" srcset="/img/loading.gif" lazyload alt="image-20260206194804145"></p>
+<p>最后，配置存储，这里我们选 100G，然后其他都是默认不用填，直接点击启动实例就创建好了。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061948673.png" srcset="/img/loading.gif" lazyload alt="image-20260206194839321"></p>
+<p>最后，来到实例管理页面，选择要连接的实例，连接即可登录进入，直接点连接，登录进去，看到命令行页面就成功了，这一步就完成了。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602061950185.png" srcset="/img/loading.gif" lazyload alt="image-20260206195039817"></p>
+<h2 id="MiniMax-Coding-plan"><a href="#MiniMax-Coding-plan" class="headerlink" title="MiniMax Coding plan"></a>MiniMax Coding plan</h2><p>Clawdbot 作为一个 Agent，需要配置一个 LLM 大模型，使用过程中会消耗大量token，所以这里是我们唯一需要花钱的一步。这里我们选择 minimax，量大，便宜。打开 <a target="_blank" rel="noopener" href="https://platform.minimaxi.com/subscribe/coding-plan?code=hGjTEmSvw2&source=link%EF%BC%8C%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95%E3%80%82%E7%84%B6%E5%90%8E%E9%80%89%E6%8B%A9">https://platform.minimaxi.com/subscribe/coding-plan?code=hGjTEmSvw2&amp;source=link，注册登录。然后选择</a> 订阅 coding plan。<a target="_blank" rel="noopener" href="https://platform.minimaxi.com/subscribe/coding-plan">Coding Plan - MiniMax API 平台</a>。</p>
+<p>选择 Starter 套餐，一个月的花费算是非常便宜的了。购买后来到账户管理页面，看到coding plan 的当前使用情况就证明ok了，什么都不用操作，这一步就完成了。然后来到 请求限制，开启一下限流预警，这里开启之后快用超了，就会提醒的。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062000435.png" srcset="/img/loading.gif" lazyload alt="image-20260206200025108"></p>
+<p>这里顺便解释一下minimax coding plan 套餐的计费逻辑：40 prompts 每 5 小时</p>
+<p>这里的 <strong>prompt</strong> 一般是指一次完整的模型调用请求，而不是单纯的一条聊天消息。多次交互算一次prompt，良心！</p>
+<ul>
+<li><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062011124.png" srcset="/img/loading.gif" lazyload alt="image-20260206201130932"></li>
+</ul>
+<p>也就是说：</p>
+<p>👉 <strong>你在 5 小时内最多可以发起 40 次模型请求</strong></p>
+<p>无论请求大小，只按“次数”计数。这里可以理解为 clawdbot 真正调用 llm 的那一次完整的请求。</p>
+<p>而且， 5小时 的计算是 <strong>滚动时间窗口（rolling window）</strong>，从你发送第一个 prompt 开始，系统会向后滚动计算 5 小时的窗口。</p>
+<p>5小时 40次，大部分场景够用了。</p>
+<p>这种计费逻辑对于使用 clawdbot 这种 Agent 是比较友好的，省钱。因为Agent每轮的交互都会携带很多上下文和指令，单次token消耗大。</p>
+<h2 id="OpenClaw-安装"><a href="#OpenClaw-安装" class="headerlink" title="OpenClaw 安装"></a>OpenClaw 安装</h2><p>来到官网<a target="_blank" rel="noopener" href="https://openclaw.ai/">OpenClaw — Personal AI Assistant</a>，复制 curl ，回到 云服务器 控制台界面执行。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062013038.png" srcset="/img/loading.gif" lazyload alt="image-20260206201345649"></p>
+<p>直接执行，这个安装脚本写的也非常烂，普通人跟着跑一遍，基本都会遇到很多坑。这里我记录下怎么解决。</p>
+<p>运行完成之后，等待一段时间：会有这样的一个提示，第一个坑点，不解决后续会遇到 openclaw 命令找不到的情况。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062029284.png" srcset="/img/loading.gif" lazyload alt="image-20260206202931468"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> PATH=<span class="hljs-string">&quot;/home/ec2-user/.npm-global/bin:\/home/ec2-user/.npm-global/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin&quot;</span><br><span class="hljs-built_in">source</span> ~/.bashrc<br></code></pre></td></tr></table></figure>
+
+<p>这里先不管，等一切安装成功之后，再执行以上命令。接下来跟着我一步步操作即可。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062032883.png" srcset="/img/loading.gif" lazyload alt="image-20260206203249723"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062033659.png" srcset="/img/loading.gif" lazyload alt="image-20260206203316030"></p>
+<p>模型选择 minimax：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062033230.png" srcset="/img/loading.gif" lazyload alt="image-20260206203345928"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062034183.png" srcset="/img/loading.gif" lazyload alt="image-20260206203405115"></p>
+<p>然后选 第一个oauth，回车，这里不要按 ESC 或者 Ctrl + C，不然就退出了，又得重新来。这里 endpoint 选 cn。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062035948.png" srcset="/img/loading.gif" lazyload alt="image-20260206203513919"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062035032.png" srcset="/img/loading.gif" lazyload alt="image-20260206203552854"></p>
+<p>然后鼠标右键复制（不要用  Ctrl + C）出来这个连接，浏览器打开授权即可。授权成功返回继续。选择第一个 keep current。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062038879.png" srcset="/img/loading.gif" lazyload alt="image-20260206203840554"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062039900.png" srcset="/img/loading.gif" lazyload alt="image-20260206203920828"></p>
+<p>channel 这里选择飞书进行安装：回车</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062040572.png" srcset="/img/loading.gif" lazyload alt="image-20260206204019787"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062040152.png" srcset="/img/loading.gif" lazyload alt="image-20260206204046162"></p>
+<p>这里是skills ，先跳过吧，暂时用不上，后续装就行了。选 No</p>
+<p> <img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062041587.png" srcset="/img/loading.gif" lazyload alt="image-20260206204133464"></p>
+<p>到这里，bot 就安装完成了，这里的意思是，你想怎么使用 clawdbot，这里提供了 两种方式，一种 是 TUI （命令行模式），一种是webui，通过网页chat 页面的形式来使用。这里我们就不使用了，先把环境装好。选 do this later</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062220770.png" srcset="/img/loading.gif" lazyload alt="image-20260206204315090"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062044294.png" srcset="/img/loading.gif" lazyload alt="image-20260206204429171"></p>
+<p>到这里就装好了，现在来解决两个问题：</p>
+<ol>
+<li>openclaw 命令找不到问题：</li>
+</ol>
+<p>直接执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> PATH=<span class="hljs-string">&quot;/home/ec2-user/.npm-global/bin:\/home/ec2-user/.npm-global/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin&quot;</span><br><span class="hljs-built_in">source</span> ~/.bashrc<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>如何连接 openclaw dashborad</li>
+</ol>
+<p>首先在命令行输入：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">openclaw dashboard</span><br></code></pre></td></tr></table></figure>
+
+<p>然后直接复制连接在浏览器访问url，发现访问不了，这时，我们上面下载的 pem 就有用了，</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062047110.png" srcset="/img/loading.gif" lazyload alt="image-20260206204749222"></p>
+<p>在 自己的本地电脑上执行以下命令（而不是服务器上）</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062052683.png" srcset="/img/loading.gif" lazyload alt="image-20260206205220498"></p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nix">ssh <span class="hljs-operator">-</span>i <span class="hljs-string">&quot;C:<span class="hljs-char escape_">\U</span>sers<span class="hljs-char escape_">\A</span>dministrator<span class="hljs-char escape_">\D</span>ownloads<span class="hljs-char escape_">\m</span>y-esc.pem&quot;</span> <span class="hljs-operator">-</span>N <span class="hljs-operator">-</span>L <span class="hljs-number">18789</span>:<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">18789</span> ec2-user@你的服务器公网ip<br></code></pre></td></tr></table></figure>
+
+<p>这里 需要改成你的 pem 文件路径，和 你的 服务器公网ip（在云服务器的下方就可以看到一个 publicips 就是它）</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062050573.png" srcset="/img/loading.gif" lazyload alt="image-20260206205038514"></p>
+<p>连接之后，刷新一下刚才的浏览器页面，可以正常访问了：到这里就安装完成了，可以去chat 里面跟它对话。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062056393.png" srcset="/img/loading.gif" lazyload alt="image-20260206205626898"></p>
+<h2 id="飞书-Channels-配置"><a href="#飞书-Channels-配置" class="headerlink" title="飞书 Channels 配置"></a>飞书 Channels 配置</h2><p>首先，我们先去飞书开发者后台创建一个自己的机器人应用：（非常简单，就两步）<a target="_blank" rel="noopener" href="https://open.feishu.cn/app">https://open.feishu.cn/app</a></p>
+<ol>
+<li>创建应用。应用图标，名称都可以自定义。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062059106.png" srcset="/img/loading.gif" lazyload alt="image-20260206205936903"></p>
+<ol start="2">
+<li>点击机器人进入 权限管理，点击导入权限，复制以下内容进去，开通即可。开通之后，提示需要发布，直接发布即可。</li>
+</ol>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs prolog">&#123;<br>  <span class="hljs-string">&quot;scopes&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;tenant&quot;</span>: [<br>      <span class="hljs-string">&quot;aily:file:read&quot;</span>,<br>      <span class="hljs-string">&quot;aily:file:write&quot;</span>,<br>      <span class="hljs-string">&quot;application:application.app_message_stats.overview:readonly&quot;</span>,<br>      <span class="hljs-string">&quot;application:application:self_manage&quot;</span>,<br>      <span class="hljs-string">&quot;application:bot.menu:write&quot;</span>,<br>      <span class="hljs-string">&quot;contact:user.employee_id:readonly&quot;</span>,<br>      <span class="hljs-string">&quot;corehr:file:download&quot;</span>,<br>      <span class="hljs-string">&quot;docx:document:readonly&quot;</span>,<br>      <span class="hljs-string">&quot;event:ip_list&quot;</span>,<br>      <span class="hljs-string">&quot;im:chat.access_event.bot_p2p_chat:read&quot;</span>,<br>      <span class="hljs-string">&quot;im:chat.members:bot_access&quot;</span>,<br>      <span class="hljs-string">&quot;im:chat:read&quot;</span>,<br>      <span class="hljs-string">&quot;im:chat:update&quot;</span>,<br>      <span class="hljs-string">&quot;im:message&quot;</span>,<br>      <span class="hljs-string">&quot;im:message.group_at_msg:readonly&quot;</span>,<br>      <span class="hljs-string">&quot;im:message.p2p_msg:readonly&quot;</span>,<br>      <span class="hljs-string">&quot;im:message.pins:read&quot;</span>,<br>      <span class="hljs-string">&quot;im:message.pins:write_only&quot;</span>,<br>      <span class="hljs-string">&quot;im:message.reactions:read&quot;</span>,<br>      <span class="hljs-string">&quot;im:message.reactions:write_only&quot;</span>,<br>      <span class="hljs-string">&quot;im:message:readonly&quot;</span>,<br>      <span class="hljs-string">&quot;im:message:recall&quot;</span>,<br>      <span class="hljs-string">&quot;im:message:send_as_bot&quot;</span>,<br>      <span class="hljs-string">&quot;im:message:send_multi_users&quot;</span>,<br>      <span class="hljs-string">&quot;im:message:send_sys_msg&quot;</span>,<br>      <span class="hljs-string">&quot;im:message:update&quot;</span>,<br>      <span class="hljs-string">&quot;im:resource&quot;</span><br>    ],<br>    <span class="hljs-string">&quot;user&quot;</span>: [<br>      <span class="hljs-string">&quot;aily:file:read&quot;</span>,<br>      <span class="hljs-string">&quot;aily:file:write&quot;</span>,<br>      <span class="hljs-string">&quot;base:record:retrieve&quot;</span>,<br>      <span class="hljs-string">&quot;contact:contact.base:readonly&quot;</span>,<br>      <span class="hljs-string">&quot;contact:user.employee_id:readonly&quot;</span>,<br>      <span class="hljs-string">&quot;docs:document.content:read&quot;</span>,<br>      <span class="hljs-string">&quot;docx:document:readonly&quot;</span>,<br>      <span class="hljs-string">&quot;im:chat.access_event.bot_p2p_chat:read&quot;</span>,<br>      <span class="hljs-string">&quot;search:docs:read&quot;</span>,<br>      <span class="hljs-string">&quot;sheets:spreadsheet.meta:read&quot;</span>,<br>      <span class="hljs-string">&quot;sheets:spreadsheet:read&quot;</span>,<br>      <span class="hljs-string">&quot;wiki:node:read&quot;</span>,<br>      <span class="hljs-string">&quot;wiki:wiki:readonly&quot;</span><br>    ]<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后记下这里的 app id 和 app secret，后面配置要用。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062102416.png" srcset="/img/loading.gif" lazyload alt="image-20260206210248124"></p>
+<p>然后，回到服务器，输入 openclaw channels add</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062104503.png" srcset="/img/loading.gif" lazyload alt="image-20260206210423569"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062104470.png" srcset="/img/loading.gif" lazyload alt="image-20260206210440451"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062106741.png" srcset="/img/loading.gif" lazyload alt="image-20260206210609734"></p>
+<p>account id 先随便写，选 飞书 china，然后输入 app id 和 app secret</p>
+<p>最后回到这个页面，移动到 finished ，点击回车。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062107755.png" srcset="/img/loading.gif" lazyload alt="image-20260206210739680"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062108304.png" srcset="/img/loading.gif" lazyload alt="image-20260206210817125"></p>
+<p>这里开始配对，然后这里就完成了</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062108047.png" srcset="/img/loading.gif" lazyload alt="image-20260206210847823"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062109699.png" srcset="/img/loading.gif" lazyload alt="image-20260206210909624"></p>
+<p>最后一步，输入 openclaw gateway restart 重启一下 openclaw，跟飞书机器人建立连接。这样才能在 飞书机器人页面上去开通事件与回调。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062122379.png" srcset="/img/loading.gif" lazyload alt="image-20260206212208184"></p>
+<p>选择使用长连接，保存，然后 添加事件 im.message.receive_v1 ，最后，一定要再发布一次应用，不然不生效。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062124238.png" srcset="/img/loading.gif" lazyload alt="image-20260206212401020"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062126349.png" srcset="/img/loading.gif" lazyload alt="image-20260206212622098"></p>
+<p>这里，就已经配置完成了，然后我们将 飞书机器人和clawdbot 进行配对。</p>
+<ol>
+<li>先在飞书上找到这个机器人，发送一条消息给机器人。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062129772.png" srcset="/img/loading.gif" lazyload alt="image-20260206212956437"></p>
+<ol start="2">
+<li>然后 拿到 pairing code，到 服务器命令行中执行命令：openclaw pairing approve feishu 2DM42xxx 即可完成。</li>
+</ol>
+<p>连接成功，可以随意发消息啦。</p>
+<p>最后，运行下 openclaw update ，更新到最新版本 openclaw ，使用最新的 飞书插件即可~。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062133089.png" srcset="/img/loading.gif" lazyload alt="image-20260206213305880"></p>
+<h2 id="设定聊天机器人人设"><a href="#设定聊天机器人人设" class="headerlink" title="设定聊天机器人人设"></a>设定聊天机器人人设</h2><p>可以通过聊天建立 bot 的人设，也可以去到 dashboard 页面进行手动配置和修改：这些内容我们都可以自定义。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062137390.png" srcset="/img/loading.gif" lazyload alt="image-20260206213702219"></p>
+<p>以下是 OpenClaw 自己的介绍：</p>
+<p>这些是OpenClaw工作区的配置文件，我来简单说明一下：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AGENTS.md</td>
+<td>工作区手册 — 告诉我如何在这里工作，比如内存管理、心跳检查、群聊礼仪等</td>
+</tr>
+<tr>
+<td>SOUL.md</td>
+<td>灵魂文件 — 定义我的核心性格、价值观和行为准则</td>
+</tr>
+<tr>
+<td>IDENTITY.md</td>
+<td>身份卡 — 我的名字、是什么类型的生物、风格、emoji头像等</td>
+</tr>
+<tr>
+<td>USER.md</td>
+<td>用户档案 — 记录你的信息、偏好、项目背景等</td>
+</tr>
+<tr>
+<td>TOOLS.md</td>
+<td>工具笔记 — 本地设备配置（SSH、摄像头、TTS等）的速查表</td>
+</tr>
+<tr>
+<td>HEARTBEAT.md</td>
+<td>心跳任务 — 周期性后台检查（邮件、日历、天气等），为空则不检查</td>
+</tr>
+<tr>
+<td>BOOTSTRAP.md</td>
+<td>首次启动引导 — 第一次运行时帮我认识自己和你，然后会删除</td>
+</tr>
+</tbody></table>
+<p>核心逻辑：</p>
+<p>• AGENTS.md + SOUL.md &#x3D; 我的”使用说明书”<br>• IDENTITY.md + USER.md &#x3D; 我们俩的互相认识<br>• memory&#x2F; 文件夹 &#x3D; 长期和短期记忆（类似人类的记事本）<br>每次会话开始，我会先读取这些文件来”醒来”。</p>
+<h2 id="安装自定义-skills"><a href="#安装自定义-skills" class="headerlink" title="安装自定义 skills"></a>安装自定义 skills</h2><p>然后就可以通过bot 安装一些自定义的 skills 来建设一些能力了~。</p>
+<p>这里我推荐三个能力：</p>
+<ol>
+<li><p>火山引擎 融合信息搜索，用于替代 自带的 web search skill，那个需要配置 brave search，没有api key 用不了。</p>
+</li>
+<li><p>火山引擎 豆包 seedream 4.5 生图，用于替代自带的 nano banana pro 生图，如果你有 则不用配置，直接配置 nano banana 就行。</p>
+</li>
+<li><p>火山引擎 豆包 seedance 1.5 pro 生视频。</p>
+</li>
+</ol>
+<p>安装过程中，有什么问题都可以让 bot 来解决。还是非常简单的。</p>
+<p>可以直接 输入以下命令快捷安装以上三个 skill：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">帮我安装这个仓库中的skills：https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/xcxyh/my</span>-custom-skills，并引导我获取相关配置api key，直到安装并测试成功。<br></code></pre></td></tr></table></figure>
+
+<p>火山模型开通页面：<a target="_blank" rel="noopener" href="https://console.volcengine.com/ark/region:ark+cn-beijing/openManagement?LLM=%7B%7D&advancedActiveKey=model">火山方舟管理控制台</a></p>
+<p>火山生图生视频apikey管理页面：<a target="_blank" rel="noopener" href="https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey">火山方舟管理控制台</a></p>
+<p>火山融合信息搜索api key管理页面：<a target="_blank" rel="noopener" href="https://console.volcengine.com/ask-echo/api-key">火山引擎控制台</a>，如下，这里入口隐藏太深。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062212357.png" srcset="/img/loading.gif" lazyload alt="image-20260206221242170"></p>
+<h2 id="它可以干啥"><a href="#它可以干啥" class="headerlink" title="它可以干啥"></a>它可以干啥</h2><ol>
+<li>跑一些定时任务，例如总结、日报等</li>
+<li>盯盘，也是定时任务。</li>
+<li>安装一些skills，自动写文章、剪视频、发布 公众号、小红书等等。</li>
+<li>整理邮件，关联日程，自动回复等等</li>
+<li>指挥 其他 coding agent 写代码等等，不要用它来直接写代码，太费token了，这个bot 贼墨迹。</li>
+</ol>
+<p>例如，让它每日总结日报：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk">来活了，你帮我个忙，每天早上<span class="hljs-number">9</span>点，抓取一下这些网页最近<span class="hljs-number">24</span>小时的消息： https:<span class="hljs-regexp">//</span>openai.com<span class="hljs-regexp">/zh-Hans-CN/</span>news<span class="hljs-regexp">/ https:/</span>/karpathy.ai<br>https:<span class="hljs-regexp">//</span>blog.samaltman.com<span class="hljs-regexp">/ https:/</span><span class="hljs-regexp">/blog.gregbrockman.com/</span> https:<span class="hljs-regexp">//</span>fchollet.com/<br>https:<span class="hljs-regexp">//</span>lilianweng.github.io<span class="hljs-regexp">/ https:/</span><span class="hljs-regexp">/colah.github.io/</span><br>https:<span class="hljs-regexp">//m</span>edium.com<span class="hljs-regexp">/@woj.zaremba https:/</span><span class="hljs-regexp">/mustafa-suleyman.ai/</span> https:<span class="hljs-regexp">//</span>deepmind.google<span class="hljs-regexp">/blog/</span> https:<span class="hljs-regexp">//</span>www.darioamodei.com<span class="hljs-regexp">/ https:/</span><span class="hljs-regexp">/karinanguyen.com/</span> https:<span class="hljs-regexp">//</span>steipete.me/<br>https:<span class="hljs-regexp">//</span>simonwillison.net<span class="hljs-regexp">/ https:/</span><span class="hljs-regexp">/ai.hubtoday.app/</span><br>https:<span class="hljs-regexp">//</span>www.anthropic.com<span class="hljs-regexp">/research https:/</span><span class="hljs-regexp">/hy.tencent.com/</span>research https:<span class="hljs-regexp">//</span>hn.buzzing.cc/<br>如果最近<span class="hljs-number">24</span>小时没有新内容的，就忽视掉。<br>如果有新内容的，就整理起来，找到跟AI产品，论文，观点，认知相关的你觉得最棒的<span class="hljs-number">10</span>条，每天早上<span class="hljs-number">9</span>点给我以飞书云文档的形式，发送一份详细的AI日报，这个云文档用Markdown渲染。<br></code></pre></td></tr></table></figure>
+
+<p>例如，连接 notion ：</p>
+<p>让它连接你的 notion 笔记，直接让跟他聊天按照bot 给的步骤 安装就行了，可以帮你记笔记，整理知识库，写文章同步到notion等等。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202602062152070.png" srcset="/img/loading.gif" lazyload alt="image-20260206215231313"></p>
+<p>总之给他越多的技能，他能做的事情也就越多，权限也就越大。更多好玩的也有待探索。</p>
+<p>你能看到这，并成功创建一个自己的bot，那是真的很不容易啦~</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI-OpenClaw/" class="print-no-link">#AI,OpenClaw</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OpenClaw: 如何最低成本拥有一只赛博宠物（踩坑无数~纯手打教程）</div>
+      <div>https://xcxyh.github.io/2026/02/06/OpenClaw 如何最低成本拥有一只赛博宠物/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年2月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/02/07/OpenClaw-%E6%94%AF%E6%8C%81QQ-Channels%E8%81%8A%E5%A4%A9/" title="OpenClaw 支持QQ Channels聊天">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OpenClaw 支持QQ Channels聊天</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/01/Moltbook%E7%88%86%E7%81%AB%E7%9A%84%E8%83%8C%E5%90%8E%E9%83%BD%E6%98%AF%E4%BA%BA%E7%B1%BB%E5%9C%A8%E5%88%B6%E9%80%A0%E6%B7%B7%E4%B9%B1/" title="Moltbook爆火的背后都是人类在制造混乱">
+                        <span class="hidden-mobile">Moltbook爆火的背后都是人类在制造混乱</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

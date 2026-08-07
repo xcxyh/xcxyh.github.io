@@ -1,0 +1,789 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xcxyh">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Android的Apk构建流程主要包括资源的编译和代码的编译。梳理清楚打包构建过程能够帮助我们理解为什么编译耗时久以及如何去优化。我们可以从以下两个方面去理解Android的Apk打包构建的过程：  Apk构建步骤 Apk自动化构建中的Gradle Task  Apk构建步骤  Apk的构建主要包括以下几个步骤：  资源文件的编译，包括通过aapt工具编译（AndroidManifest.xml，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 构建流程（笔记流）">
+<meta property="og:url" content="https://xcxyh.github.io/2024/07/06/Android-%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%EF%BC%88%E7%AC%94%E8%AE%B0%E6%B5%81%EF%BC%89/index.html">
+<meta property="og:site_name" content="Xiong&#39;s Blogs">
+<meta property="og:description" content="Android的Apk构建流程主要包括资源的编译和代码的编译。梳理清楚打包构建过程能够帮助我们理解为什么编译耗时久以及如何去优化。我们可以从以下两个方面去理解Android的Apk打包构建的过程：  Apk构建步骤 Apk自动化构建中的Gradle Task  Apk构建步骤  Apk的构建主要包括以下几个步骤：  资源文件的编译，包括通过aapt工具编译（AndroidManifest.xml，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062110151.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062111331.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062111418.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062112525.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062112749.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062112400.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062113285.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062113274.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062114189.png">
+<meta property="article:published_time" content="2024-07-06T13:17:01.000Z">
+<meta property="article:modified_time" content="2026-03-01T03:24:10.170Z">
+<meta property="article:author" content="xcxyh">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062110151.png">
+  
+  
+  
+  <title>Android 构建流程（笔记流） - Xiong&#39;s Blogs</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xcxyh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Xiong&#39;s Blogs</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/article-bg.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Android 构建流程（笔记流）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-06 21:17" pubdate>
+          2024年7月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Android 构建流程（笔记流）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Android的Apk构建流程主要包括资源的编译和代码的编译。梳理清楚打包构建过程能够帮助我们理解为什么编译耗时久以及如何去优化。我们可以从以下两个方面去理解Android的Apk打包构建的过程：</p>
+<ul>
+<li>Apk构建步骤</li>
+<li>Apk自动化构建中的Gradle Task</li>
+</ul>
+<h3 id="Apk构建步骤"><a href="#Apk构建步骤" class="headerlink" title="Apk构建步骤"></a>Apk构建步骤</h3><p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062110151.png" srcset="/img/loading.gif" lazyload alt="APK构建"></p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062111331.png" srcset="/img/loading.gif" lazyload alt="APK打包流程"></p>
+<p>Apk的构建主要包括以下几个步骤：</p>
+<ol>
+<li>资源文件的编译，包括通过aapt工具编译（AndroidManifest.xml，res）等资源，通过AIDL工具处理AIDL文件生成Java文件。</li>
+<li>Java &amp; kotlin 源代码编译。</li>
+<li>代码混淆，以及利用dex 工具将 class 文件编译为 dex 文件。</li>
+<li>通过 apkbuilder &#x2F; zipflinger 生成 apk文件。</li>
+<li>使用zipalign 对齐，提升 mmap 访问apk文件的速度。</li>
+<li>利用 apksigner 对apk文件进行签名。</li>
+</ol>
+<p><strong>资源文件的编译</strong><br>可以分析一下一个Android工程中通常会包括哪些资源文件：</p>
+<ol>
+<li>AndroidManifest.xml</li>
+<li>res&#x2F; 文件夹下的文件</li>
+<li>asset&#x2F; 文件夹下的文件</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062111418.png" srcset="/img/loading.gif" lazyload alt="app文件"></p>
+<p>在编译资源文件时，除了 asset&#x2F; 文件夹下的文件会直接保留之外，xml 与 res&#x2F;下的文件都会通过 aapt2 来编译为二进制文件。</p>
+<p><code>AAPT2</code>（<code>Android Asset Packaging Tool2</code>）是一种构建工具，<code>Android Studio</code> 和 <code>Android Gradle</code> 插件使用它来编译和打包应用的资源。<code>AAPT2</code> 会解析资源、为资源编制索引，并将资源编译为针对 <code>Android</code>平台进行过优化的二进制格式。Android Gradle 插件 3.0.0 及更高版本默认情况下会启用 AAPT2，因此通常不需要自行调用 <code>aapt2</code>。</p>
+<p>其路径位于：<code>android_sdk/build-tools/version/</code>下</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062112525.png" srcset="/img/loading.gif" lazyload alt="aapt"></p>
+<p>AAPT2 支持通过启用增量编译实现更快的资源编译。这是通过将资源处理拆分为两个步骤来实现的：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/command-line/aapt2?hl=zh-cn#compile">编译</a>：将资源文件编译为二进制格式。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/command-line/aapt2?hl=zh-cn#link">链接</a>：合并所有已编译的文件并将它们打包到一个软件包中。</li>
+</ul>
+<p>这种拆分方式有助于提高增量编译的性能。例如，如果某个文件中有更改，只需要重新编译该文件。</p>
+<p>编译过程：</p>
+<ol>
+<li>针对位于<code>res/values/</code>下的 xml资源文件，会被编译为以 <code>*.arsc.flat</code>作为扩展名的资源表。</li>
+<li>其他资源文件中，其他所有的xml文件都将转换为扩展名为 <code>*.flat</code> 的二进制 XML 文件。而对于png图片，则会被压缩，并采用 <code>*.png.flat</code> 作为扩展名。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">aapt2 compile project_root/module_root/src/main/res/values-en/<br>strings.xml -o compiled/<br>aapt2 compile project_root/module_root/src/main/res/drawable<br>/myImage.png -o compiled/<br><br><span class="hljs-comment"># 生成文件 values-en_strings.arsc.flat 和 drawable_img.png.flat</span><br></code></pre></td></tr></table></figure>
+
+<p>链接过程：</p>
+<p>AAPT2 输出的文件不是可执行文件，必须在链接阶段添加这些二进制文件作为输入来生成 APK，在链接阶段，AAPT2 会合并在编译阶段生成的所有中间文件（如资源表、二进制 XML 文件和处理过的 PNG 等 .flat文件），并将它们打包成一个 APK。而且，这个过程中还会生成 R.java文件、resources.arsc和ProGuard 规则文件，此时生成的apk 不含 Dex 等源码文件，无法安装到设备使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">aapt2 <span class="hljs-built_in">link</span> -o output.apk<br> -I android_sdk/platforms/android_version/android.jar<br>    compiled/res/values_values.arsc.flat<br>    compiled/res/drawable_img.flat --manifest /path/to/AndroidManifest.xml -v<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="http://r.java/">R.java</a> 文件提供资源文件的id进行索引，而 resources.arsc 文件是资源索引表，供在程序运行时根据id索引到具体的资源路径。如下表所示， resources.arsc 保存了id 、name和路径的映射关系。</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062112749.png" srcset="/img/loading.gif" lazyload alt="resources文件"></p>
+<p>resources.arsc 文件的格式：</p>
+<p>文件头：描述整个文件的信息，数据结构为 Restable_header （<a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/base/+/56a2301/include/androidfw/ResourceTypes.h">ResourceTypes.h</a>）</p>
+<p>全局字符常量池：存放所有的字符串，便于字符资源的复用。</p>
+<p>资源包：多个资源包，系统资源应用资源等。</p>
+<p>AIDL文件是一种用于进程间通信的接口文件，最终还是要生成为java文件，位于<code>android_sdk/build-tools/version/</code>的 aidl 工具 会将 aidl文件编译为java文件。</p>
+<p><strong>Java &amp; kotlin 源代码编译</strong></p>
+<p>Javac 编译 所有Java代码，包括 AIDL生成的java文件，生成 .class文件。kotlinc 编译所有的kotin代码，生成 .class 文件。APT&#x2F;KAPT生成的代码也是位于这个阶段，当注解被标记为 <code>AnnotationTarget.CLASS</code>时，相对应的注解处理器会在该阶段生成对应的java文件和class文件。</p>
+<p><strong>代码混淆 D8</strong></p>
+<p>在 <code>AGP 3.X</code>以后，<code>Google</code> 分别引入 <code>D8</code>编译器和 <code>R8</code>工具作为默认的 <code>DEX</code>编译器和混淆压缩工具。</p>
+<p><code>d8</code>是一种命令行工具，位于<code>android_sdk/build-tools/version/</code>，Android Studio 和 Android Gradle 插件使用该工具来将项目的.class字节码文件编译为在 Android 设备上运行的 DEX 字节码，即<code>dexing</code> 过程。</p>
+<p><code>R8</code>是 <code>ProGuard</code> 的替代工具，用于代码的压缩（<code>shrinking</code>）和混淆（<code>obfuscation</code>）。</p>
+<p>在 <code>AGP3.4.0</code>版本中，<code>R8</code>把 <code>desugaring</code>、<code>shrinking</code>、<code>obfuscating</code>、<code>optimizing</code> 和 <code>dexing</code>都合并到一步进行执行。</p>
+<p>脱糖（<code>desugaring</code>）即在编译阶段将在语法层面一些底层字节码不支持的特性转换为基础的字节码结构，(比如 <code>List</code> 上的泛型脱糖后在字节码层面实际为 <code>Object</code>)，新的语法可以在所有的设备上运行。</p>
+<p>可以在 gradle.properties 中配置相关属性，来禁用D8、R8 和 desugaring等过程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Disables R8 for Android Library modules only.</span><br>android.enableR8.libraries = <span class="hljs-literal">false</span><br><span class="hljs-comment"># Disables R8 for all modules.</span><br>android.enableR8 = <span class="hljs-literal">false</span><br><span class="hljs-comment"># Disables desugaring</span><br>android.enableIncrementalDesugaring=<span class="hljs-literal">false</span><br>android.enableDesugar=<span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+
+<p>d8还可用于增量构建，<code>d8</code> 在执行增量构建时，会将一些额外的信息存储在 DEX 输出中。随后在完整构建应用时，<code>d8</code>会利用这些信息来正确处理 <code>--main-dex-list</code>选项以及合并 DEX 文件。</p>
+<p><strong>apkbuilder &#x2F; zipflinger 生成 apk</strong></p>
+<p>将<code>manifest</code>文件、<code>resources</code>文件、<code>dex</code>文件、<code>assets</code>文件等等打包成一个压缩包，也就是<code>apk</code>文件。老版本使用 apkbuilder ，在<code>AGP3.6.0</code>之后，使用<code>zipflinger</code>作为默认打包工具来构建<code>APK</code>，以提高构建速度。</p>
+<p><strong>zipalign 对齐</strong></p>
+<p><code>zipalign</code>是一种 zip 归档文件对齐工具，有助于确保归档文件中的所有未压缩文件相对于文件开头对齐。这样一来，您便可直接通过 mmap 访问这些文件，而无需在 RAM 中复制这些数据并减少了应用的内存用量。</p>
+<aside>
+💡 注意：您必须在构建流程的特定时间点使用 `zipalign`。该时间点取决于您使用的应用签名工具：
+
+
+<ul>
+<li>如果您使用的是 <a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/command-line/apksigner?hl=zh-cn"><strong><code>apksigner</code></strong></a>，则必须在为 APK 文件签名<strong>之前</strong>使用 **<code>zipalign</code>**。如果您在使用 <strong><code>apksigner</code></strong> 为 APK 签名之后对 APK 做出了进一步更改，签名便会失效。</li>
+<li>如果您使用的是 <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/tutorial/deployment/jar/signing.html"><strong><code>jarsigner</code></strong></a>，则必须在为 APK 文件签名<strong>之后</strong>使用 **<code>zipalign</code>**。</aside></li>
+</ul>
+<p>为了实现对齐，<code>zipalign</code>会更改 zip <strong>本地文件标头</strong>部分中 <code>&quot;extra&quot;</code>字段的大小。此过程还会更改 <code>&quot;extra&quot;</code>字段中的现有数据。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">zipalign -p -f -v 4 infile.apk outfile.apk<br><br>-p 对齐 <br>-f 覆盖输出<br>-v 详细信息<br>4 4字节对齐<br></code></pre></td></tr></table></figure>
+
+<p>对齐的主要过程是将<code>APK</code>包中所有的资源文件距离文件起始偏移为4字节整数倍，对齐后就可以使用<code>mmap</code>函数读取文件，可以像读取内存一样对普通文件进行操作。</p>
+<p><strong>apksigner 签名</strong></p>
+<p>需要对apk文件进行签名，否则无法安装，实际项目中会有 debug 和release 两种不同的签名文件。<code>jarsigner</code>只能进行<code>v1</code>签名，而<code>apksigner</code>可以进行<code>v2</code>、<code>v3</code>、<code>v4</code>签名。</p>
+<p>详细介绍：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7111116047960244254">Android开发应该知道的签名知识！ - 掘金 (juejin.cn)</a></p>
+<p>消息摘要：对数据进行单向hash，得到固定hash值的过程。常见的摘要算法都有 MD5、SHA-1 和 SHA-256，满足 对相同内容多次hash结果一致，且很少发生hash碰撞。</p>
+<p>非对称加密：非对称加密是使用公钥&#x2F;私钥中的公钥来加密明文，然后使用对应的私钥&#x2F;私钥来解密密文的过程。例如 https 通信过程中的非对称加密过程。</p>
+<p>数字证书：由 CA机构颁发的证明公钥的身份的证书。</p>
+<p>Android 中数字签名的生成和普通的数字签名并没有很大的区别。Android主要使用自签名的方式，不需要CA机构颁发的数字证书。</p>
+<p><strong>v1 签名：</strong></p>
+<p>利用<code>META-INFO</code>文件夹中以<code>MF</code>、<code>SF</code>和 <code>RSA</code>为扩展名的三个文件，将<code>apk</code>中除了<code>META-INFO</code>文件夹中的所有文件进行进行摘要写到 <code>META-INFO/MANIFEST.MF</code>；然后计算<code>MANIFEST.MF</code>文件的摘要写到<code>CERT.SF</code>；最后计算<code>CERT.SF</code>的摘要，使用私钥计算签名，将签名和开发者证书写到<code>CERT.RSA</code>。</p>
+<p>v1签名的问题：</p>
+<p>签名校验慢。</p>
+<p><code>META-INFO</code>文件夹不会被签名，存在一定安全隐患</p>
+<p><strong>v2签名：</strong></p>
+<p>Apk本质上为一个压缩包，而压缩包文件格式一般分为三块：文件数据区，中央目录，中央目录结束节。<code>V2</code>要做的就是，在文件中插入一个<code>APK Signing Block</code>，位于中央目录部分之前。</p>
+<h3 id="Apk自动化构建中的Gradle-Task"><a href="#Apk自动化构建中的Gradle-Task" class="headerlink" title="Apk自动化构建中的Gradle Task"></a>Apk自动化构建中的Gradle Task</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs bash">&gt; Configure project :app<br>&gt; Task :app:preBuild UP-TO-DATE<br>&gt; Task :app:preDebugBuild UP-TO-DATE<br>&gt; Task :app:mergeDebugNativeDebugMetadata NO-SOURCE<br>&gt; Task :app:compileDebugAidl NO-SOURCE<br>&gt; Task :app:compileDebugRenderscript NO-SOURCE<br>&gt; Task :app:generateDebugBuildConfig UP-TO-DATE<br>&gt; Task :app:checkDebugAarMetadata UP-TO-DATE<br>&gt; Task :app:generateDebugResValues UP-TO-DATE<br>&gt; Task :app:generateDebugResources UP-TO-DATE<br>&gt; Task :app:mergeDebugResources UP-TO-DATE<br>&gt; Task :app:packageDebugResources UP-TO-DATE<br>&gt; Task :app:parseDebugLocalResources UP-TO-DATE<br>&gt; Task :app:createDebugCompatibleScreenManifests UP-TO-DATE<br>&gt; Task :app:extractDeepLinksDebug UP-TO-DATE<br>&gt; Task :app:processDebugMainManifest UP-TO-DATE<br>&gt; Task :app:processDebugManifest UP-TO-DATE<br>&gt; Task :app:processDebugManifestForPackage UP-TO-DATE<br>&gt; Task :app:processDebugResources UP-TO-DATE<br>&gt; Task :app:compileDebugKotlin UP-TO-DATE<br>&gt; Task :app:javaPreCompileDebug UP-TO-DATE<br>&gt; Task :app:compileDebugJavaWithJavac UP-TO-DATE<br>&gt; Task :app:mergeDebugShaders UP-TO-DATE<br>&gt; Task :app:compileDebugShaders NO-SOURCE<br>&gt; Task :app:generateDebugAssets UP-TO-DATE<br>&gt; Task :app:mergeDebugAssets UP-TO-DATE<br>&gt; Task :app:compressDebugAssets UP-TO-DATE<br>&gt; Task :app:processDebugJavaRes NO-SOURCE<br>&gt; Task :app:mergeDebugJavaResource UP-TO-DATE<br>&gt; Task :app:checkDebugDuplicateClasses UP-TO-DATE<br>&gt; Task :app:desugarDebugFileDependencies UP-TO-DATE<br>&gt; Task :app:mergeExtDexDebug UP-TO-DATE<br>&gt; Task :app:mergeLibDexDebug UP-TO-DATE<br>&gt; Task :app:dexBuilderDebug UP-TO-DATE<br>&gt; Task :app:mergeProjectDexDebug UP-TO-DATE<br>&gt; Task :app:mergeDebugJniLibFolders UP-TO-DATE<br>&gt; Task :app:mergeDebugNativeLibs NO-SOURCE<br>&gt; Task :app:stripDebugDebugSymbols NO-SOURCE<br>&gt; Task :app:validateSigningDebug UP-TO-DATE<br>&gt; Task :app:writeDebugAppMetadata UP-TO-DATE<br>&gt; Task :app:writeDebugSigningConfigVersions UP-TO-DATE<br>&gt; Task :app:packageDebug UP-TO-DATE<br>&gt; Task :app:createDebugApkListingFileRedirect UP-TO-DATE<br>&gt; Task :app:assembleDebug UP-TO-DATE<br><br>BUILD SUCCESSFUL <span class="hljs-keyword">in</span> 571ms<br>31 actionable tasks: 31 up-to-date<br><br>Build Analyzer results available<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs bash">:app:preBuild UP-TO-DATE    → 空task，锚点<br>:app:preDebugBuild  → 空task，锚点<br>:app:compileDebugAidl NO-SOURCE → 处理AIDL<br>:app:checkDebugManifest → 检查Manifest是否存在<br>:app:compileDebugRenderscript NO-SOURCE → 处理renderscript<br>:app:generateDebugBuildConfig   → 生成 BuildConfig.java<br>:app:mainApkListPersistenceDebug → 生成 app-list.gson<br>:app:generateDebugResValues → 生成resvalue，generated.xml<br>:app:generateDebugResources → 空task，锚点<br>:app:mergeDebugResources    → 合并资源文件<br>:app:createDebugCompatibleScreenManifests   → manifest文件中生成compatible-screens，指定屏幕适配<br>:app:processDebugManifest → 合并manifest.xml文件<br>:app:processDebugResources → aapt打包资源<br>:app:compileDebugKotlin → 编译Kotlin文件<br>:app:prepareLintJar UP-TO-DATE → 拷贝 lint jar包到指定位置<br>:app:generateDebugSources → 空task，锚点<br>:app:javaPreCompileDebug → 生成 annotationProcessors.json 文件<br>:app:compileDebugJavaWithJavac → 编译 java文件<br>:app:compileDebugNdk → 编译ndk<br>:app:compileDebugSources → 空task，锚点<br>:app:mergeDebugShaders → 合并 shader文件<br>:app:compileDebugShaders → 编译 shaders<br>:app:generateDebugAssets → 空task，锚点<br>:app:mergeDebugAssets → 合并 assests文件<br>:app:validateSigningDebug → 验证签名<br>:app:signingConfigWriterDebug → 编写SigningConfig信息<br>:app:checkDebugDuplicateClasses → 检查重复class<br>:app:transformClassesWithDexBuilderForDebug → class打包成dex<br>:app:transformDexArchiveWithExternalLibsDexMergerForDebug → 打包第三方库的dex<br>:app:transformDexArchiveWithDexMergerForDebug → 打包最终的dex<br>:app:mergeDebugJniLibFolders → 合并jni lib 文件<br>:app:transformNativeLibsWithMergeJniLibsForDebug → 合并jnilibs<br>:app:transformNativeLibsWithStripDebugSymbolForDebug → 去掉native lib里的debug符号<br>:app:processDebugJavaRes NO-SOURCE → 处理java res<br>:app:transformResourcesWithMergeJavaResForDebug → 合并java res<br>:app:packageDebug  → 打包apk<br>:app:assembleDebug → 空task，锚点<br>:app:extractProguardFiles → 生成混淆文件<br></code></pre></td></tr></table></figure>
+
+<p>Android Gradle Plugin源码阅读准备</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/column/6963508988642230285">Gradle - renxhui的专栏 - 掘金 (juejin.cn)</a></p>
+<p>Android gradle plugin 的源码的依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">implementation <span class="hljs-string">&quot;com.android.tools.build:gradle:<span class="hljs-variable">$VERSION</span>&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>在 gradle 7.0 之前，gradle 的版本和 agp 的版本号不一致，以下是对应关系：</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062112400.png" srcset="/img/loading.gif" lazyload alt="AGP版本对应"></p>
+<p>安利查看 <code>AGP</code> 源码的一个方法，直接在项目依赖对应 <code>AGP</code> 版本即可，不需要手动下载源码</p>
+<p><code>implementation &quot;com.android.tools.build:gradle:7.1.2&quot;</code></p>
+<p>sync 完成之后，才可以看到AGP源码</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062113285.png" srcset="/img/loading.gif" lazyload alt="gradle"></p>
+<p>全局搜索 AppPlugin.java 类，而不是 AppPlugin.kt 文件，可以看到 <a target="_blank" rel="noopener" href="http://com.android.application.properties/">com.android.application.properties</a> 文件中记录的implementation-class对应的实现类。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">implementation-class=com.android.build.gradle.AppPlugin<br></code></pre></td></tr></table></figure>
+
+<p>BasePlugin.java</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062113274.png" srcset="/img/loading.gif" lazyload alt="BasePlugin"></p>
+<p>app 构建流程包括：</p>
+<p><code>configureProject</code></p>
+<p><code>configureExtension</code></p>
+<p><code>createTasks</code></p>
+<p><code>createTasksBeforeEvaluate</code></p>
+<p><code>createAndroidTasks</code></p>
+<p>经过代码跟踪，最终到<code>ApplicationTaskManager</code>类中完成了整个打包过程task 的构建。对于源码阅读，只需要在用到时查找某个功能的使用节点时在跟进代码，找到具体位置即可，例如想知道自定义的 tranform 是在哪个task 任务中被执行的，就可以从该入口进入进行查找：TaskManager#createPostCompilationTasks，关于这个方法的注释为：</p>
+<p><code>Creates the post-compilation tasks for the given Variant. These tasks create the dex file from the .class files, plus optional intermediary steps like proguard and jacoco</code></p>
+<p>为给定变体创建编译后任务。<br>这些任务从.class文件创建 dex 文件，以及可选的中间步骤，如 proguard 和 jacoco</p>
+<p><img src="https://raw.githubusercontent.com/xcxyh/xcxyh.github.io/image-save/images/2024202407062114189.png" srcset="/img/loading.gif" lazyload alt="tranform Task"></p>
+<p>agp 各个版本 api 变化较大，最新版本甚至都用kotlin 重写了整个流程，但是整个打包的主体流程是不变的。所以，我们只需要选择其中一个版本，分析它打包流程中所对应的各个task 的作用即可。</p>
+<p><strong>参考资料：</strong></p>
+<ul>
+<li>开发者官网：<a target="_blank" rel="noopener" href="https://developer.android.google.cn/">Android 开发者  |  Android Developers (google.cn)</a></li>
+<li>AOSP官网：<a target="_blank" rel="noopener" href="https://source.android.google.cn/?hl=zh-cn">Android 开源项目  |  Android Open Source Project (google.cn)</a></li>
+<li>构建相关官方文档：<a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/build?hl=zh-cn">配置 build  |  Android 开发者  |  Android Developers (google.cn)</a></li>
+<li>beesX：<a target="_blank" rel="noopener" href="https://www.yuque.com/beesx/beesandroid/qqqbuh">Android安装包的打包流程 (yuque.com)</a></li>
+<li>一些博客：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7113713363900694565">Android Apk 编译打包流程，了解一下~ - 掘金 (juejin.cn)</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Android/" class="print-no-link">#Android</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Android 构建流程（笔记流）</div>
+      <div>https://xcxyh.github.io/2024/07/06/Android-构建流程（笔记流）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xcxyh</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/13/QuickAnimate-DSL/" title="QuickAnimate DSL">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">QuickAnimate DSL</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/06/%E5%86%99%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8E%9F%E5%88%99%EF%BC%88%E7%AC%94%E8%AE%B0%E6%B5%81%EF%BC%89/" title="写代码的一些原则（笔记流）">
+                        <span class="hidden-mobile">写代码的一些原则（笔记流）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
